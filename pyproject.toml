@@ -1,0 +1,31 @@
+[project]
+name = "apfel"
+version = "0.1.0-alpha0"
+description = "A Python functional extension library, or another personal fragmental enhancement laboratory."
+authors = [
+  { name = "Yixuan Wang" },
+]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = [
+  "attrs>=23.1.0",
+  "typing-extensions",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest",
+  "mypy",
+  "isort",
+  "black",
+]
+
+[build-system]
+build-backend = "setuptools.build_meta"
+requires = ["setuptools", "wheel"]
+
+[tool.mypy]
+[tool.isort]
+[tool.black]
+
