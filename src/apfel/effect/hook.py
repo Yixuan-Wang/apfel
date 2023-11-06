@@ -2,8 +2,9 @@ from __future__ import annotations
 
 import abc
 from collections.abc import Callable
-from attrs import define, field
 from typing import TypeVar
+
+from attrs import define, field
 from typing_extensions import ParamSpec
 
 _P = ParamSpec("_P")

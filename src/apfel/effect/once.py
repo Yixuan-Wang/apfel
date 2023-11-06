@@ -1,6 +1,8 @@
 from __future__ import annotations
+
 from collections.abc import Callable
-from typing import TypeVar, Literal, Union
+from typing import Literal, TypeVar, Union
+
 from typing_extensions import ParamSpec
 
 _T = TypeVar("_T")
