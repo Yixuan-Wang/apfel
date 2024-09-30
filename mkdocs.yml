@@ -1,0 +1,64 @@
+site_name: "Apfel"
+docs_dir: doc
+
+theme:
+  name: material
+  custom_dir: doc/overrides
+  font: false
+  palette:
+    - media: "(prefers-color-scheme)"
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-auto
+        name: Switch to light mode
+    - media: "(prefers-color-scheme: light)"
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      primary: custom
+      accent: custom
+      toggle:
+        icon: material/brightness-4
+        name: Switch to system preference
+  logo: "asset/red-apple.png"
+  favicon: "asset/red-apple.png"
+  features:
+    - navigation.expand
+    - navigation.path
+
+watch:
+  - src/apfel
+
+extra_css:
+  - stylesheet/extra.css
+
+plugins:
+  - search
+  - mkdocstrings:
+      default_handler: python
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_root_toc_entry: false
+            show_root_full_path: false
+            show_bases: false
+
+markdown_extensions:
+  - admonition
+  - attr_list
+  - tables
+  - toc:
+      permalink: "#"
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.superfences
+  - pymdownx.snippets
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg

@@ -1,0 +1,37 @@
+[project]
+name = "apfel"
+version = "0.0.1-alpha.1"
+description = "A personal functional extension library."
+authors = [
+    {name = "Yixuan-Wang", email = "tom-yx_wang@outlook.com"},
+]
+dependencies = [
+    "typing-extensions>=4.12.0",
+]
+requires-python = ">=3.11"
+readme = "README.md"
+license = {text = "MIT"}
+
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.package-data]
+"apfel" = ["py.typed"]
+
+[tool.pdm]
+distribution = true
+
+[tool.pdm.dev-dependencies]
+doc = [
+    "mkdocs>=1.6.0",
+    "mkdocstrings[python]>=0.25.1",
+    "mkdocs-material>=9.5.24",
+]
+pilot = [
+    "ipykernel>=6.29.4",
+    "ipython>=8.24.0",
+    "jupyter-server>=2.14.0",
+]
+
+[tool.ruff]
