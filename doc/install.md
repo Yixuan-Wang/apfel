@@ -7,6 +7,15 @@
     If you are interested in using this library, please make sure to **lock** the version.
 
 
+## Dependencies
+
+Currently, `apfel` requires Python 3.11 or later.
+
+The following dependencies are required:
+
+- [`typing-extensions`](https://pypi.org/project/typing-extensions/)
+
+
 ## Installation
 
 This library is not published to PyPI.
