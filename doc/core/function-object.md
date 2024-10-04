@@ -21,7 +21,7 @@
 
 ::: apfel.core.function_object.FunctionObject.__or__
 
-### `_&`
+### `&`
 
 ::: apfel.core.function_object.FunctionObject.__rand__
 
