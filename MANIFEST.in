@@ -1,0 +1,4 @@
+graft src
+
+global-exclude src/apfel_build/**
+global-exclude *.py[cod]
