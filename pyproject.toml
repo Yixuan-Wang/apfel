@@ -34,4 +34,7 @@ pilot = [
     "jupyter-server>=2.14.0",
 ]
 
+[tool.pdm.scripts]
+pre_build = "python src/apfel_build"
+
 [tool.ruff]

@@ -63,7 +63,6 @@ class FunctionObjectA1[P1, R](
 
 class FunctionObjectA2[P1, P2, R](
     FunctionObject,
-    Reveal[Callable[[P1, P2], R]],
 ):
     type Function = Callable[[P1, P2], R]
     def __init__(self, f: Function) -> None: ...
@@ -87,7 +86,6 @@ class FunctionObjectA2[P1, P2, R](
 
 class FunctionObjectA3[P1, P2, P3, R](
     FunctionObject,
-    Reveal[Callable[[P1, P2, P3], R]],
 ):
     type Function = Callable[[P1, P2, P3], R]
     def __init__(self, f: Function) -> None: ...
@@ -115,7 +113,6 @@ class FunctionObjectA3[P1, P2, P3, R](
 
 class FunctionObjectA4[P1, P2, P3, P4, R](
     FunctionObject,
-    Reveal[Callable[[P1, P2, P3, P4], R]],
 ):
     type Function = Callable[[P1, P2, P3, P4], R]
     def __init__(self, f: Function) -> None: ...
@@ -147,7 +144,6 @@ class FunctionObjectA4[P1, P2, P3, P4, R](
 
 class FunctionObjectA4P[P1, P2, P3, P4, R, **Ps](
     FunctionObject,
-    Reveal[Callable[Concatenate[P1, P2, P3, P4, Ps], R]],
 ):
     type Function = Callable[Concatenate[P1, P2, P3, P4, Ps], R]
     def __init__(self, f: Function) -> None: ...
@@ -181,7 +177,6 @@ class FunctionObjectA4P[P1, P2, P3, P4, R, **Ps](
 
 class FunctionObjectA3P[P1, P2, P3, R, **Ps](
     FunctionObject,
-    Reveal[Callable[Concatenate[P1, P2, P3, Ps], R]],
 ):
     type Function = Callable[Concatenate[P1, P2, P3, Ps], R]
     def __init__(self, f: Function) -> None: ...
@@ -211,7 +206,6 @@ class FunctionObjectA3P[P1, P2, P3, R, **Ps](
 
 class FunctionObjectA2P[P1, P2, R, **Ps](
     FunctionObject,
-    Reveal[Callable[Concatenate[P1, P2, Ps], R]],
 ):
     type Function = Callable[Concatenate[P1, P2, Ps], R]
     def __init__(self, f: Function) -> None: ...
@@ -237,7 +231,6 @@ class FunctionObjectA2P[P1, P2, R, **Ps](
 
 class FunctionObjectA1P[P1, R, **Ps](
     FunctionObject,
-    Reveal[Callable[Concatenate[P1, Ps], R]],
 ):
     type Function = Callable[Concatenate[P1, Ps], R]
     def __init__(self, f: Function) -> None: ...
@@ -264,7 +257,6 @@ class FunctionObjectA1P[P1, R, **Ps](
 
 class FunctionObjectA0P[R, **Ps](
     FunctionObject,
-    Reveal[Callable[Concatenate[Ps], R]],
 ):
     type Function = Callable[Concatenate[Ps], R]
     def __init__(self, f: Function) -> None: ...
