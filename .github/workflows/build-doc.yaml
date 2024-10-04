@@ -1,0 +1,36 @@
+name: Build Documentation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'doc/**'
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out
+        uses: actions/checkout@v4
+
+      - name: Setup PDM
+        uses: pdm-project/setup-pdm@v4
+        with:
+          python-version: 3.12
+          cache: true
+          cache-dependency-path: |
+            ./pdm.lock
+
+      - name: Install dependencies
+        run: pdm install --no-verbose
+
+      - name: Build documentation
+        run: pdm run mkdocs build
+
+      - name: Deploy documentation
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./site
+          publish_branch: docs
