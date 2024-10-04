@@ -24,7 +24,7 @@ jobs:
             ./pdm.lock
 
       - name: Install dependencies
-        run: pdm install --no-verbose
+        run: pdm install -dG doc
 
       - name: Build documentation
         run: pdm run mkdocs build
