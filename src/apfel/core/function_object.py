@@ -1,8 +1,8 @@
 """
 [**Function Objects**](https://en.wikipedia.org/Function_objects) are
 objects that implement the function call operator.
-This module provides [`FunctionObject`](./#functionobject).
-These are functions enhanced with methods and operator overloads,
+This module provides [**`FunctionObject`**](./#functionobject),
+a wrapper to extend functions with methods and operator overloads,
 and can be called and passed around just like normal :simple-python: Python functions,
 or further combined and mutated as the functions in :simple-haskell: Haskell.
 
@@ -15,13 +15,9 @@ import inspect as _inspect
 from functools import partial as _functools_partial
 
 class FunctionObject:
-    """\
-    ```python
-    class FunctionObject
-    ```
-
-    A wrapper for callable that provides additional methods and operator overloads.
-    """
+    #? This class cannot have docstring, as class level docstring will
+    #? conflict with object specific __doc__ used to wrap the original
+    #? function's docstring.
 
     __slots__ = (
         "__call__",
@@ -132,7 +128,7 @@ class FunctionObject:
     def __rand__(self, lhs):
         """\
         ```python
-        def _&[
+        def &[
             T, R,
             Self: Callable[[T], R],
         ](
@@ -141,6 +137,7 @@ class FunctionObject:
         ) -> R
         ```
         Reverse function application operator `&` for `FunctionObject`s.
+        **This operator overloading targets the right-hand side**.
 
         `x & f` is equivalent to `f(x)`, if `&` operator (left, `__and__`) is not overloaded by `x`'s type.
 
@@ -219,6 +216,9 @@ class FunctionObject:
 
 
 def _partial(f, *args, **kwargs):
+    """
+    Internal helper for creating partial function objects.
+    """
     return FunctionObject(_functools_partial(f, *args, **kwargs))
 
 func = FunctionObject(FunctionObject)
@@ -227,7 +227,7 @@ func = FunctionObject(FunctionObject)
 def func[F: Callable](f: F) -> F
 ```
 
-Turns a callable into `FunctionObject` yet keeps its original type hints.
+Turn a callable into `FunctionObject` yet keeps its original type hints.
 
 !!! example
     ```python

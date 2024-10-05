@@ -2,7 +2,6 @@ from __future__ import annotations
 from collections.abc import Callable
 from typing import Any, Concatenate, Never, overload
 
-from apfel.core.reveal import Reveal
 class FunctionObject:
     @overload
     def __new__[R](cls, f: Callable[[], R]) -> FunctionObjectA0[R]: ...
@@ -27,7 +26,6 @@ class FunctionObject:
 
 class FunctionObjectA0[R](
     FunctionObject,
-    Reveal[Callable[[], R]],
 ):
     type Function = Callable[[], R]
     def __init__(self, f: Function) -> None: ...
@@ -41,7 +39,6 @@ class FunctionObjectA0[R](
 
 class FunctionObjectA1[P1, R](
     FunctionObject,
-    Reveal[Callable[[P1], R]],
 ):
     type Function = Callable[[P1], R]
     def __init__(self, f: Function) -> None: ...
