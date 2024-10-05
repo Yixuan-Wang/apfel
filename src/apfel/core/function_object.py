@@ -15,13 +15,9 @@ import inspect as _inspect
 from functools import partial as _functools_partial
 
 class FunctionObject:
-    """\
-    ```python
-    class FunctionObject
-    ```
-
-    A wrapper for callable that provides additional methods and operator overloads.
-    """
+    #? This class cannot have docstring, as class level docstring will
+    #? conflict with object specific __doc__ used to wrap the original
+    #? function's docstring.
 
     __slots__ = (
         "__call__",
