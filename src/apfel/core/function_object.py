@@ -3,8 +3,8 @@
 objects that implement the function call operator.
 This module provides [**`FunctionObject`**](./#functionobject),
 a wrapper to extend functions with methods and operator overloads,
-and can be called and passed around just like normal :simple-python: Python functions,
-or further combined and mutated as the functions in :simple-haskell: Haskell.
+and can be called and passed around just like normal <span class="ref py">Python</span> functions,
+or further combined and mutated as the functions in <span class="ref hs">Haskell</span>.
 
 !!! warning
     Function objects come with runtime costs.
