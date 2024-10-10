@@ -25,9 +25,10 @@ are expected.
 
 - **Unpythonic**.
   Use best practices and API naming conventions from other languages,
-  especially [:simple-rust: Rust](https://doc.rust-lang.org/stable/std),
-  [:simple-haskell: Haskell](https://hoogle.haskell.org/?scope=set%3Aincluded-with-ghc)
-  and [:simple-julia: Julia](https://docs.julialang.org/en/v1) to mitigate Python's limitations.
+  especially [Rust](https://doc.rust-lang.org/stable/std){ .ref .rs },
+  [Haskell](https://hoogle.haskell.org/?scope=set%3Aincluded-with-ghc){ .ref .hs },
+  [R](https://www.rdocumentation.org/){ .ref .rl },
+  and [Julia](https://docs.julialang.org/en/v1){ .ref .jl } to mitigate Python's limitations.
 
 - **Type safe**.
   Add expressive and sound type hints whenever possible.
