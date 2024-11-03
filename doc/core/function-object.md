@@ -5,44 +5,43 @@
       heading_level: 1
       members: false
 
-## Decorators
+## Classes
 
-### `@func`
-
-::: apfel.core.function_object.func
-
-## `FunctionObject`
+###  `FunctionObject`
 
 ::: apfel.core.function_object.FunctionObject
     options:
         members: false
 
-### `|`
+#### operator-application(or)
 
 ::: apfel.core.function_object.FunctionObject.__or__
 
-### `&`
+#### operator-application(and)
 
 ::: apfel.core.function_object.FunctionObject.__rand__
 
-
-### `@`
+#### operator-application(at)
 
 ::: apfel.core.function_object.FunctionObject.__matmul__
 
-### `**`
+#### operator-composition
 
 ::: apfel.core.function_object.FunctionObject.__pow__
 
-### `%`
+#### operator-bind
 
 ::: apfel.core.function_object.FunctionObject.__mod__
 
-### `bind`
+#### `bind`
 
 ::: apfel.core.function_object.FunctionObject.bind
 
-## Module Functions
+## Functions
+
+### `func`
+
+::: apfel.core.function_object.func
 
 ### `reveal_func`
 
