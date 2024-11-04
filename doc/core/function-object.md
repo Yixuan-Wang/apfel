@@ -17,15 +17,15 @@
 
 ::: apfel.core.function_object.FunctionObject.__or__
 
-#### operator-application(and)
-
-::: apfel.core.function_object.FunctionObject.__rand__
-
 #### operator-application(at)
 
 ::: apfel.core.function_object.FunctionObject.__matmul__
 
-#### operator-composition
+#### operator-application(and)
+
+::: apfel.core.function_object.FunctionObject.__rand__
+
+#### operator-application(pow)
 
 ::: apfel.core.function_object.FunctionObject.__pow__
 

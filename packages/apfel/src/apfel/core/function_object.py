@@ -8,20 +8,25 @@ objects that implement the function call operator.
 
 ## Usage
 
+!!! tip
+    Use `FunctionObject` in interactive environments.
+
 `FunctionObject`s are particularly useful in interactive environments.
 Instead of wrapping a large expression in another level of parentheses,
-you can use [`|`](./#operator-applicationor) or [`@`](./#operator-applicationat) operators to apply the function on the following expression.
-If an expression guarantees to not overload the [`&`](./#operator-applicationand) operator, you can also use `&` to apply the function on the left-hand side,
-which is handy in REPLs.
+you can use application operators provided by `FunctionObject` to apply the function on the following expression.
 
 ```python
 f | although(we(are_not(using(lisp() or are_we()))))
 do_not(want_to(see(these(parentheses())))) & f
 ```
 
-Sometimes writing `f(...)` as `f@(...)` or `f|(...)` is kind of redundant,
-but these usages can be purged easily with simple search and replace.
-These operators are carefully chosen, as they are relatively rare in Python code.
+Writing `f(...)` as `f@(...)` seems redundant,
+but these `@` usages can be purged easily with simple search and replace.
+`FunctionObject`'s operators are carefully chosen, as they:
+
+1. are relatively rare in Python
+2. have different precedence and associativity
+
 This is especially useful when you wrap some debugging or logging code around a function call.
 For example, with the following usage with [`icecream`](https://pypi.org/project/icecream/){ .ref .py },
 you can replace `ic @ ` with empty string to remove all debugging code,
@@ -44,7 +49,13 @@ result = ic @ (
 the `|` has almost the lowest precedence of all Python operators, while the `@` has almost the highest precedence.
 This allows you combine expressions more flexibly without worrying about parentheses.
 
-[`**`](./#operator-composition) and [`%`](./#operator-bind) operators are also provided for function composition and partial function creation.
+[`&`](./#operator-applicationand) operator can be used to apply the function to its left-hand side,
+if the left-hand side does not overload the `&` operator.
+This is similar to [`&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-){ .ref .hs }, [`|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping){ .ref .jl } or roughly [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html){ .ref .rl }.
+
+[`**`](./#operator-applicationpow) operator has the highest precedence of all, and it has a unique
+associtivity from right to left.
+It is particularly useful to simulate [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs } operator in Haskell.
 
 !!! tip
     **Do not use `FunctionObject`s in library or main code base.**
@@ -161,12 +172,15 @@ class FunctionObject:
     def __pow__(self, rhs):
         """\
         ```python
-        def **[F: Callable](self, rhs: F) -> FunctionObject
+        def **[T, R](self, rhs: T) -> R
         ```
         
-        Functional composition operator `**` for `FunctionObject`s.
+        Function application operator `**` for `FunctionObject`s.
 
-        `f ** g` is mathematically similar to $f \\circ g$.
+        `f ** g ** x` is equivalent to `f(g(x))`.
+        This operator has the highest precedence of all overloadable operators,
+        and it binds from right to left.
+        It intends to simulate [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs } operator, except the precedence.
         
         !!! example
             ```python
@@ -178,15 +192,11 @@ class FunctionObject:
             def g(x):
                 return x * 2
 
-            h = f ** g
-            h(1)
+            f ** g ** 1
             # 3
             ```
         """
-        def f(*args, **kwargs):
-            return self(rhs(*args, **kwargs))
-
-        return FunctionObject(f)
+        return self.__call__(rhs)
     
     def __mod__(self, rhs):
         """\

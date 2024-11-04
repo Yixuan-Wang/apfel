@@ -82,7 +82,7 @@ def test_function_object_function_application():
     with pytest.raises(TypeError):
         1 & g
 
-def test_function_object_composition():
+def test_function_object_application_pow():
     from apfel.core.function_object import func
 
     @func
@@ -94,8 +94,8 @@ def test_function_object_composition():
     def g(x):
         return x * 2
 
-    assert (f**g)(1) == f(g(1)), "`FunctionObject.__pow__` does not work correctly"
-    assert (g**f)(1) == g(f(1)), "`FunctionObject.__pow__` does not work correctly"
+    assert f ** g ** 1 == f(g(1)), "`FunctionObject.__pow__` does not work correctly"
+    assert g ** f ** 1 == g(f(1)), "`FunctionObject.__pow__` does not work correctly"
 
 def test_function_object_partial():
     from apfel.core.function_object import func
@@ -137,5 +137,8 @@ def test_function_object_precedence():
 
     assert f | g @ 1 + 2 == f | ((g @ 1) + 2)
     
-    assert f ** g @ 1 == (f ** g) @ 1
-    assert f ** g ** f @ 1 == f(g(f(1)))
+    assert f @ g ** 1 == f(g(1))
+    assert f @ g ** 1 & 2 == f(g(1)) & 2
+    
+    with pytest.raises(TypeError):
+        f ** g @ 1
