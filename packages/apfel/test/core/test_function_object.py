@@ -82,7 +82,7 @@ def test_function_object_function_application():
     with pytest.raises(TypeError):
         1 & g
 
-def test_function_object_composition():
+def test_function_object_application_pow():
     from apfel.core.function_object import func
 
     @func
@@ -94,21 +94,28 @@ def test_function_object_composition():
     def g(x):
         return x * 2
 
-    assert (f**g)(1) == f(g(1)), "`FunctionObject.__pow__` does not work correctly"
-    assert (g**f)(1) == g(f(1)), "`FunctionObject.__pow__` does not work correctly"
+    assert f ** g ** 1 == f(g(1)), "`FunctionObject.__pow__` does not work correctly"
+    assert g ** f ** 1 == g(f(1)), "`FunctionObject.__pow__` does not work correctly"
 
-def test_function_object_partial():
+def test_function_object_application_mod():
     from apfel.core.function_object import func
 
     @func
     def f(a, b, c):
         return a + b + c
 
-    g = f % (1, 2)
-    assert g(3) == 6, "`FunctionObject.__mod__` does not work correctly"
+    @func
+    def g(a, b = 2, c = 3):
+        return a * b * c
 
-    g = f % {"a": 1, "b": 2}
-    assert g(c=3) == 6, "`FunctionObject.__mod__` does not work correctly"
+    assert f % (1, 2, 3) == f(1, 2, 3)
+    assert f % [1, 2, 3] == f(1, 2, 3)
+    assert f % { "a": 1, "b": 2, "c": 3 } == f(a=1, b=2, c=3)
+    assert f % { ...: (1, 2,), "c": 3 } == f(1, 2, c=3)
+    assert f % { ...: (), "a": 1, "b": 2, "c": 3 } == f(1, 2, 3)
+    assert f % ({...: (1, 2)} | { "c": 3 }) == f(1, 2, c=3)
+
+    assert g % 1 == g % (1,)
 
     with pytest.raises(TypeError):
         f % 1
@@ -137,5 +144,37 @@ def test_function_object_precedence():
 
     assert f | g @ 1 + 2 == f | ((g @ 1) + 2)
     
-    assert f ** g @ 1 == (f ** g) @ 1
-    assert f ** g ** f @ 1 == f(g(f(1)))
+    assert f @ g ** 1 == f(g(1))
+    assert f @ g ** 1 & 2 == f(g(1)) & 2
+
+    assert f % g ** 1 == f(g(1))
+    
+    with pytest.raises(TypeError):
+        f ** g @ 1
+
+def test_function_object_typing(capsys):
+    from apfel.core.function_object import func
+    from typing import reveal_type
+    from apfel.core.function_object import reveal_func
+
+    @func
+    def f(x: int) -> int:
+        return x + 1
+    
+    reveal_type(f)
+    reveal_type(reveal_func(f) | 1)
+    reveal_type(reveal_func(f) @ 1)
+    reveal_type(1 & reveal_func(f))
+    reveal_type(reveal_func(f) ** 1)
+    reveal_type(reveal_func(f) % (1,))
+
+    @func
+    def g(a: int, b: str = "a", *, c: float = 1.0) -> str:
+        return f"{a}{b}{c}"
+    
+    reveal_type(g)
+    reveal_type(reveal_func(g))
+    reveal_type(reveal_func(g) | 1)
+    reveal_type(reveal_func(g) @ 1)
+    reveal_type(1 & reveal_func(g))
+    reveal_type(reveal_func(g) ** 1)
