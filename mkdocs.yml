@@ -32,7 +32,7 @@ theme:
     - navigation.path
 
 watch:
-  - packages/apfel
+  - src/apfel
 
 extra_css:
   - stylesheet/extra.css
