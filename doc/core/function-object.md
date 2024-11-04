@@ -13,29 +13,25 @@
     options:
         members: false
 
-#### operator-application(or)
+#### | { #operator-or }
 
 ::: apfel.core.function_object.FunctionObject.__or__
 
-#### operator-application(at)
+#### @ { #operator-at }
 
 ::: apfel.core.function_object.FunctionObject.__matmul__
 
-#### operator-application(and)
+#### & { #operator-and }
 
 ::: apfel.core.function_object.FunctionObject.__rand__
 
-#### operator-application(pow)
+#### ** { #operator-pow }
 
 ::: apfel.core.function_object.FunctionObject.__pow__
 
-#### operator-bind
+#### % { #operator-mod }
 
 ::: apfel.core.function_object.FunctionObject.__mod__
-
-#### `bind`
-
-::: apfel.core.function_object.FunctionObject.bind
 
 ## Functions
 

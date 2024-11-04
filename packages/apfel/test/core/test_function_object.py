@@ -97,18 +97,25 @@ def test_function_object_application_pow():
     assert f ** g ** 1 == f(g(1)), "`FunctionObject.__pow__` does not work correctly"
     assert g ** f ** 1 == g(f(1)), "`FunctionObject.__pow__` does not work correctly"
 
-def test_function_object_partial():
+def test_function_object_application_mod():
     from apfel.core.function_object import func
 
     @func
     def f(a, b, c):
         return a + b + c
 
-    g = f % (1, 2)
-    assert g(3) == 6, "`FunctionObject.__mod__` does not work correctly"
+    @func
+    def g(a, b = 2, c = 3):
+        return a * b * c
 
-    g = f % {"a": 1, "b": 2}
-    assert g(c=3) == 6, "`FunctionObject.__mod__` does not work correctly"
+    assert f % (1, 2, 3) == f(1, 2, 3)
+    assert f % [1, 2, 3] == f(1, 2, 3)
+    assert f % { "a": 1, "b": 2, "c": 3 } == f(a=1, b=2, c=3)
+    assert f % { ...: (1, 2,), "c": 3 } == f(1, 2, c=3)
+    assert f % { ...: (), "a": 1, "b": 2, "c": 3 } == f(1, 2, 3)
+    assert f % ({...: (1, 2)} | { "c": 3 }) == f(1, 2, c=3)
+
+    assert g % 1 == g % (1,)
 
     with pytest.raises(TypeError):
         f % 1
@@ -139,6 +146,8 @@ def test_function_object_precedence():
     
     assert f @ g ** 1 == f(g(1))
     assert f @ g ** 1 & 2 == f(g(1)) & 2
+
+    assert f % g ** 1 == f(g(1))
     
     with pytest.raises(TypeError):
         f ** g @ 1

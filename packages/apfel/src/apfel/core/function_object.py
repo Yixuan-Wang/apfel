@@ -1,8 +1,9 @@
 """
 This module provides [**`FunctionObject`**](./#functionobject),
 a wrapper to extend functions with methods and operator overloads,
-and can be called and passed around just like normal <span class="ref py">Python</span> functions,
-or further combined and mutated as the functions in <span class="ref hs">Haskell</span>.
+and can be called just like normal <span class="ref py">Python</span> functions.
+Yet they support numerous additional operators for function calling.
+
 Conceptually, [**function objects**](https://en.wikipedia.org/Function_objects) are
 objects that implement the function call operator.
 
@@ -45,17 +46,20 @@ result = ic @ (
 )
 ```
 
-[`|`](./#operator-applicationor) and [`@`](./#operator-applicationat) have different operator precedence,
+[`|`](./#operator-or) and [`@`](./#operator-at) have different operator precedence,
 the `|` has almost the lowest precedence of all Python operators, while the `@` has almost the highest precedence.
 This allows you combine expressions more flexibly without worrying about parentheses.
 
-[`&`](./#operator-applicationand) operator can be used to apply the function to its left-hand side,
+[`&`](./#operator-and) operator can be used to apply the function to its left-hand side,
 if the left-hand side does not overload the `&` operator.
 This is similar to [`&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-){ .ref .hs }, [`|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping){ .ref .jl } or roughly [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html){ .ref .rl }.
 
-[`**`](./#operator-applicationpow) operator has the highest precedence of all, and it has a unique
+[`**`](./#operator-pow) operator has the highest precedence of all, and it has a unique
 associtivity from right to left.
-It is particularly useful to simulate [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs } operator in Haskell.
+It can be used in wrapping multiple calls together without parentheses, like `f(g(x))` can be written as `f ** g ** x`.
+It roughly simulates [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs }.
+
+[`%`](./#operator-mod) operator is used for calling multi-argument functions.
 
 !!! tip
     **Do not use `FunctionObject`s in library or main code base.**
@@ -74,7 +78,7 @@ It is particularly useful to simulate [`$`](https://hackage.haskell.org/package/
     For performance considerations, the majority of `apfel` APIs are not wrapped in `FunctionObject`s.
 """
 
-from functools import partial as _functools_partial
+from collections.abc import Sequence as _Sequence, Mapping as _Mapping
 
 class FunctionObject:
     #? This class cannot have docstring, as class level docstring will
@@ -107,7 +111,7 @@ class FunctionObject:
 
         Function application operator `|` for `FunctionObject`s.
 
-        `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](./#operator-applicationat), but with a different precedence.
+        `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](./#operator-at), but with a different precedence.
 
         !!! example
             ```python
@@ -155,7 +159,7 @@ class FunctionObject:
 
         Function application operator `@` for `FunctionObject`s.
 
-        `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](./#operator-applicationor), but with a different precedence.
+        `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](./#operator-or), but with a different precedence.
 
         !!! example
             ```python
@@ -201,16 +205,15 @@ class FunctionObject:
     def __mod__(self, rhs):
         """\
         ```python
-        def %(self, rhs: tuple | dict) -> FunctionObject raise TypeError
+        def %[R](self, rhs) -> R
         ```
 
-        Bind operator `%` for `FunctionObject`s to create partial functions.
+        Function application operator `%` for `FunctionObject`s of multi-argument functions.
 
-        `x % (a, b, c)` binds positional arguments.
-        `x % { "a": 1, "b": 2 }` binds keyword arguments.
-
-        !!! note
-            Use [`bind` method](./#bind) for all usage `functools.partial` supported.
+        - If the right hand side is a [Sequence](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence){ .ref .py }, spreads the sequence as positional arguments. For example, `x % (a, b, c)` is equivalent to `x(a, b, c)`.
+        - If the right hand side is a [Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping){ .ref .py }, spreads the mapping as keyword arguments. For example, `x % { "a": 1, "b": 2, "c": 3 }` is equivalent to `x(a=1, b=2, c=3)`.
+        - Specifically, you can use `...` as the map key to pass keyword arguments with keyword arguments at the same time, `x % { ...: (1, 2), "c": 3 }` is equivalent to `x(1, 2, c=3)`.
+        - Otherwise, it calls on the right-hand side. This catches the case where you forget the trailing comma in the right-hand side tuple.
 
         !!! example
             ```python
@@ -218,38 +221,24 @@ class FunctionObject:
             def f(a, b, c):
                 return a + b + c
 
-            g = f % (1, 2)
-            g(3)
-            # 6
+            f % (1, 2, 3)                  # 6
+            f % { "a": 1, "b": 2, "c": 3 } # 6
+            f % { ...: (1, 2), "c": 3 }    # 6
             ```
+
+        !!! warning
+            This operator does not support the case where `...` (the `Ellipsis`, not `"..."`) is used as a keyword argument.
+            However, this case is relatively rare, as `...` cannot be declared as argument name.
         """
-        if isinstance(rhs, tuple):
-            return _partial(self.__call__, *rhs)
-        elif isinstance(rhs, dict):
-            return _partial(self.__call__, **rhs)
+        if isinstance(rhs, _Sequence):
+            return self.__call__(*rhs)
+        elif isinstance(rhs, _Mapping):
+            if ... in rhs:
+                return self.__call__(*rhs[...], **{k: v for k, v in rhs.items() if k is not ...})
+            return self.__call__(**rhs)
         else:
-            raise TypeError(
-                f"Cannot bind {rhs!r} of type {type(rhs)} to {self.__class__.__name__}"
-            )
+            return self.__call__(rhs)
 
-    def bind(self, *args, **kwargs):
-        """\
-        ```python
-        def bind(self, *args, **kwargs) -> FunctionObject
-        ```
-
-        Bind extra arguments to a `FunctionObject`.
-        The returned function will be wrapped in another `FuncObject`.
-        """
-        return FunctionObject(_functools_partial(self.__call__, *args, **kwargs))
-
-
-
-def _partial(f, *args, **kwargs):
-    """
-    Internal helper for creating partial function objects.
-    """
-    return FunctionObject(_functools_partial(f, *args, **kwargs))
 
 def func(f, *fs):
     """\
