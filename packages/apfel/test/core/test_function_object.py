@@ -151,3 +151,30 @@ def test_function_object_precedence():
     
     with pytest.raises(TypeError):
         f ** g @ 1
+
+def test_function_object_typing(capsys):
+    from apfel.core.function_object import func
+    from typing import reveal_type
+    from apfel.core.function_object import reveal_func
+
+    @func
+    def f(x: int) -> int:
+        return x + 1
+    
+    reveal_type(f)
+    reveal_type(reveal_func(f) | 1)
+    reveal_type(reveal_func(f) @ 1)
+    reveal_type(1 & reveal_func(f))
+    reveal_type(reveal_func(f) ** 1)
+    reveal_type(reveal_func(f) % (1,))
+
+    @func
+    def g(a: int, b: str = "a", *, c: float = 1.0) -> str:
+        return f"{a}{b}{c}"
+    
+    reveal_type(g)
+    reveal_type(reveal_func(g))
+    reveal_type(reveal_func(g) | 1)
+    reveal_type(reveal_func(g) @ 1)
+    reveal_type(1 & reveal_func(g))
+    reveal_type(reveal_func(g) ** 1)
