@@ -2,25 +2,13 @@
 # It is not intended for manual editing.
 
 [metadata]
-groups = ["default", "dev", "doc"]
+groups = ["default", "doc"]
 strategy = ["inherit_metadata"]
 lock_version = "4.5.0"
-content_hash = "sha256:ece25486d141be244b94b1535bf9dc3ca87bdcc1b82dcdea836b53d72de419e1"
+content_hash = "sha256:64b0d98b0f5753bd8ff31a9567a8ea647a133e540372111b33d4a5d4bf2d34d7"
 
 [[metadata.targets]]
 requires_python = ">=3.11"
-
-[[package]]
-name = "apfel"
-version = "0.0.1a1"
-requires_python = ">=3.11"
-editable = true
-path = "./packages/apfel"
-summary = "A personal functional extension library."
-groups = ["dev"]
-dependencies = [
-    "typing-extensions>=4.12.0",
-]
 
 [[package]]
 name = "babel"
@@ -629,7 +617,7 @@ name = "typing-extensions"
 version = "4.12.2"
 requires_python = ">=3.8"
 summary = "Backported and Experimental Type Hints for Python 3.8+"
-groups = ["dev"]
+groups = ["default"]
 files = [
     {file = "typing_extensions-4.12.2-py3-none-any.whl", hash = "sha256:04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"},
     {file = "typing_extensions-4.12.2.tar.gz", hash = "sha256:1a7ead55c7e559dd4dee8856e3a88b41225abfe1ce8df57b7c13915fe121ffb8"},
