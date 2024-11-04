@@ -91,13 +91,7 @@ class FunctionObject:
     def __or__(self, rhs):
         """\
         ```python
-        def |[
-            T, R,
-            Self: Callable[[T], R],
-        ](
-            self,
-            rhs: T,
-        ) -> R
+        def |[T, R](self, rhs: T) -> R
         ```
 
         Function application operator `|` for `FunctionObject`s.
@@ -119,13 +113,7 @@ class FunctionObject:
     def __rand__(self, lhs):
         """\
         ```python
-        def &[
-            T, R,
-            Self: Callable[[T], R],
-        ](
-            self,
-            lhs: T,
-        ) -> R
+        def &[T, R](self, lhs: T) -> R
         ```
         Reverse function application operator `&` for `FunctionObject`s.
         **This operator overloading targets the right-hand side**.
@@ -151,7 +139,7 @@ class FunctionObject:
     def __matmul__(self, rhs):
         """\
         ```python
-        def @[F: Callable](self, rhs: F) -> ...
+        def @[T, R](self, rhs: T) -> R
         ```
 
         Function application operator `@` for `FunctionObject`s.
