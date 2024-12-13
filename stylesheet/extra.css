@@ -66,6 +66,11 @@ em, i {
 
 header.md-header {
     background-color: var(--md-default-bg-color);
+    color: var(--md-default-fg-color);
+}
+
+header.md-header :is(.md-search__icon, .md-search__input) {
+    color: var(--md-default-fg-color);
 }
 
 svg,
