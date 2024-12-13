@@ -19,13 +19,53 @@
 
 em, i {
     font-style: normal;
-    font-variation-settings: 'slnt' -10;
+    font-variation-settings: 'ital' -10;
+}
+
+.md-typeset :is(h1, h2, h3, h4, h5, h6) {
+    font-family: var(--md-text-font);
+    font-weight: 700 !important;
+}
+
+.md-typeset h1 {
+    font-size: 3em;
+    color: inherit;
+}
+
+.md-typeset h2 {
+    font-size: 2.25em;
+    padding-bottom: 0.25em;
+    border-bottom: solid 2px var(--md-primary-fg-color);
+}
+
+.md-typeset h3 {
+    font-size: 2.125em;
+}
+
+.md-typeset h4 {
+    font-size: 1.5em;
+}
+
+.md-typeset :is(h1, h2, h3, h4, h5, h6) code {
+    background: none;
+    color: inherit;
+    font-size: inherit;
+    padding: 0;
 }
 
 .md-typeset code,.md-typeset kbd,.md-typeset pre {
     color: var(--md-code-fg-color);
     direction: ltr;
-    font-variant-ligatures: discretionary-ligatures
+    font-variant-ligatures: discretionary-ligatures;
+    font-size: inherit;
+}
+
+.md-typeset .admonition, .md-typeset details {
+    font-size: inherit;
+}
+
+header.md-header {
+    background-color: var(--md-default-bg-color);
 }
 
 svg,
