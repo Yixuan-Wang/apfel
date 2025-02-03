@@ -40,13 +40,14 @@ class ABCDispatchMeta(ABCMeta):
                 value, "__isabstractmethod__", False
             ):
                 if isinstance(value, classmethod):
-                    value.__dispatch__ = DispatchRegistryForClassMethod(value)
+                    dispatch = DispatchRegistryForClassMethod(value)
                 elif isinstance(value, staticmethod):
-                    value.__dispatch__ = DispatchRegistryForStaticMethod(value)
+                    dispatch = DispatchRegistryForStaticMethod(value)
                 else:
-                    value.__dispatch__ = DispatchRegistry(value)
+                    dispatch = DispatchRegistry(value)
 
-                value = value.__dispatch__.decorate(value)
+                value = dispatch.decorate(value)
+                value.__dispatch__ = dispatch
                 namespace[key] = value
                 __dispatch_methods__.add(key)
 
@@ -230,4 +231,8 @@ def dispatch(func):
     """
     Decorator for single dispatch.
     """
-    return DispatchRegistry(func)
+
+    dispatch = DispatchRegistry(func)
+    func = dispatch.decorate(func)
+    func.__dispatch__ = dispatch
+    return func
