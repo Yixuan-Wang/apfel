@@ -90,12 +90,12 @@ class ABCDispatch(metaclass=ABCDispatchMeta):
     """
     ...
 
-class IDispatchRegistry[**P, R, F: Callable[P, R]](Protocol):
+class IDispatchRegistry(Protocol):
     """
     A protocol for dispatch registry.
     """
 
-    def dispatch(self, *args: P.args, **kwargs: P.kwargs) -> Callable[..., R]:
+    def dispatch(self, *args, **kwargs):
         """
         Dispatch based on a given a set of arguments,
         i.e. decide which implementation should be used.
@@ -103,7 +103,7 @@ class IDispatchRegistry[**P, R, F: Callable[P, R]](Protocol):
         """
         ...
     
-    def decorate(self, func: F) -> F:
+    def decorate(self, func):
         """
         Redirect the function to the polymorphic dispatch.
         This method should typically be implemented as a higher-order function,
@@ -113,7 +113,7 @@ class IDispatchRegistry[**P, R, F: Callable[P, R]](Protocol):
             An example implementation of this method:
             ```python
             def decorate(self, func):
-                def dyn(*args: P.args, **kwargs: P.kwargs):
+                def dyn(*args, **kwargs):
                     return self.dispatch(*args, **kwargs)(*args, **kwargs)
                 
                 update_wrapper(dyn, func)
@@ -122,7 +122,7 @@ class IDispatchRegistry[**P, R, F: Callable[P, R]](Protocol):
         """
         ...
 
-    def register(self, func: F, *args, **kwargs):
+    def register(self, func, *args, **kwargs):
         """
         Dynamically add a new implementation to the registry.
         The interface of this method is not specified,
@@ -130,17 +130,17 @@ class IDispatchRegistry[**P, R, F: Callable[P, R]](Protocol):
         """
         ...
 
-class DispatchRegistry[**P, R](IDispatchRegistry[P, R, Callable[P, R]]):
+class DispatchRegistry(IDispatchRegistry):
     """
     Default [registry][apfel.core.dispatch.IDispatchRegistry] using single dispatch.
     """
 
-    func: Callable[P, R]
+    func: Callable
     """
     The original function or method.
     """
 
-    registry: dict[type, Callable[P, R]]
+    registry: dict
     """
     A mapping from types to functions or methods.
     """
@@ -151,19 +151,19 @@ class DispatchRegistry[**P, R](IDispatchRegistry[P, R, Callable[P, R]]):
     If it is not a method, this should be `None`.
     """
     
-    decorate_assignments: list[str]
+    decorate_assignments: list
     """
     What attributes to copy from the original function to the decorated function
     when calling the `decorate` method.
     """
 
-    def __init__(self, func: Callable[P, R], *, enclosing_class: type | None = None, decorate_assignments: list[str] | None = None):
+    def __init__(self, func, *, enclosing_class=None, decorate_assignments=None):
         self.func = func
         self.registry = {}
         self.enclosing_class = enclosing_class
         self.decorate_assignments = decorate_assignments or [*WRAPPER_ASSIGNMENTS, "__isabstractmethod__"]
 
-    def dispatch(self, *args: P.args, **kwargs: P.kwargs) -> Callable[..., R]:
+    def dispatch(self, *args, **kwargs):
         receiver, *args = args
         ty_receiver = type(receiver)
         if self.enclosing_class and isinstance(receiver, self.enclosing_class):
@@ -175,22 +175,22 @@ class DispatchRegistry[**P, R](IDispatchRegistry[P, R, Callable[P, R]]):
             
         return self.func
     
-    def decorate(self, func: Callable[P, R]) -> Callable[P, R]:
-        def dyn(*args: P.args, **kwargs: P.kwargs):
+    def decorate(self, func):
+        def dyn(*args, **kwargs):
             return self.dispatch(*args, **kwargs)(*args, **kwargs)
 
         update_wrapper(dyn, func, assigned=self.decorate_assignments)
         return MethodType(dyn, self.enclosing_class) if self.enclosing_class is not None else dyn
         
 
-    def register(self, func: Callable[P, R], cls: type):
+    def register(self, func, cls):
         self.registry[cls] = func
 
-class DispatchRegistryForClassMethod[**P, R](DispatchRegistry[P, R]):
-    def dispatch(self, *args: P.args, **kwargs: P.kwargs) -> Callable[..., R]:
+class DispatchRegistryForClassMethod(DispatchRegistry):
+    def dispatch(self, *args, **kwargs):
         ty_or_receiver = args[0]
 
-        ty: type = ty_or_receiver if isinstance(ty_or_receiver, type) else type(ty_or_receiver)
+        ty = ty_or_receiver if isinstance(ty_or_receiver, type) else type(ty_or_receiver)
         if self.enclosing_class and issubclass(ty, self.enclosing_class):
             return getattr(ty, self.func.__name__)
 
@@ -204,7 +204,7 @@ class DispatchRegistryForClassMethod[**P, R](DispatchRegistry[P, R]):
         return self.func
     
     def decorate(self, func):
-        def dyn(*args: P.args, **kwargs: P.kwargs):
+        def dyn(*args, **kwargs):
             impl = self.dispatch(*args, **kwargs)
             receiver, *args = args
             # Here impl is of `method` type
@@ -213,11 +213,11 @@ class DispatchRegistryForClassMethod[**P, R](DispatchRegistry[P, R]):
         update_wrapper(dyn, func, assigned=self.decorate_assignments)
         return MethodType(dyn, self.enclosing_class) if self.enclosing_class is not None else dyn
 
-class DispatchRegistryForStaticMethod[**P, R](DispatchRegistryForClassMethod[P, R]):
+class DispatchRegistryForStaticMethod(DispatchRegistryForClassMethod):
     # dispatch reuses the dispatch function of `DispatchRegistryForClassMethod`
 
     def decorate(self, func):
-        def dyn(*args: P.args, **kwargs: P.kwargs):
+        def dyn(*args, **kwargs):
             impl = self.dispatch(*args, **kwargs)
             _, *args = args
             # Here impl is of `function` type
@@ -226,7 +226,7 @@ class DispatchRegistryForStaticMethod[**P, R](DispatchRegistryForClassMethod[P, 
         update_wrapper(dyn, func, assigned=self.decorate_assignments)
         return MethodType(dyn, self.enclosing_class) if self.enclosing_class is not None else dyn
 
-def dispatch[**P, R, F: Callable[P, R]](func: F) -> DispatchRegistry[P, R]:
+def dispatch(func):
     """
     Decorator for single dispatch.
     """
