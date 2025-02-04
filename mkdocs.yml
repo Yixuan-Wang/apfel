@@ -49,8 +49,10 @@ plugins:
             show_root_toc_entry: false
             show_root_full_path: true
             show_bases: false
-            group_by_category: true
-            show_category_heading: true
+            group_by_category: false
+            show_category_heading: false
+            show_symbol_type_toc: true
+
 
 markdown_extensions:
   - admonition
