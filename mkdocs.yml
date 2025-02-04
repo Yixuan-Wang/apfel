@@ -32,13 +32,14 @@ theme:
     - navigation.path
 
 watch:
-  - packages/apfel
+  - src/apfel
 
 extra_css:
   - stylesheet/extra.css
 
 plugins:
   - search
+  - autorefs
   - mkdocstrings:
       default_handler: python
       handlers:
@@ -46,8 +47,10 @@ plugins:
           options:
             show_source: false
             show_root_toc_entry: false
-            show_root_full_path: false
+            show_root_full_path: true
             show_bases: false
+            group_by_category: true
+            show_category_heading: true
 
 markdown_extensions:
   - admonition
