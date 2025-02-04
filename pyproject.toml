@@ -12,14 +12,7 @@ requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
 
-[build-system]
-requires = ["pdm-backend"]
-build-backend = "pdm.backend"
-
-[tool.pdm]
-distribution = true
-
-[tool.pdm.dev-dependencies]
+[dependency-groups]
 doc = [
     "mkdocs>=1.6.0",
     "mkdocstrings[python]>=0.25.1",
@@ -30,13 +23,17 @@ pilot = [
     "ipython>=8.24.0",
     "jupyter-server>=2.14.0",
 ]
-test = [
-    "pytest>=8.3.3",
-]
+test = ["pytest>=8.3.4"]
+
+[build-system]
+requires = ["pdm-backend"]
+build-backend = "pdm.backend"
+
+[tool.pdm]
+distribution = true
 
 [tool.pdm.scripts]
-
-[tool.pdm.build]
+doc = "mkdocs serve"
 
 [tool.ruff]
 
