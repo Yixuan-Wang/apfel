@@ -25,11 +25,11 @@ This means the dispatch is based on **the concrete type** of **first argument** 
 """
 
 from __future__ import annotations
-from abc import abstractmethod, ABCMeta
+from abc import ABCMeta
 from collections.abc import Callable
 from functools import update_wrapper, WRAPPER_ASSIGNMENTS
 from typing import Protocol
-from types import ClassMethodDescriptorType, FunctionType, MethodType
+from types import FunctionType, MethodType
 
 
 class ABCDispatchMeta(ABCMeta):
@@ -47,7 +47,7 @@ class ABCDispatchMeta(ABCMeta):
                     dispatch = DispatchRegistry(value)
 
                 value = dispatch.decorate(value)
-                value.__dispatch__ = dispatch
+                value.__dispatch__ = dispatch  # type: ignore
                 namespace[key] = value
                 __dispatch_methods__.add(key)
 
@@ -61,6 +61,13 @@ class ABCDispatchMeta(ABCMeta):
 
         return self
 
+class IABCDispatch(Protocol):
+    """
+    A protocol for ABCs that supports dispatching regardless of dispatch flavor.
+    """
+
+    @property
+    def __dispatch_methods__(self): ...
 
 class ABCDispatch(metaclass=ABCDispatchMeta):
     """
@@ -198,7 +205,7 @@ class DispatchRegistryForClassMethod(DispatchRegistry):
         if not hasattr(ty, "__mro__"):
             ty = type(ty)
 
-        for cls in ty.__mro__:
+        for cls in ty.__mro__: # type: ignore
             if cls in self.registry:
                 return self.registry[cls]
             
@@ -234,5 +241,46 @@ def dispatch(func):
 
     dispatch = DispatchRegistry(func)
     func = dispatch.decorate(func)
-    func.__dispatch__ = dispatch
+    setattr(func, "__dispatch__", dispatch)
+
+    def impl_for(cls):
+        def wrapper(impl):
+            dispatch.register(impl, cls)
+            return impl
+        return wrapper
+    setattr(func, "impl_for", impl_for)
+
     return func
+
+def impl(definition):
+    """
+    Decorator for registering an implementation.
+    """
+
+    is_class = isinstance(definition, type)
+    if not is_class:
+        raise TypeError(f"{definition} of type {type(definition)} cannot dispatch")
+    
+    dispatchable_methods = getattr(definition, "__dispatch_methods__", set())
+
+    def decorator(impl):
+        if not isinstance(impl, type):
+            raise TypeError(f"{impl} of type {type(impl)} cannot be an implementation")
+        
+        impl_for = impl.__base__
+
+        if impl_for is None:
+            raise ValueError(f"{impl} not subclassing any class is not a valid implementation")
+
+        for name, func in vars(impl).items():
+            if not isinstance(func, (FunctionType, classmethod, staticmethod)):
+                continue
+
+            if name not in dispatchable_methods:
+                raise ValueError(f"{name} of {definition.__name__} does not support dispatching")
+            
+            getattr(definition, name).__dispatch__.register(func, impl_for)
+
+        return impl
+
+    return decorator
