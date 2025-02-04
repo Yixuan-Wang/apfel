@@ -34,17 +34,17 @@ def test_function_object_call():
 
 
 def test_func_decorator():
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
 
-    @func
+    @fob
     def f(x):
         return x + 1
 
-    assert f(1) == 2, "`@func` decorator does not work correctly"
+    assert f(1) == 2, "`@fob` decorator does not work correctly"
 
 
 def test_func_batch_transform():
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
 
     def f(x: int) -> int:
         return x + 1
@@ -52,15 +52,15 @@ def test_func_batch_transform():
     def g(x: str) -> str:
         return x * 2
     
-    f, g = func(f, g)
+    f, g = fob(f, g)
     assert f(1) == 2
     assert g("a") == "aa"
 
 
 def test_function_object_function_application():
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
 
-    @func
+    @fob
     def f(x):
         """A simple function"""
         return x + 1
@@ -69,7 +69,7 @@ def test_function_object_function_application():
     assert f @ 1 == 2, "`FunctionObject.__matmul__` does not work correctly"
     assert 1 & f == 2, "`FunctionObject.__rand__` does not work correctly"
 
-    @func
+    @fob
     def g(x, y):
         return x + y
 
@@ -83,14 +83,14 @@ def test_function_object_function_application():
         1 & g
 
 def test_function_object_application_pow():
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
 
-    @func
+    @fob
     def f(x):
         """A simple function"""
         return x + 1
 
-    @func
+    @fob
     def g(x):
         return x * 2
 
@@ -98,13 +98,13 @@ def test_function_object_application_pow():
     assert g ** f ** 1 == g(f(1)), "`FunctionObject.__pow__` does not work correctly"
 
 def test_function_object_application_mod():
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
 
-    @func
+    @fob
     def f(a, b, c):
         return a + b + c
 
-    @func
+    @fob
     def g(a, b = 2, c = 3):
         return a * b * c
 
@@ -121,9 +121,9 @@ def test_function_object_application_mod():
         f % 1
 
 def test_function_object_precedence():
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
 
-    @func
+    @fob
     def f(x):
         return x * 2
     
@@ -131,7 +131,7 @@ def test_function_object_precedence():
     assert f @ 1 + 2 == (f @ 1) + 2
     assert 1 + 2 & f == (1 + 2) & f
 
-    @func
+    @fob
     def g(x):
         return x + 1
 
@@ -153,28 +153,28 @@ def test_function_object_precedence():
         f ** g @ 1
 
 def test_function_object_typing(capsys):
-    from apfel.core.function_object import func
+    from apfel.core.function_object import fob
     from typing import reveal_type
-    from apfel.core.function_object import reveal_func
+    from apfel.core.function_object import reveal_fob
 
-    @func
+    @fob
     def f(x: int) -> int:
         return x + 1
     
     reveal_type(f)
-    reveal_type(reveal_func(f) | 1)
-    reveal_type(reveal_func(f) @ 1)
-    reveal_type(1 & reveal_func(f))
-    reveal_type(reveal_func(f) ** 1)
-    reveal_type(reveal_func(f) % (1,))
+    reveal_type(reveal_fob(f) | 1)
+    reveal_type(reveal_fob(f) @ 1)
+    reveal_type(1 & reveal_fob(f))
+    reveal_type(reveal_fob(f) ** 1)
+    reveal_type(reveal_fob(f) % (1,))
 
-    @func
+    @fob
     def g(a: int, b: str = "a", *, c: float = 1.0) -> str:
         return f"{a}{b}{c}"
     
     reveal_type(g)
-    reveal_type(reveal_func(g))
-    reveal_type(reveal_func(g) | 1)
-    reveal_type(reveal_func(g) @ 1)
-    reveal_type(1 & reveal_func(g))
-    reveal_type(reveal_func(g) ** 1)
+    reveal_type(reveal_fob(g))
+    reveal_type(reveal_fob(g) | 1)
+    reveal_type(reveal_fob(g) @ 1)
+    reveal_type(1 & reveal_fob(g))
+    reveal_type(reveal_fob(g) ** 1)
