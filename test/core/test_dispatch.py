@@ -37,10 +37,6 @@ class TestSingleDispatch:
                 "args": args,
                 "kwargs": kwargs,
             }
-    
-    assert ITest.normal_method.__dispatch__.registry == {}
-    assert ITest.class_method.__dispatch__.registry == {}
-    assert ITest.static_method.__dispatch__.registry == {}
 
     def test_dispatch_abc_blanket(self):
         """Check if the blanket implementation works."""
@@ -54,90 +50,49 @@ class TestSingleDispatch:
                 pass
             _ = TestNotInitiable()  # type: ignore
 
-        # Test the blanket implementation
         # Given a class that neither subclasses nor registers any methods,
-        # the blanket implementation should be called.
+        # should raise NotImplementedError (instead of AttributeError)
         EmptyClass = type("EmptyClass", (), {})
         empty = EmptyClass()
 
-        assert TestSingleDispatch.ITest.normal_method(empty) == {
-            "type": "normal",
-            "implementation": "(blanket)",
-            "args": (),
-            "kwargs": {},
-        }
-        assert TestSingleDispatch.ITest.class_method(empty) == {
-            "type": "class",
-            "implementation": "(blanket)",
-            "args": (),
-            "kwargs": {},
-        }
-        assert TestSingleDispatch.ITest.static_method(empty) == {
-            "type": "static",
-            "implementation": "(blanket)",
-            "args": (),
-            "kwargs": {},
-        }
+        with pytest.raises(NotImplementedError):
+            TestSingleDispatch.ITest.normal_method(empty) # type: ignore
 
-        assert TestSingleDispatch.ITest.normal_method(empty, 1, a="a") == {
-            "type": "normal",
-            "implementation": "(blanket)",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert TestSingleDispatch.ITest.class_method(empty, 1, a="a") == {
-            "type": "class",
-            "implementation": "(blanket)",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert TestSingleDispatch.ITest.class_method(EmptyClass, 1, a="a") == {
-            "type": "class",
-            "implementation": "(blanket)",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert TestSingleDispatch.ITest.static_method(empty, 1, a="a") == {
-            "type": "static",
-            "implementation": "(blanket)",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert TestSingleDispatch.ITest.static_method(EmptyClass, 1, a="a") == {
-            "type": "static",
-            "implementation": "(blanket)",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
+        with pytest.raises(NotImplementedError):
+            TestSingleDispatch.ITest.class_method[empty]() # type: ignore
+
+        with pytest.raises(NotImplementedError):
+            TestSingleDispatch.ITest.static_method[empty]() # type: ignore
+
+    class A(ITest):
+        def normal_method(self, *args, **kwargs):
+            return {
+                "type": "normal",
+                "implementation": "A",
+                "args": args,
+                "kwargs": kwargs,
+            }
+
+        @classmethod
+        def class_method(cls, *args, **kwargs):
+            return {
+                "type": "class",
+                "implementation": "A",
+                "args": args,
+                "kwargs": kwargs,
+            }
+        
+        @staticmethod
+        def static_method(*args, **kwargs):
+            return {
+                "type": "static",
+                "implementation": "A",
+                "args": args,
+                "kwargs": kwargs,
+            }
     
-    def test_dispatch_abc_inherit(self):
-        class A(TestSingleDispatch.ITest):
-            def normal_method(self, *args, **kwargs):
-                return {
-                    "type": "normal",
-                    "implementation": "A",
-                    "args": args,
-                    "kwargs": kwargs,
-                }
-
-            @classmethod
-            def class_method(cls, *args, **kwargs):
-                return {
-                    "type": "class",
-                    "implementation": "A",
-                    "args": args,
-                    "kwargs": kwargs,
-                }
-            
-            @staticmethod
-            def static_method(*args, **kwargs):
-                return {
-                    "type": "static",
-                    "implementation": "A",
-                    "args": args,
-                    "kwargs": kwargs,
-                }
-            
+    def test_dispatch_abc_inherit_normal(self):
+        A = TestSingleDispatch.A
         a = A()
         
         # Using normal method call
@@ -147,32 +102,8 @@ class TestSingleDispatch:
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert a.class_method(1, a="a") == {
-            "type": "class",
-            "implementation": "A",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert A.class_method(1, a="a") == {
-            "type": "class",
-            "implementation": "A",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert a.static_method(1, a="a") == {
-            "type": "static",
-            "implementation": "A",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
-        assert A.static_method(1, a="a") == {
-            "type": "static",
-            "implementation": "A",
-            "args": (1,),
-            "kwargs": {"a": "a"},
-        }
 
-        # Using function call
+        # Use qualified function call
         assert A.normal_method(a, 1, a="a") == {
             "type": "normal",
             "implementation": "A",
@@ -187,25 +118,62 @@ class TestSingleDispatch:
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method(a, 1, a="a") == {
+
+    def test_dispatch_abc_inherit_class(self):
+        A = self.A
+        a = A()
+    
+        assert a.class_method(1, a="a") == {
             "type": "class",
             "implementation": "A",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method(A, 1, a="a") == {
+        assert A.class_method(1, a="a") == {
             "type": "class",
             "implementation": "A",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.static_method(a, 1, a="a") == {
+        assert TestSingleDispatch.ITest.class_method[a](1, a="a") == { # type: ignore
+            "type": "class",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.class_method[A](1, a="a") == { # type: ignore
+            "type": "class",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+
+
+    def test_dispatch_abc_inherit_static(self):
+        A = self.A
+        a = A()
+
+        assert a.static_method(1, a="a") == {
             "type": "static",
             "implementation": "A",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.static_method(A, 1, a="a") == {
+        assert A.static_method(1, a="a") == {
+            "type": "static",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+
+        # Using function call
+        assert TestSingleDispatch.ITest.static_method[a](1, a="a") == { # type: ignore
+            "type": "static",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.static_method[A](1, a="a") == { # type: ignore
             "type": "static",
             "implementation": "A",
             "args": (1,),
@@ -242,19 +210,19 @@ class TestSingleDispatch:
                 }
             
         i = 1
-        assert TestSingleDispatch.ITest.normal_method(i, 1, a="a") == {
+        assert TestSingleDispatch.ITest.normal_method(i, 1, a="a") == { # type: ignore
             "type": "normal",
             "implementation": "int",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method(i, 1, a="a") == {
+        assert TestSingleDispatch.ITest.class_method[1](1, a="a") == { # type: ignore
             "type": "class",
             "implementation": "int",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method(int, 1, a="a") == {
+        assert TestSingleDispatch.ITest.class_method[int](1, a="a") == { # type: ignore
             "type": "class",
             "implementation": "int",
             "args": (1,),
@@ -273,7 +241,8 @@ class TestSingleDispatchFuncAPI:
         assert f.__dispatch__.registry == {}
 
         # Fallback implementation used
-        assert f(1/3) == "0.3333333333333333"
+        with pytest.raises(NotImplementedError):
+            f(1/3)
 
         # Register an implementation
         @f.impl_for(float)
