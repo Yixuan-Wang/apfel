@@ -1,17 +1,42 @@
 """\
-!!! tip
+Tip: Meme
     <del>A monad is a **monoid** in the category of **endofunctors**.</del>
 
-The [`apfel.core.monad`](/core/monad) module provides monadic interfaces that enable
+The [`monad`](/core/monad) module provides monadic interfaces that enable
 structured ways to compose and manipulate computations on a single effectful construction.
 
+The module defines three abstract classes: [`Functor`][apfel.core.monad.Functor],
+[`Applicative`][apfel.core.monad.Applicative], and [`Monad`][apfel.core.monad.Monad].
+
+# Guide
+
+Here's a high-level comparison of the three.
+Assume `Value` is a `Monad`.
+**A `Monad` is always a `Functor` and an `Applicative`.**
+
+```python
+
+value = Value(42)
+
+assert value.map  (      lambda x: x + 1 ) == Value(43)
+assert value.apply(Value(lambda x: x + 1)) == Value(43)
+assert value.bind (lambda x: Value(x + 1)) == Value(43)
+
+```
+
+If you are familiar with Rust,
+[`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){.ref .rs} is a `Monad`,
+[`Option.map`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map){.ref .rs} is its `Functor.map`,
+[`Option.and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then){.ref .rs} is its `Monad.bind`.
 
 """
 
-from abc import ABC, abstractmethod
+from abc import abstractmethod
+
+from apfel.core.dispatch import ABCDispatch
 
 
-class Functor(ABC):
+class Functor(ABCDispatch):
     """\
     ```python
     class Functor[T](ABC):
@@ -21,6 +46,8 @@ class Functor(ABC):
 
     A [functor](https://en.wikipedia.org/wiki/Functor) is a type that can apply
     a function to its inner value(s) without changing its structure.
+
+    To implement a `Functor`, you need to implement at least the `map` method.
 
     See [Functor](https://wiki.haskell.org/Functor){.ref .hs} for more information.
 
@@ -37,16 +64,26 @@ class Functor(ABC):
     def map(self, f):
         """\
         ```python
-        def map
-            [F: Callable[[T], R], R]
-            (self, f: F)
-            -> Self[R]
+        def map[F, R](self, f: F) -> Self[R]
+            where F: Callable[[T], R]
         ```
 
-        Apply a function to the inner value(s) of the functor.
+        Apply a function to the inner value(s) of the functor, returning a new 
+        instance of the functor.
+        This corresponds to the [`fmap`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:fmap){.ref .hs} in Haskell.
+        
+        Built-in [`map`](https://docs.python.org/3/library/functions.html#map){.ref .py} function
+        returns an iterator, not a new instance of the functor.
+
+        Example:
+            ```python
+            add = lambda x: x + 1
+            Functor.map([1, 2, 3], add) # [2, 3, 4]
+            map([1, 2, 3], add)         # <map object at ...>
+            ```
 
         Args:
-            f: The function to apply.
+            f (Callable[[T], R]): The function to apply.
 
         Returns:
             A new instance of the functor with transformed inner value(s).
@@ -56,25 +93,16 @@ class Functor(ABC):
     def __xor__(self, f):
         """\
         ```python
-        def ^
-            [F: Callable[[T], R], R]
-            (self, f: F)
-            -> Self[R]
+        def ^[F: Callable[[T], R], R](self, f: F)-> Self[R]
         ```
 
-        Map operator `^`, purely syntactic sugar for `map`.
-
-        Args:
-            f: The function to apply.
-
-        Returns:
-            A new instance of the functor with transformed inner value(s).
+        Map operator `^`, purely syntactic sugar for [`map`][apfel.core.monad.Functor.map].
         """
 
         return self.map(f)
 
 
-class Applicative(Functor, ABC):
+class Applicative(Functor, ABCDispatch):
     """\
     ```python
     class Applicative[T](Functor):
@@ -86,17 +114,17 @@ class Applicative(Functor, ABC):
     An [applicative functor](https://en.wikipedia.org/wiki/Applicative_functor) is a functor
     extended with the ability to apply an effectful function to its inner value(s).
 
+    To implement an `Applicative`, you need to implement at least the `pure` and `apply` methods.
+
     See [Applicative](https://wiki.haskell.org/Applicative){ .ref .hs } for more information.
     """
 
-    @abstractmethod
     @classmethod
+    @abstractmethod
     def pure(cls, x):
         """\
         ```python
-        def pure
-            (self, x: T)
-            -> Self[T]
+        def pure(cls, x: T) -> Self[T]
         ```
 
         Wrap a value into the applicative structure.
@@ -113,30 +141,20 @@ class Applicative(Functor, ABC):
     def __matmul__(cls, x):
         """\
         ```python
-        def @
-            (self, x: T)
-            -> Self[T]
+        def @(self, x: T) -> Self[T]
         ```
 
-        Applicative operator `@`, purely syntactic sugar for `pure`.
-
-        Args:
-            x: The value to wrap.
-
-        Returns:
-            A new instance of the applicative with the value wrapped.
+        Applicative operator `@`, purely syntactic sugar for [`pure`][apfel.core.monad.Applicative.pure].
         """
 
-        return cls.pure(x)
+        return Applicative.pure[cls](x)  # type: ignore
 
     @abstractmethod
     def apply(self, f):
         """\
         ```python
-        def apply
-            [F: Self[Callable[[T], R]], R]
-            (self, f: F)
-            -> Self[R]
+        def apply[F, R](self, f: F) -> Self[R]
+            where F: Self[Callable[[T], R]]
         ```
 
         Applies a function wrapped inside the applicative structure to the inner value(s) of this applicative.
@@ -155,31 +173,38 @@ class Applicative(Functor, ABC):
         # ? map f x = pure f <*> x
         # ? ```
 
-        return self.apply(self.pure(f))
+        # return self.apply(self.pure(f))
+        return Applicative.apply[self](self, Applicative.pure[self](f))  # type: ignore
 
 
-class Monad(Applicative, ABC):
+class Monad(Applicative, ABCDispatch):
     """\
     ```python
     class Monad[T](Applicative):
         bind
+        (Applicative.pure)
     ```
 
     A [monad](https://en.wikipedia.org/wiki/Monad_(functional_programming)) is an applicative
     functor extended with the ability to reuse results of previous computations and chain
     effectful computations together.
 
+    To implement a `Monad`, you need to implement at least the `bind` method, and
+    the [`pure`][apfel.core.monad.Applicative.pure] method from `Applicative`.
+
     See [Monad](https://wiki.haskell.org/Monad){ .ref .hs } for more information.
+
+    Notes:
+        `return` is a reserved keyword in Python, and Haskell [`return`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:return){.ref .hs} is a historical mistake that is now
+        pointing to [`pure`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:pure){.ref .hs}.
     """
 
     @abstractmethod
     def bind(self, f):
         """\
         ```python
-        def bind
-            [F: Callable[[T], Self[R]], R]
-            (self, f: F)
-            -> Self[R]
+        def bind[F, R](self, f: F) -> Self[R]
+            where F: Callable[[T], Self[R]]
         ```
 
         Chain a new monadic computation to the current one.
@@ -206,7 +231,9 @@ class Monad(Applicative, ABC):
         # ? apply f x = f >>= \g -> x >>= \y -> return (g y)
         # ? ```
 
-        return f.bind(lambda g: self.bind(lambda y: self.pure(g(y))))
+        return Monad.bind( # type: ignore
+            f, lambda g: Monad.bind(self, lambda y: Applicative.pure[self](g(y))) # type: ignore
+        )
 
     def map(self, f):
         # ? This is the default implementation of `Functor.map` for `Monad`.
@@ -214,7 +241,6 @@ class Monad(Applicative, ABC):
         # ? map f x = x >>= \a -> return (f a)
         # ? ```
 
-        return self.bind(lambda a: self.pure(f(a)))
-
+        return Monad.bind(self, lambda a: Applicative.pure[self](f(a)))  # type: ignore
 
 __all__ = ["Functor", "Applicative", "Monad"]
