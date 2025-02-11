@@ -32,6 +32,7 @@ If you are familiar with Rust,
 """
 
 from abc import abstractmethod
+from typing import override
 
 from apfel.core.dispatch import ABCDispatch
 
@@ -167,6 +168,7 @@ class Applicative(Functor, ABCDispatch):
         """
         ...
 
+    @override
     def map(self, f):
         # ? This is the default implementation of `Functor.map` for `Applicative`.
         # ? ```haskell
@@ -225,6 +227,7 @@ class Monad(Applicative, ABCDispatch):
         """
         ...
 
+    @override
     def apply(self, f):
         # ? This is the default implementation of `Applicative.apply` for `Monad`.
         # ? ```haskell
@@ -235,6 +238,7 @@ class Monad(Applicative, ABCDispatch):
             f, lambda g: Monad.bind(self, lambda y: Applicative.pure[self](g(y))) # type: ignore
         )
 
+    @override
     def map(self, f):
         # ? This is the default implementation of `Functor.map` for `Monad`.
         # ? ```haskell

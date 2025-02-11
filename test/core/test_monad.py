@@ -30,7 +30,7 @@ class Maybe[T](Monad):
 def test_monad_maybe():
     assert Maybe.__abstractmethods__ == set()
 
-    maybe = Maybe(42)  # type: ignore
+    maybe = Maybe(42)
     
     assert maybe.map(lambda x: x + 1) == Maybe(43) # type: ignore
     assert maybe.apply(Maybe(lambda x: x + 1)) == Maybe(43) # type: ignore
