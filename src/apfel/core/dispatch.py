@@ -219,8 +219,12 @@ class DispatchRegistry(IDispatchRegistry):
     def decide_impl(self, *args, **kwargs):
         receiver, *args = args
         ty_receiver = type(receiver)
-        if self.enclosing_class and isinstance(receiver, self.enclosing_class):
-            return getattr(ty_receiver, self.function.__name__)
+        if (
+            self.enclosing_class
+            and isinstance(receiver, self.enclosing_class)
+            and (impl := getattr(ty_receiver, self.function.__name__, None)) is not None
+        ):
+            return impl 
 
         for cls in ty_receiver.__mro__:
             if cls in self.registry:
@@ -272,8 +276,12 @@ class DispatchRegistryForClassMethod(DispatchRegistry):
         ty = (
             ty_or_receiver if isinstance(ty_or_receiver, type) else type(ty_or_receiver)
         )
-        if self.enclosing_class and issubclass(ty, self.enclosing_class):
-            return getattr(ty, self.function.__name__)
+        if (
+            self.enclosing_class
+            and issubclass(ty, self.enclosing_class)
+            and (impl := getattr(ty, self.function.__name__, None)) is not None
+        ):
+            return impl
 
         if not hasattr(ty, "__mro__"):
             ty = type(ty)
@@ -390,6 +398,18 @@ def impl(definition):
                 )
 
             getattr(definition, name).__dispatch__.add_impl(func, impl_for)
+
+        try:
+            for name, func in vars(impl).items():
+                if not isinstance(func, (FunctionType, classmethod, staticmethod)):
+                    continue
+
+                setattr(impl, name, func)
+        except AttributeError:
+            pass
+        
+        if isinstance(definition, ABCMeta):
+            definition.register(impl_for)
 
         return impl
 
