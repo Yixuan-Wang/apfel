@@ -35,3 +35,68 @@ def test_monad_maybe():
     assert maybe.map(lambda x: x + 1) == Maybe(43) # type: ignore
     assert maybe.apply(Maybe(lambda x: x + 1)) == Maybe(43) # type: ignore
     assert maybe.bind(lambda x: Maybe(x + 1)) == Maybe(43) # type: ignore
+
+def test_monad_impl_list():
+    assert issubclass(list, Functor)
+    assert issubclass(list, Applicative)
+    assert issubclass(list, Monad)
+
+    lst = [1, 2, 3]
+
+    import operator
+    from functools import partial
+
+    add = lambda x: partial(operator.add, x)
+
+    assert Functor.map(lst, add(1)) == [2, 3, 4]
+    assert Applicative.pure[list](42) == [42]
+    assert Applicative.apply(lst, [add(1), add(2)]) == [2, 3, 4, 3, 4, 5]
+    assert Monad.bind(lst, lambda x: [x, x + 1]) == [1, 2, 2, 3, 3, 4]
+
+def test_monad_impl_tuple():
+    assert issubclass(tuple, Functor)
+    assert issubclass(tuple, Applicative)
+    assert issubclass(tuple, Monad)
+
+    tpl = (1, 2, 3)
+
+    import operator
+    from functools import partial
+
+    add = lambda x: partial(operator.add, x)
+
+    assert Functor.map(tpl, add(1)) == (2, 3, 4)
+    assert Applicative.pure[tuple](42) == (42,)
+    assert Applicative.apply(tpl, (add(1), add(2))) == (2, 3, 4, 3, 4, 5)
+    assert Monad.bind(tpl, lambda x: (x, x + 1)) == (1, 2, 2, 3, 3, 4)
+
+def test_monad_impl_set():
+    assert issubclass(set, Functor)
+    assert issubclass(set, Applicative)
+    assert issubclass(set, Monad)
+
+    st = {1, 2, 3}
+
+    import operator
+    from functools import partial
+
+    add = lambda x: partial(operator.add, x)
+
+    assert Functor.map(st, add(1)) == {2, 3, 4}
+    assert Applicative.pure[set](42) == {42}
+    assert Applicative.apply(st, {add(1), add(2)}) == {2, 3, 4, 5}
+    assert Monad.bind(st, lambda x: {x, x + 1}) == {1, 2, 3, 4}
+
+def test_monad_impl_dict():
+    assert issubclass(dict, Functor)
+    assert not issubclass(dict, Applicative)
+    assert not issubclass(dict, Monad)
+
+    dct = {1: 2, 3: 4}
+
+    import operator
+    from functools import partial
+
+    add = lambda x: partial(operator.add, x)
+
+    assert Functor.map(dct, add(1)) == {1: 3, 3: 5}
