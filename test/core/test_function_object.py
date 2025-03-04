@@ -1,3 +1,5 @@
+# type: ignore
+
 import pytest
 
 
@@ -178,3 +180,20 @@ def test_function_object_typing(capsys):
     reveal_type(reveal_fob(g) @ 1)
     reveal_type(1 & reveal_fob(g))
     reveal_type(reveal_fob(g) ** 1)
+
+
+def test_function_object_on_callables():
+    from apfel.core.function_object import fob
+
+    class A:
+        def __call__(self, x):
+            return x + 1
+        
+    a = fob(A())
+
+    assert a | 1 == 2
+
+    list_ = fob(list)
+    map_ = fob(map)
+
+    assert list_ | map_ % (lambda x: x + 1, [1, 2, 3]) == [2, 3, 4]
