@@ -414,3 +414,11 @@ def impl(definition):
         return impl
 
     return decorator
+
+
+def add_impl(definition, impl, *impl_for_args, **impl_for_kwargs):
+    """
+    An imperative interface for adding implementations to a dispatchable class.
+    """
+    for name, func in impl.items():
+        getattr(definition, name).__dispatch__.add_impl(func, *impl_for_args, **impl_for_kwargs)

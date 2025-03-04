@@ -1,6 +1,6 @@
 from __future__ import annotations
 from abc import ABCMeta 
-from collections.abc import Callable, Sequence
+from collections.abc import Callable, Mapping, Sequence
 from typing import Protocol
 
 class ABCDispatchMeta(ABCMeta): ...
@@ -48,3 +48,5 @@ class DispatchFunction[**P, R]:
 def dispatch[**P, R](func: Callable[P, R]) -> DispatchFunction[P, R]: ...
 
 def impl[T](definition: type) -> Callable[[type[T]], type[T]]: ...
+
+def add_impl(definition: type, impl: Mapping[str, Callable], *impl_for_args, **impl_for_kwargs) -> None: ...
