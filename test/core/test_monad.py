@@ -1,3 +1,5 @@
+# type: ignore
+
 from __future__ import annotations
 
 from apfel.core.monad import Functor, Applicative, Monad
@@ -46,7 +48,8 @@ def test_monad_impl_list():
     import operator
     from functools import partial
 
-    add = lambda x: partial(operator.add, x)
+    def add(x):
+        return partial(operator.add, x)
 
     assert Functor.map(lst, add(1)) == [2, 3, 4]
     assert Applicative.pure[list](42) == [42]
@@ -63,7 +66,8 @@ def test_monad_impl_tuple():
     import operator
     from functools import partial
 
-    add = lambda x: partial(operator.add, x)
+    def add(x):
+        return partial(operator.add, x)
 
     assert Functor.map(tpl, add(1)) == (2, 3, 4)
     assert Applicative.pure[tuple](42) == (42,)
@@ -80,7 +84,8 @@ def test_monad_impl_set():
     import operator
     from functools import partial
 
-    add = lambda x: partial(operator.add, x)
+    def add(x):
+        return partial(operator.add, x)
 
     assert Functor.map(st, add(1)) == {2, 3, 4}
     assert Applicative.pure[set](42) == {42}
@@ -97,6 +102,33 @@ def test_monad_impl_dict():
     import operator
     from functools import partial
 
-    add = lambda x: partial(operator.add, x)
+    def add(x):
+        return partial(operator.add, x)
 
     assert Functor.map(dct, add(1)) == {1: 3, 3: 5}
+
+def test_monad_impl_function():
+    from types import FunctionType
+
+    assert issubclass(FunctionType, Functor)
+    assert issubclass(FunctionType, Applicative)
+    assert issubclass(FunctionType, Monad)
+
+    def f(x):
+        return x + 1
+    
+    def add(x):
+        return lambda y: f"{x}{y}"
+
+    assert Functor.map(f, add(1))(42) == (lambda x: add(1)(x + 1))(42)
+    assert Applicative.pure[FunctionType](42)() == 42
+    assert Applicative.apply(f, lambda x: add(x))(42) == (lambda x: add(x)(x + 1))(42) == "4243"
+    assert Monad.bind(f, lambda x: add(x))(42) == (lambda x: add(x + 1)(x))(42) == "4342"
+
+def test_monad_impl_function_ext():
+    """
+    Test the implementation on BuiltinFunctionType and types
+    """
+
+    assert Functor.map(map, list)(lambda x: x + 1, [1, 2, 3, 4]) == list(map(lambda x: x + 1, [1, 2, 3, 4]))
+    assert Functor.map(str, list)(1) == ["1"]
