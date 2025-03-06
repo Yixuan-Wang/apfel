@@ -1,6 +1,6 @@
 # Once
 
-::: apfel.effect.once
+::: apfel.container.once
     options:
       members:
         - Once
