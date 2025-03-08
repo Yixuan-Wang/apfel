@@ -186,6 +186,13 @@ class Maybe(Monad):
         ```
         """
         return cls(val) if val is not None else cls(has_value=False)
+    
+    @classmethod
+    def duplicate(cls, m, /):
+        """
+        Create a shallow copy of a `Maybe` value.
+        """
+        return cls(m._val, has_value=m._has_value)
 
     def and_(self, other, /):
         """
