@@ -63,6 +63,16 @@ def test_maybe_constructor_some():
     n = some(None)
     assert n.is_nothing()
 
+def test_maybe_constructor_duplicate():
+    j = just(42)
+    n = nothing()
+
+    j1 = Maybe.duplicate(j)
+    assert j1 is not j
+
+    n1 = Maybe.duplicate(n)
+    assert n1 is not n
+
 def test_maybe_method_and():
     j1 = just[int](42)
     j2 = just[bool](True)
