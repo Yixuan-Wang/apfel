@@ -1,26 +1,21 @@
 """
 This module provides [**`FunctionObject`**](./#functionobject),
-a wrapper to extend functions with methods and operator overloads,
-and can be called just like normal <span class="ref py">Python</span> functions.
-Yet they support numerous additional operators for function calling.
+a wrapper to extend functions with operator overloads for function calling.
 
 Conceptually, [**function objects**](https://en.wikipedia.org/Function_objects) are
 objects that implement the function call operator.
 
 ## Usage
 
-!!! tip
-    Use `FunctionObject` in interactive environments.
+Tip: TL;DR
+    Use and only use function objects in interactive environments.
 
 `FunctionObject`s are particularly useful in interactive environments.
 Instead of wrapping a large expression in another level of parentheses,
 you can use application operators provided by `FunctionObject` to apply the function on the following expression.
+Use the [`fob`][apfel.core.function_object.fob] function to turn a function or a sequence of functions into `FunctionObject`s.
 
-```python
-f | although(we(are_not(using(lisp() or are_we()))))
-do_not(want_to(see(these(parentheses())))) & f
-```
-
+For example, `f(..)` is equivalent to `f | (...)` or `f @ (...)`.
 Writing `f(...)` as `f@(...)` seems redundant,
 but these `@` usages can be purged easily with simple search and replace.
 `FunctionObject`'s operators are carefully chosen, as they:
@@ -36,7 +31,7 @@ without worrying of breaking the `get_pic()` call:
 ```python
 from icecream import ic as _ic
 
-ic = func(_ic)
+ic = fob(_ic)
 result = ic @ (
     get_pic(iris)
         .filter(...)
@@ -46,36 +41,46 @@ result = ic @ (
 )
 ```
 
-[`|`](./#operator-or) and [`@`](./#operator-at) have different operator precedence,
+[`|`][apfel.core.function_object.FunctionObject.__or__] and [`@`][apfel.core.function_object.FunctionObject.__matmul__] have different operator precedence,
 the `|` has almost the lowest precedence of all Python operators, while the `@` has almost the highest precedence.
 This allows you combine expressions more flexibly without worrying about parentheses.
 
-[`&`](./#operator-and) operator can be used to apply the function to its left-hand side,
+[`&`][apfel.core.function_object.FunctionObject.__rand__] operator can be used to apply the function to its left-hand side,
 if the left-hand side does not overload the `&` operator.
 This is similar to [`&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-){ .ref .hs }, [`|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping){ .ref .jl } or roughly [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html){ .ref .rl }.
+With `&` you can write your code naturally from left to right.
 
-[`**`](./#operator-pow) operator has the highest precedence of all, and it has a unique
+```python
+from icecream import ic as _ic
+ic = fob(_ic)
+
+result = (
+    get_pic(iris)
+        .filter(...)
+        # ...
+) & ic
+```
+
+[`**`][apfel.core.function_object.FunctionObject.__pow__] operator has the highest precedence of all, and it has a unique
 associtivity from right to left.
 It can be used in wrapping multiple calls together without parentheses, like `f(g(x))` can be written as `f ** g ** x`.
 It roughly simulates [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs }.
 
-[`%`](./#operator-mod) operator is used for calling multi-argument functions.
+[`%`][apfel.core.function_object.FunctionObject.__mod__] operator is used for calling multi-argument functions.
 
-!!! tip
-    **Do not use `FunctionObject`s in library or main code base.**
-    **Only use them in scripts, notebooks or REPLs.**
+Tip:
     Function objects come with runtime costs.
-    Albeit negligible most of the time, the cost could accumulate on critical paths.
+    Although negligible most of the time, the cost could accumulate on critical paths.
 
     `FunctionObject`s also have less static typing support.
     Do not use them in type-checked code.
 
-!!! warning
-    Wrapping callables with `FunctionObject` will lose fields and methods of the original callable.
-    Be cautious especially when wrapping other callable objects.
+Warning:
+    Wrapping callables other than functions with `FunctionObject` may lose attributes 
+    and methods of the original callable.
 
-!!! warning
-    For performance considerations, the majority of `apfel` APIs are not wrapped in `FunctionObject`s.
+Warning:
+    For performance considerations, `apfel` APIs are not wrapped in `FunctionObject`s.
 """
 
 from collections.abc import Sequence as _Sequence, Mapping as _Mapping
@@ -113,9 +118,9 @@ class FunctionObject:
 
         `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](./#operator-at), but with a different precedence.
 
-        !!! example
+        Example:
             ```python
-            @func
+            @fob
             def f(x):
                 return x * 2
 
@@ -135,13 +140,13 @@ class FunctionObject:
 
         `x & f` is equivalent to `f(x)`, if `&` operator (left, `__and__`) is not overloaded by `x`'s type.
 
-        !!! warning
+        Warning:
             `np.array` and array-like types are common overloaders of `&`, therefore this operator cannot be used with them.
 
 
-        !!! example
+        Example:
             ```python
-            @func
+            @fob
             def f(x):
                 return x + 1
 
@@ -161,9 +166,9 @@ class FunctionObject:
 
         `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](./#operator-or), but with a different precedence.
 
-        !!! example
+        Example:
             ```python
-            @func
+            @fob
             def f(x):
                 return x * 2
 
@@ -186,13 +191,13 @@ class FunctionObject:
         and it binds from right to left.
         It intends to simulate [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs } operator, except the precedence.
         
-        !!! example
+        Example:
             ```python
-            @func
+            @fob
             def f(x):
                 return x + 1
 
-            @func
+            @fob
             def g(x):
                 return x * 2
 
@@ -215,9 +220,9 @@ class FunctionObject:
         - Specifically, you can use `...` as the map key to pass keyword arguments with keyword arguments at the same time, `x % { ...: (1, 2), "c": 3 }` is equivalent to `x(1, 2, c=3)`.
         - Otherwise, it calls on the right-hand side. This catches the case where you forget the trailing comma in the right-hand side tuple.
 
-        !!! example
+        Example:
             ```python
-            @func
+            @fob
             def f(a, b, c):
                 return a + b + c
 
@@ -226,7 +231,7 @@ class FunctionObject:
             f % { ...: (1, 2), "c": 3 }    # 6
             ```
 
-        !!! warning
+        Warning:
             This operator does not support the case where `...` (the `Ellipsis`, not `"..."`) is used as a keyword argument.
             However, this case is relatively rare, as `...` cannot be declared as argument name.
         """
@@ -240,46 +245,46 @@ class FunctionObject:
             return self.__call__(rhs)
 
 
-def func(f, *fs):
+def fob(f, *fs):
     """\
     ```python
-    def func[F: Callable](f: F) -> F
-    def func[*Fs](*fs: *Fs) -> tuple[*Fs]
+    def fob[F: Callable](f: F) -> F
+    def fob[*Fs](*fs: *Fs) -> tuple[*Fs]
     ```
 
     Turn callables into `FunctionObject` yet keeps their original type hints.
 
-    !!! example
+    Example:
         ```python
-        @func
+        @fob
         def f(a: int) -> int:
             return f + 1
 
         f | 1
         # 2
 
-        print, display, str = func(print, display, str)
+        print, display, str = fob(print, display, str)
         ```
 
-    !!! note
+    Note:
         As a callable, `FunctionObject` has less static typing support.
-        `@func` erases type hints of `FunctionObject` while keeping the runtime type.
+        `@fob` erases type hints of `FunctionObject` while keeping the runtime type.
         If you want to retain the type hints, directly use `FunctionObject`'s
-        constructor, or use `reveal_func` on an object with runtime type `FunctionObject`.
+        constructor, or use `reveal_fob` on an object with runtime type `FunctionObject`.
     """
     return tuple(map(FunctionObject, [f, *fs])) if fs else FunctionObject(f)
 
-def reveal_func(f):
+def reveal_fob(f):
     """\
     ```python
-    def reveal_func(func: Any) -> FunctionObject raise TypeError
+    def reveal_fob(func: Any) -> FunctionObject raise TypeError
     ```
 
     Cast a `FunctionObject` to `FunctionObject` type.
 
-    !!! failure "Exception"
+    Failure: Exception
         This function performs runtime check and raises `TypeError` if the input is not a `FunctionObject`.
     """
     if not isinstance(f, FunctionObject):
-        raise TypeError(f"`reveal_func` must be called on a FunctionObject, not {type(f)}")
+        raise TypeError(f"`reveal_fob` must be called on a FunctionObject, not {type(f)}")
     return f

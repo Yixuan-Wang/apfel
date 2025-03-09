@@ -2,9 +2,12 @@
 
 ::: apfel.core.monad
     options:
-        members: false
+        members: 
+            - Functor
+            - Applicative
+            - Monad
 
-## Functor
+<!-- ## Functor
 
 ```python
 apfel.core.monad.Functor
@@ -58,4 +61,8 @@ apfel.core.monad.Monad
 
 ### `bind`
 
+<<<<<<< HEAD
 ::: apfel.core.monad.Monad.bind
+=======
+::: apfel.core.monad.Monad.bind -->
+>>>>>>> main

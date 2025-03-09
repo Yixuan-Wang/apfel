@@ -29,6 +29,7 @@ are expected.
   [Haskell](https://hoogle.haskell.org/?scope=set%3Aincluded-with-ghc){ .ref .hs },
   [R](https://www.rdocumentation.org/){ .ref .rl },
   and [Julia](https://docs.julialang.org/en/v1){ .ref .jl } to mitigate Python's limitations.
+  [Go](https://go.dev/){ .ref .go } is also a good reference for simplicity and readability comparable to Python.
 
 - **Type safe**.
   Add expressive and sound type hints whenever possible.
