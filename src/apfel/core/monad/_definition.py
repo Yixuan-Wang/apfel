@@ -1,36 +1,3 @@
-"""\
-Tip: Meme
-    <del>A monad is a **monoid** in the category of **endofunctors**.</del>
-
-The [`monad`](/core/monad) module provides monadic interfaces that enable
-structured ways to compose and manipulate computations on a single effectful construction.
-
-The module defines three abstract classes: [`Functor`][apfel.core.monad.Functor],
-[`Applicative`][apfel.core.monad.Applicative], and [`Monad`][apfel.core.monad.Monad].
-
-# Guide
-
-Here's a high-level comparison of the three.
-Assume `Value` is a `Monad`.
-**A `Monad` is always a `Functor` and an `Applicative`.**
-
-```python
-
-value = Value(42)
-
-assert value.map  (      lambda x: x + 1 ) == Value(43)
-assert value.apply(Value(lambda x: x + 1)) == Value(43)
-assert value.bind (lambda x: Value(x + 1)) == Value(43)
-
-```
-
-If you are familiar with Rust,
-[`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){.ref .rs} is a `Monad`,
-[`Option.map`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map){.ref .rs} is its `Functor.map`,
-[`Option.and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then){.ref .rs} is its `Monad.bind`.
-
-"""
-
 from abc import abstractmethod
 from typing import override
 
@@ -42,7 +9,6 @@ class Functor(ABCDispatch):
     ```python
     class Functor[T](ABC):
         map
-        * = ...
     ```
 
     A [functor](https://en.wikipedia.org/wiki/Functor) is a type that can apply
@@ -91,16 +57,6 @@ class Functor(ABCDispatch):
         """
         ...
 
-    def __xor__(self, f):
-        """\
-        ```python
-        def ^[F: Callable[[T], R], R](self, f: F)-> Self[R]
-        ```
-
-        Map operator `^`, purely syntactic sugar for [`map`][apfel.core.monad.Functor.map].
-        """
-
-        return self.map(f)
 
 
 class Applicative(Functor, ABCDispatch):
@@ -109,7 +65,6 @@ class Applicative(Functor, ABCDispatch):
     class Applicative[T](Functor):
         pure
         apply
-        @ = ...
     ```
 
     An [applicative functor](https://en.wikipedia.org/wiki/Applicative_functor) is a functor
@@ -138,17 +93,6 @@ class Applicative(Functor, ABCDispatch):
         """
         ...
 
-    @classmethod
-    def __matmul__(cls, x):
-        """\
-        ```python
-        def @(self, x: T) -> Self[T]
-        ```
-
-        Applicative operator `@`, purely syntactic sugar for [`pure`][apfel.core.monad.Applicative.pure].
-        """
-
-        return Applicative.pure[cls](x)  # type: ignore
 
     @abstractmethod
     def apply(self, f):
