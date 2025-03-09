@@ -1,26 +1,106 @@
 """
-Dynamic dispatch for Python.
+Dynamic dispatch facilities for Python.
 
-This address the lack of **runtime-available**, **inheritance-free** interfaces in Python.
+This addresses the lack of **runtime-available**, **inheritance-free** interfaces in Python.
 It partially resembles the [`extension`](https://kotlinlang.org/docs/extensions.html){ .ref .kt } and [`trait`](https://doc.rust-lang.org/book/ch10-02-traits.html){ .ref .rs }.
 
 # Rationale
 
 **Why not [`functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch){ .ref .py }?**
-This API is added in Python 3.4, and it uses type hints to dispatch functions.
-However, as Python develops, type hints are disentangled from concrete types.
-Using type hints to dispatch functions can be error-prone.
-Besides, its method counterpart [`functools.singledispatchmethod`](https://docs.python.org/3/library/functools.html#functools.singledispatchmethod){ .ref .py } dispatches methods based on the first non-first argument, which is very different from the single dispatch found in object-oriented programming.
+
+- Runtime behavior based on type hints can be confusing.
+- It's method variant [`functools.singledispatchmethod`](https://docs.python.org/3/library/functools.html#functools.singledispatchmethod){ .ref .py } dispatches methods based on the first non-`self` argument, which is very different from the single dispatch found in other object-oriented programming languages.
 
 **Why not [`abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC){ .ref .py }?**
-`abc.ABC` enables inheritance-free interfaces with the [.add_impl`](https://docs.python.org/3/library/abc.html#abc.ABC.add_impl){ .ref .py } method,
-but it does not enable [`virtual`](https://cppreference.com/w/cpp/language/virtual){ .ref .cpp }-like dispatch.
 
+- It does not enable [`virtual`](https://cppreference.com/w/cpp/language/virtual){ .ref .cpp }-like or [`dyn`](https://doc.rust-lang.org/book/ch18-02-trait-objects.html){ .ref .rs }-like dispatch.
+An [`abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py } in an abstract class will not forward the call to the concrete implementation based on the real type.
+i.e., there is no facilities for implementation selection based on concrete types.
+- Although [`ABCMeta.register`](https://docs.python.org/3/library/abc.html#abc.ABCMeta.register){ .ref .py } can be used to register non-child classes, it cannot inject implementations to the registered classes. 
+Some classes do not allow monkey-patching and the implementations must be stored elsewhere, registering them to the ABC is logical error, as the implementations are not part of the concrete class.
+
+Using [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] defined in this module,
+
+- All ABC features work out of the box. Supports static type checking (inheritance-based usages only), non-inheritance based runtime type checking, and `@abstractmethod`.
+- Abstract methods defined in an `ABCDispatch` can **dynamically** forward the call to the concrete implementation based on the real type, and the implementations can be externally provided.
+  For example, an `ABCDispatch` can be used to extend built-in classes.
 
 # Usage
 
-By default the utilities in `dispatch` module are for [single dispatch](https://en.wikipedia.org/wiki/Multiple_dispatch#Single_dispatch).
-This means the dispatch is based on **the concrete type** of **first argument** of the function, or of the **receiver** in the case of methods.
+First, define a class that subclasses [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
+This class will be semantically similar to [Rust traits](https://doc.rust-lang.org/book/ch10-02-traits.html){ .ref .rs }.
+All interface functions defined in this method shall be decorated with [`@abc.abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py }.
+Class methods and static methods can also be defined with the same decorator.
+
+Warning:
+    The `@abstractmethod` decorator must be placed after the `@classmethod` or `@staticmethod` decorator.
+
+```python
+class Trait(ABCDispatch):
+    @abstractmethod
+    def method(self, f): ...
+
+    @classmethod
+    @abstractmethod
+    def class_method(cls, f): ...
+
+    @staticmethod
+    @abstractmethod
+    def static_method(f): ...
+```
+
+Then, we can implement the "trait" for a class by using the [`@impl`][apfel.core.dispatch.impl] decorator.
+The implementor class is passed as the first argument to the decorator.
+The implementation is written in the `class` syntax, with each trait method implemented as a method of the class.
+The class name doesn't matter, but it should subclass the trait class.
+
+```python
+@impl(Class)
+class _(Trait):
+    def method(self, f): \"""Concrete implementation goes here\"""
+
+    @classmethod
+    def class_method(cls, f): \"""Concrete implementation goes here\"""
+
+    @staticmethod
+    def static_method(f): \"""Concrete implementation goes here\"""
+```
+
+In this case, `Class.method` does not exist during runtime so you may not call it, and calling `.method` on an instance of `Class` will also fail.
+But you can call `Trait.method` on an instance of `Class` and it will dispatch to the concrete implementation defined in the `@impl` construct.
+
+```python
+c = Class()
+Trait.method(c, f)  # Calls the implementation within the @impl
+```
+
+If you have control to the source code, you can add `Trait` to the base classes of `Class`,
+so `Class.method(instance)` and `instance.method()` will work as expected, `Trait.method(instance, f)` shall also work.
+
+Class methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.
+
+```python
+Trait.class_method[Class](f)
+Trait.static_method[Class](f)
+```
+
+It's also possible to define a dispatchable function using the [`@dispatch`][apfel.core.dispatch.dispatch] decorator.
+Then an method `impl_for` will be on the function, which can be used to register implementations.
+
+```python
+@dispatch
+def f(x): ...
+
+@f.impl_for(int)
+def _(x: int):
+    \"""Implementation for int goes here\"""
+```
+
+Example:
+  You can check the [`Functor`][apfel.core.monad.Functor]'s source code as an example of how to use this module.
+
+By default `ABCDispatch` and `@dispatch` defines a [single dispatch](https://en.wikipedia.org/wiki/Multiple_dispatch#Single_dispatch).
+This means the runtime imlementation selection is based on **the concrete type** of **first argument** of the function, or of the **receiver** in the case of methods.
 
 """
 
@@ -77,12 +157,12 @@ class IABCDispatch(Protocol):
 class ABCDispatch(metaclass=ABCDispatchMeta):
     """
     An `ABC` that enables single dispatch for its abstract methods.
-    This behaves similarly to [`abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC){ .ref .py } but with the added feature of single dispatch.
+    This behaves similarly to [`abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC){ .ref .py } but with the added feature of dynamic concrete implementation selection under single dispatch.
     Stick to built-in [`abc.abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py } to define abstract methods.
 
     See the [usage section][apfel.core.dispatch--usage] for more information.
 
-    !!! example
+    Example:
         ```python
         from abc import abstractmethod
         from apfel.core.dispatch import ABCDispatch
@@ -347,7 +427,29 @@ class DispatchRegistryForStaticMethod(DispatchRegistryForClassMethod):
 
 def dispatch(func):
     """
-    Decorator for single dispatch.
+    A decorator for creating a single-dispatchable function.
+    It will add an `impl_for` method to the function, which can be used to register implementations.
+    Calling the function will dispatch to the correct implementation based on the type of the first argument.
+
+    This is similar to [`functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch){ .ref .py }, but does not use type hints for dispatching, and static type unions are not supported.
+
+    Example:
+        ```python
+        @dispatch
+        def show(x):
+            ...
+
+        @show.impl_for(int)
+        def _(x: int):
+            return f"int: {x}"
+
+        @show.impl_for(str)
+        def _(x: str):
+            return f"str: {x}"
+        
+        show(1)       # "int: 1"
+        show("hello") # "str: hello"
+        ```
     """
 
     dispatch = DispatchRegistry(func)
@@ -368,7 +470,23 @@ def dispatch(func):
 
 def impl(definition):
     """
-    Decorator for registering an implementation.
+    Decorator for registering an implementation using the `class` syntax.
+
+    See the [usage section][apfel.core.dispatch--usage] for more information.
+
+    Example:
+        Here `Class` is a concrete class and `Trait` is an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
+        ```python
+        @impl(Class)
+        class _(Trait):
+            def method(self, f): \"""Concrete implementation goes here\"""
+
+            @classmethod
+            def class_method(cls, f): \"""Concrete implementation goes here\"""
+
+            @staticmethod
+            def static_method(f): \"""Concrete implementation goes here\"""
+        ```
     """
 
     is_class = isinstance(definition, type)
@@ -419,6 +537,27 @@ def impl(definition):
 def add_impl(definition, impl, *impl_for_args, **impl_for_kwargs):
     """
     An imperative interface for adding implementations to a dispatchable class.
+    For a declarative interface, use the [`@impl`][apfel.core.dispatch.impl] decorator.
+
+    If the dispatchable class is an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] which does single dispatch,
+    the `impl_for_args` param should be the type of the implementor class.
+
+    Args:
+        definition (type): The dispatchable class.
+        impl (Mapping[str, Callable]): A mapping from method names to implementations.
+        *impl_for_args: Arguments that the dispatch mechanism will use for selecting the implementation.
+        **impl_for_kwargs: Keyword arguments that the dispatch mechanism will use for selecting the implementation.
+
+    Example:
+        ```python
+        # The following imperative code ...
+        add_impl(Trait, {"method": lambda self, f: f}, Class)
+
+        # ... is equivalent to the following declarative code:
+        @impl(Class)
+        class _(Trait):
+            def method(self, f): return f
+        ```
     """
     for name, func in impl.items():
         getattr(definition, name).__dispatch__.add_impl(func, *impl_for_args, **impl_for_kwargs)

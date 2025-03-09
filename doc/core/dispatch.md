@@ -3,7 +3,7 @@
 ::: apfel.core.dispatch
     options:
         members:
-          - ABCDispatchMeta
-          - IABCDispatch
           - ABCDispatch
-          - IDispatchRegistry
+          - dispatch
+          - impl
+          - add_impl
