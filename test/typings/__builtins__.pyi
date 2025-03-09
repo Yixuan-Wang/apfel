@@ -1,3 +1,3 @@
-from apfel import identity, todo, unimplemented
+from apfel import identity, imperative, todo, unimplemented
 
-__all__ = ["identity", "todo", "unimplemented"]
+__all__ = ["identity", "imperative", "todo", "unimplemented"]

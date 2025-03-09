@@ -6,10 +6,23 @@ def identity(x):
         x (T): Any object.
 
     Returns:
-        (T): The same object passed to it.
+        out (T): The same object passed to it.
     """
     return x
 
+
+def imperative(*exprs):
+    """
+    Returns the last expression passed into the function.
+    If no expression are passed, returns `None`, per Python's convention.
+
+    Args:
+        *exprs (*tuple[*Ts, R]): Any number of expressions. 
+    
+    Returns:
+        out (R): The last expression passed into the function.
+    """
+    return exprs[-1] if exprs else None
 
 def todo(message = None):
     """

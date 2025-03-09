@@ -10,5 +10,6 @@ If you are using Pyright, you can follow the [builtins extension](https://github
     options:
         members:
           - identity
+          - imperative
           - todo
           - unimplemented
