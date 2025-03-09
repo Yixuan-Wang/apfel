@@ -6,4 +6,5 @@
             - Functor
             - Applicative
             - Monad
+            - fmap
 

@@ -17,14 +17,6 @@ class Functor(ABCDispatch):
     To implement a `Functor`, you need to implement at least the `map` method.
 
     See [Functor](https://wiki.haskell.org/Functor){.ref .hs} for more information.
-
-    !!! info
-        A `Functor` implementation must adhere to the
-        [Functor Laws](https://wiki.haskell.org/Functor#Functor_Laws):
-
-        1. **Identity**: `f.map(lambda x: x) == f`
-        2. **Composition**: `f.map(lambda x: h(g(x))) == f.map(g).map(h)`
-
     """
 
     @abstractmethod

@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 from apfel.core.monad import Functor, Applicative, Monad
-from apfel.core.dispatch import impl
 
 class Maybe[T](Monad):
     value: T
