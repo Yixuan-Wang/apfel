@@ -4,4 +4,4 @@
     options:
       members:
         - Once
-        - lazy_init
+        - Lazy

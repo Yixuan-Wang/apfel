@@ -1,7 +1,9 @@
 """
-Primitive for a container that can be written only once. Inspired by [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs}.
+Primitives for containers that can be written only once. Inspired by [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs}.
 
 # Implementation
+
+[`Once`][apfel.container.once.Once] takes reference from [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and the current status is as follows:
 
 | Reference [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){ .ref .rs } | Counterpart |
 | --- | --- |
@@ -40,7 +42,7 @@ class Once:
         self._value = ...
         self._has_value = False
 
-    def __class_getitem__(cls, value_type):
+    def __class_getitem__(cls, item):
         return cls
 
     def __bool__(self):
@@ -99,32 +101,100 @@ class Once:
             self._has_value = True
         
         return self._value
-    
 
-def lazy_init(func):
+class Lazy:
     """
-    Decorator to turn a function into a lazy initializer.
-    The decorated function will be actually called only on the first call, and the result will be cached for consequent calls.
+    A container that can be lazily initialized only once.
+    The stored function will be actually called only on the first retrieval, and the result will be cached for consequent calls.
     See [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs} for more information.
 
-    Args:
-        func (Callable[[], T]): The function to be lazily initialized.
-    
-    Returns:
-        func (Callable[[], T]): The function that can be used as a getter.
-    """
-    is_called = False
-    result = ...
+    Example:
+        ```python
+        from apfel.container.once import Lazy
 
-    @wraps(func)
-    def wrapper():
-        nonlocal is_called, result
-
-        if is_called:
-            return result
+        @Lazy
+        def f():
+            print("called")
+            return object()
         
-        result = func()
-        is_called = True
-        return result
+        obj = f.value()
+        # print "called"
+        # here, the function `f` will be called and the result will be cached.
+
+        f.value() is obj # the function `f` will not be called again.
+        ```
+    """
+
+    __slots__ = ("_value", "_has_value", "_init")
+
+    def __init__(self, f, /):
+        """
+        Create a lazily initialized `Lazy` container.
+
+        Args:
+            f (Callable[[], T]): The function to be lazily initialized.
+        """
+        self._value = ...
+        self._has_value = False
+        self._init = f
     
-    return wrapper
+    def __class_getitem__(cls, item):
+        return cls
+    
+    def __bool__(self):
+        return self._has_value
+
+    def __call__(self):
+        """
+        An alias for [`Lazy.value`][apfel.container.once.Lazy.value].
+        Notice that this operator overloading might be slower than calling `value` directly.
+
+        Example:
+            ```python
+            @Lazy
+            def f():
+                return object()
+            
+            obj = f()
+            assert f() is obj
+            ```
+        """
+        if self._has_value:
+            return self._value
+        
+        self._value = self._init()
+        self._has_value = True
+        return self._value
+
+    def unwrap(self):
+        """
+        Get the inner value of the `Lazy` container.
+        If no value has been set, this method raises a `ValueError`.
+        
+        Returns:
+            value (T): The lazily initialized value of the `Lazy` container.
+        
+        Raises:
+            ValueError: If no value has been set.
+        """
+        if not self._has_value:
+            raise ValueError("Called `Lazy.unwrap()` on an uninitialized value.")
+
+        return self._value
+
+    def value(self):
+        """
+        Get the inner value of the `Lazy` container.
+        If no value has been set, this method initializes the value with the stored function.
+
+        Returns:
+            value (T): The lazily initialized value of the `Lazy` container.
+        """
+        if self._has_value:
+            return self._value
+        
+        self._value = self._init()
+        self._has_value = True
+        return self._value
+
+    
