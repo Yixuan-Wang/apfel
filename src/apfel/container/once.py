@@ -80,7 +80,7 @@ class Once:
             ValueError: If no value has been set.
         """
         if not self._has_value:
-            raise ValueError("OnceCell is empty")
+            raise ValueError("called `Once.unwrap()` on an unset value.")
         
         return self._value
     
