@@ -1,5 +1,8 @@
 site_name: "Apfel"
 docs_dir: doc
+repo_url: https://github.com/Yixuan-Wang/apfel
+repo_name: Yixuan-Wang/apfel
+copyright: MIT License &copy; 2024 - now Yixuan Wang
 
 theme:
   name: material
@@ -27,9 +30,12 @@ theme:
         name: Switch to system preference
   logo: "asset/red-apple.png"
   favicon: "asset/red-apple.png"
+  icon:
+    repo: fontawesome/brands/github
   features:
     - navigation.expand
     - navigation.path
+    - navigation.sections
 
 watch:
   - src/apfel
@@ -39,6 +45,7 @@ extra_css:
 
 plugins:
   - search
+  - awesome-nav
   - autorefs
   - mkdocstrings:
       default_handler: python

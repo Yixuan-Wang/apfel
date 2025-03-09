@@ -61,6 +61,10 @@ em, i {
     font-size: inherit;
 }
 
+.md-typeset :is(code, kbd) {
+    font-size: 0.875em;
+}
+
 .md-typeset .admonition, .md-typeset details {
     font-size: inherit;
 }
@@ -101,6 +105,8 @@ aside.md-annotation>.md-annotation__index {
 }
 
 .md-typeset .ref {
+    color: var(--ref-color-primary);
+
     &::before {
         content: "";
         display: inline-block;
@@ -116,15 +122,32 @@ aside.md-annotation>.md-annotation__index {
         height: 1.25em;
     }
 
-    color: var(--ref-color-primary);
-    &:is(a):hover {
-        color: var(--ref-color-hover);
+    code {
+        background-color: hsl(from var(--ref-color-primary) h s 95% / 85%);
     }
 
-    body[data-md-color-scheme="slate"] & {
-        color: var(--ref-color-dark);
-        &:is(a):hover {
-            color: var(--ref-color-dark-hover);
+    &:is(a):hover {
+        color: var(--ref-color-hover);
+
+        code {
+            background-color: hsl(from var(--ref-color-hover) h s 95% / 85%);
+        }
+    }
+}
+
+body[data-md-color-scheme="slate"] .md-typeset .ref {
+    color: var(--ref-color-dark);
+
+    code {
+        background-color: hsl(from var(--ref-color-dark) h 15% 18%);
+    }
+
+    
+    &:is(a):hover {
+        color: var(--ref-color-dark-hover);
+
+        code {
+            background-color: hsl(from var(--ref-color-dark-hover) h 15% 18%);
         }
     }
 }
