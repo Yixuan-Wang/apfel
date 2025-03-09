@@ -22,6 +22,7 @@ pilot = [
     "ipykernel>=6.29.4",
     "ipython>=8.24.0",
     "jupyter-server>=2.14.0",
+    "ipdb>=0.13.13",
 ]
 test = ["pytest>=8.3.4"]
 
