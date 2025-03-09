@@ -1,19 +1,20 @@
 """
-This module provides [**`FunctionObject`**](./#functionobject),
-a wrapper to extend functions with operator overloads for function calling.
+Extend functions with operator overloads for function calling.
 
 Conceptually, [**function objects**](https://en.wikipedia.org/Function_objects) are
 objects that implement the function call operator.
 
-## Usage
+# Rationale
+
+Python codes contain extensive use of parentheses, which can be cumbersome in interactive environments.
+This module simply provides a way to reduce the pain of wrapping huge expressions in parentheses.
+You can use application operators provided by `FunctionObject` to apply the function on the following expression.
+Use the [`fob`][apfel.core.function_object.fob] function to turn a function or a sequence of functions into `FunctionObject`s.
+
+# Usage
 
 Tip: TL;DR
     Use and only use function objects in interactive environments.
-
-`FunctionObject`s are particularly useful in interactive environments.
-Instead of wrapping a large expression in another level of parentheses,
-you can use application operators provided by `FunctionObject` to apply the function on the following expression.
-Use the [`fob`][apfel.core.function_object.fob] function to turn a function or a sequence of functions into `FunctionObject`s.
 
 For example, `f(..)` is equivalent to `f | (...)` or `f @ (...)`.
 Writing `f(...)` as `f@(...)` seems redundant,
@@ -67,6 +68,7 @@ It can be used in wrapping multiple calls together without parentheses, like `f(
 It roughly simulates [`$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-){ .ref .hs }.
 
 [`%`][apfel.core.function_object.FunctionObject.__mod__] operator is used for calling multi-argument functions.
+Check its documentation for more details.
 
 Tip:
     Function objects come with runtime costs.
