@@ -111,7 +111,7 @@ from functools import update_wrapper, WRAPPER_ASSIGNMENTS
 from typing import Protocol
 from types import FunctionType, MethodType
 
-from apfel.core.function import unimplemented
+from apfel import unimplemented
 
 
 class ABCDispatchMeta(ABCMeta):
