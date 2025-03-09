@@ -22,6 +22,31 @@ This library is not published to PyPI.
 You should install it directly from the GitHub repository.
 Using `pyprojects.toml` and locking to a Git reference (e.g. a tag) is recommended.
 
+### `pip`
+
+This is not recommended as you cannot lock the version with `pip`.
+
+```bash
+pip install git+https://github.com/Yixuan-Wang/apfel.git@v{VERSION}
+```
+
+### `uv`
+
+```bash
+uv add git+https://github.com/Yixuan-Wang/apfel.git --tag "v{VERSION}"
+
+# or
+
+uv add git+https://github.com/Yixuan-Wang/apfel.git --ref "{COMMIT_SHA}"
+```
+
+### `pdm`
+
+```bash
+pdm add "apfel @ git+https://github.com/Yixuan-Wang/apfel.git@v{VERSION}"
+```
+
+
 ### In `pyprojects.toml`
 
 ```toml
@@ -42,10 +67,4 @@ apfel = { git = "https://github.com/Yixuan-Wang/apfel.git", tag = "v{VERSION}" }
 
 ```plaintext
 apfel @ git+https://github.com/Yixuan-Wang/apfel.git@v{VERSION}
-```
-
-### Direct Installation
-
-```bash
-pip install git+https://github.com/Yixuan-Wang/apfel.git@v{VERSION}
 ```
