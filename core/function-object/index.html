@@ -12,11 +12,11 @@
         <link rel="prev" href="../dispatch/">
       
       
-        <link rel="next" href="../function/">
+        <link rel="next" href="../monad/">
       
       
       <link rel="icon" href="../../asset/red-apple.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.49">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.6.7">
     
     
       
@@ -24,7 +24,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.6f8fc17f.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.8608ea7d.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.06af60db.min.css">
@@ -193,6 +193,18 @@
 </div>
     
     
+      <div class="md-header__source">
+        <a href="https://github.com/Yixuan-Wang/apfel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Yixuan-Wang/apfel
+  </div>
+</a>
+      </div>
+    
   </nav>
   
 </header>
@@ -226,6 +238,18 @@
     Apfel
   </label>
   
+    <div class="md-nav__source">
+      <a href="https://github.com/Yixuan-Wang/apfel" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.7.2 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Yixuan-Wang/apfel
+  </div>
+</a>
+    </div>
+  
   <ul class="md-nav__list" data-md-scrollfix>
     
       
@@ -240,6 +264,7 @@
   
   <span class="md-ellipsis">
     Apfel
+    
   </span>
   
 
@@ -260,6 +285,7 @@
   
   <span class="md-ellipsis">
     Installation
+    
   </span>
   
 
@@ -279,19 +305,25 @@
     
     
     
+      
+        
+        
+      
     
-    <li class="md-nav__item md-nav__item--active md-nav__item--nested">
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
       
         
         
         <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
         
           
-          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
             
   
   <span class="md-ellipsis">
     Core
+    
   </span>
   
 
@@ -312,11 +344,34 @@
   
   
     <li class="md-nav__item">
+      <a href="../" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Core
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
       <a href="../dispatch/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
     Dispatch
+    
   </span>
   
 
@@ -347,6 +402,7 @@
   
   <span class="md-ellipsis">
     Function Object
+    
   </span>
   
 
@@ -358,6 +414,7 @@
   
   <span class="md-ellipsis">
     Function Object
+    
   </span>
   
 
@@ -377,6 +434,15 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apfel.core.function_object--rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#apfel.core.function_object--usage" class="md-nav__link">
@@ -481,11 +547,84 @@
   
   
     <li class="md-nav__item">
-      <a href="../function/" class="md-nav__link">
+      <a href="../monad/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Common Functions
+    Monad
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Container
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            Container
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../container/maybe/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Maybe
+    
   </span>
   
 
@@ -502,11 +641,106 @@
   
   
     <li class="md-nav__item">
-      <a href="../monad/" class="md-nav__link">
+      <a href="../../container/once/" class="md-nav__link">
         
   
   <span class="md-ellipsis">
-    Monad
+    Once
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Impt
+    
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            Impt
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../impt/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Import
+    
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../impt/transform/" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Transform
+    
   </span>
   
 
@@ -548,6 +782,15 @@
       Table of contents
     </label>
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#apfel.core.function_object--rationale" class="md-nav__link">
+    <span class="md-ellipsis">
+      Rationale
+    </span>
+  </a>
+  
+</li>
       
         <li class="md-nav__item">
   <a href="#apfel.core.function_object--usage" class="md-nav__link">
@@ -651,6 +894,10 @@
                   
 
 
+  
+  
+
+
 <h1 id="function-object">Function Object<a class="headerlink" href="#function-object" title="Permanent link">#</a></h1>
 
 
@@ -661,21 +908,21 @@
 
     <div class="doc doc-contents first">
 
-        <p>This module provides <a href="./#functionobject"><strong><code>FunctionObject</code></strong></a>,
-a wrapper to extend functions with operator overloads for function calling.</p>
+        <p>Extend functions with operator overloads for function calling.</p>
 <p>Conceptually, <a href="https://en.wikipedia.org/Function_objects"><strong>function objects</strong></a> are
 objects that implement the function call operator.</p>
-<h3 id="apfel.core.function_object--usage">Usage<a class="headerlink" href="#apfel.core.function_object--usage" title="Permanent link">#</a></h3>
+<h2 id="apfel.core.function_object--rationale">Rationale<a class="headerlink" href="#apfel.core.function_object--rationale" title="Permanent link">#</a></h2>
+<p>Python codes contain extensive use of parentheses, which can be cumbersome in interactive environments.
+This module simply provides a way to reduce the pain of wrapping huge expressions in parentheses.
+You can use application operators provided by <code>FunctionObject</code> to apply the function on the following expression.
+Use the <a class="autorefs autorefs-internal" title=" fob" href="#apfel.core.function_object.fob"><code>fob</code></a> function to turn a function or a sequence of functions into <code>FunctionObject</code>s.</p>
+<h2 id="apfel.core.function_object--usage">Usage<a class="headerlink" href="#apfel.core.function_object--usage" title="Permanent link">#</a></h2>
 
 
 <details class="tip" open>
   <summary>TL;DR</summary>
   <p>Use and only use function objects in interactive environments.</p>
-</details>        <p><code>FunctionObject</code>s are particularly useful in interactive environments.
-Instead of wrapping a large expression in another level of parentheses,
-you can use application operators provided by <code>FunctionObject</code> to apply the function on the following expression.
-Use the <a class="autorefs autorefs-internal" href="#apfel.core.function_object.fob"><code>fob</code></a> function to turn a function or a sequence of functions into <code>FunctionObject</code>s.</p>
-<p>For example, <code>f(..)</code> is equivalent to <code>f | (...)</code> or <code>f @ (...)</code>.
+</details>        <p>For example, <code>f(..)</code> is equivalent to <code>f | (...)</code> or <code>f @ (...)</code>.
 Writing <code>f(...)</code> as <code>f@(...)</code> seems redundant,
 but these <code>@</code> usages can be purged easily with simple search and replace.
 <code>FunctionObject</code>'s operators are carefully chosen, as they:</p>
@@ -687,7 +934,7 @@ but these <code>@</code> usages can be purged easily with simple search and repl
 For example, with the following usage with <a class="ref py" href="https://pypi.org/project/icecream/"><code>icecream</code></a>,
 you can replace <code>ic @</code> with empty string to remove all debugging code,
 without worrying of breaking the <code>get_pic()</code> call:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span> <span class="nn">icecream</span> <span class="kn">import</span> <span class="n">ic</span> <span class="k">as</span> <span class="n">_ic</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span> <span class="k">as</span> <span class="n">_ic</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">ic</span> <span class="o">=</span> <span class="n">fob</span><span class="p">(</span><span class="n">_ic</span><span class="p">)</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ic</span> <span class="o">@</span> <span class="p">(</span>
@@ -698,14 +945,14 @@ without worrying of breaking the <code>get_pic()</code> call:</p>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span>
 </code></pre></div>
-<p><a class="autorefs autorefs-internal" href="#apfel.core.function_object.FunctionObject.__or__"><code>|</code></a> and <a class="autorefs autorefs-internal" href="#apfel.core.function_object.FunctionObject.__matmul__"><code>@</code></a> have different operator precedence,
+<p><a class="autorefs autorefs-internal" title=" __or__" href="#apfel.core.function_object.FunctionObject.__or__"><code>|</code></a> and <a class="autorefs autorefs-internal" title=" __matmul__" href="#apfel.core.function_object.FunctionObject.__matmul__"><code>@</code></a> have different operator precedence,
 the <code>|</code> has almost the lowest precedence of all Python operators, while the <code>@</code> has almost the highest precedence.
 This allows you combine expressions more flexibly without worrying about parentheses.</p>
-<p><a class="autorefs autorefs-internal" href="#apfel.core.function_object.FunctionObject.__rand__"><code>&amp;</code></a> operator can be used to apply the function to its left-hand side,
+<p><a class="autorefs autorefs-internal" title=" __rand__" href="#apfel.core.function_object.FunctionObject.__rand__"><code>&amp;</code></a> operator can be used to apply the function to its left-hand side,
 if the left-hand side does not overload the <code>&amp;</code> operator.
 This is similar to <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-"><code>&amp;</code></a>, <a class="ref jl" href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping"><code>|&gt;</code></a> or roughly <a class="ref rl" href="https://magrittr.tidyverse.org/reference/pipe.html"><code>%&gt;%</code></a>.
 With <code>&amp;</code> you can write your code naturally from left to right.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span> <span class="nn">icecream</span> <span class="kn">import</span> <span class="n">ic</span> <span class="k">as</span> <span class="n">_ic</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span> <span class="k">as</span> <span class="n">_ic</span>
 <a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">ic</span> <span class="o">=</span> <span class="n">fob</span><span class="p">(</span><span class="n">_ic</span><span class="p">)</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
@@ -714,11 +961,12 @@ With <code>&amp;</code> you can write your code naturally from left to right.</p
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="c1"># ...</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span> <span class="o">&amp;</span> <span class="n">ic</span>
 </code></pre></div>
-<p><a class="autorefs autorefs-internal" href="#apfel.core.function_object.FunctionObject.__pow__"><code>**</code></a> operator has the highest precedence of all, and it has a unique
+<p><a class="autorefs autorefs-internal" title=" __pow__" href="#apfel.core.function_object.FunctionObject.__pow__"><code>**</code></a> operator has the highest precedence of all, and it has a unique
 associtivity from right to left.
 It can be used in wrapping multiple calls together without parentheses, like <code>f(g(x))</code> can be written as <code>f ** g ** x</code>.
 It roughly simulates <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-"><code>$</code></a>.</p>
-<p><a class="autorefs autorefs-internal" href="#apfel.core.function_object.FunctionObject.__mod__"><code>%</code></a> operator is used for calling multi-argument functions.</p>
+<p><a class="autorefs autorefs-internal" title=" __mod__" href="#apfel.core.function_object.FunctionObject.__mod__"><code>%</code></a> operator is used for calling multi-argument functions.
+Check its documentation for more details.</p>
 
 
 <details class="tip" open>
@@ -795,7 +1043,7 @@ and methods of the original callable.</p>
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="o">@</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">@</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>@</code> for <code>FunctionObject</code>s.</p>
 <p><code>f @ x</code> is equivalent to <code>f(x)</code>. This operator behaves the same as <a href="./#operator-or"><code>|</code></a>, but with a different precedence.</p>
@@ -804,7 +1052,7 @@ and methods of the original callable.</p>
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">@</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
@@ -831,7 +1079,7 @@ and methods of the original callable.</p>
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="o">%</span><span class="p">[</span><span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">%</span><span class="p">[</span><span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>%</code> for <code>FunctionObject</code>s of multi-argument functions.</p>
 <ul>
@@ -845,7 +1093,7 @@ and methods of the original callable.</p>
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                  <span class="c1"># 6</span>
@@ -879,7 +1127,7 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="o">|</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">|</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>|</code> for <code>FunctionObject</code>s.</p>
 <p><code>f | x</code> is equivalent to <code>f(x)</code>. This operator behaves the same as <a href="./#operator-at"><code>@</code></a>, but with a different precedence.</p>
@@ -888,7 +1136,7 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">|</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
@@ -915,7 +1163,7 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="o">**</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">**</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>**</code> for <code>FunctionObject</code>s.</p>
 <p><code>f ** g ** x</code> is equivalent to <code>f(g(x))</code>.
@@ -927,11 +1175,11 @@ It intends to simulate <a class="ref hs" href="https://hackage.haskell.org/packa
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">def</span> <span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
 <a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">f</span> <span class="o">**</span> <span class="n">g</span> <span class="o">**</span> <span class="mi">1</span>
@@ -958,7 +1206,7 @@ It intends to simulate <a class="ref hs" href="https://hackage.haskell.org/packa
 
     <div class="doc doc-contents ">
 
-        <p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="o">&amp;</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">&amp;</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 Reverse function application operator <code>&amp;</code> for <code>FunctionObject</code>s.
 <strong>This operator overloading targets the right-hand side</strong>.</p>
@@ -973,7 +1221,7 @@ Reverse function application operator <code>&amp;</code> for <code>FunctionObjec
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&amp;</span> <span class="n">f</span>
@@ -1009,8 +1257,8 @@ Reverse function application operator <code>&amp;</code> for <code>FunctionObjec
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">fob</span><span class="p">[</span><span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">](</span><span class="n">f</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">fob</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">](</span><span class="o">*</span><span class="n">fs</span><span class="p">:</span> <span class="o">*</span><span class="n">Fs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">]</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">](</span><span class="n">f</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">](</span><span class="o">*</span><span class="n">fs</span><span class="p">:</span> <span class="o">*</span><span class="n">Fs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">]</span>
 </code></pre></div>
 <p>Turn callables into <code>FunctionObject</code> yet keeps their original type hints.</p>
 
@@ -1018,7 +1266,7 @@ Reverse function application operator <code>&amp;</code> for <code>FunctionObjec
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span> <span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">1</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">|</span> <span class="mi">1</span>
@@ -1055,7 +1303,7 @@ constructor, or use <code>reveal_fob</code> on an object with runtime type <code
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span> <span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionObject</span> <span class="k">raise</span> <span class="ne">TypeError</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionObject</span> <span class="k">raise</span> <span class="ne">TypeError</span>
 </code></pre></div>
 <p>Cast a <code>FunctionObject</code> to <code>FunctionObject</code> type.</p>
 
@@ -1104,6 +1352,10 @@ constructor, or use <code>reveal_fob</code> on an object with runtime type <code
     <div class="md-footer-meta__inner md-grid">
       <div class="md-copyright">
   
+    <div class="md-copyright__highlight">
+      MIT License &copy; 2024 - now Yixuan Wang
+    </div>
+  
   
     Made with
     <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
@@ -1122,10 +1374,10 @@ constructor, or use <code>reveal_fob</code> on an object with runtime type <code
     </div>
     
     
-    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.path"], "search": "../../assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    <script id="__config" type="application/json">{"base": "../..", "features": ["navigation.expand", "navigation.path", "navigation.sections"], "search": "../../assets/javascripts/workers/search.f8cc74c7.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.88dd0f4e.min.js"></script>
+      <script src="../../assets/javascripts/bundle.c8b220af.min.js"></script>
       
     
   </body>
