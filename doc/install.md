@@ -20,7 +20,7 @@ The following dependencies are required:
 
 This library is not published to PyPI.
 You should install it directly from the GitHub repository.
-Using `pyprojects.toml` and locking to a Git reference (e.g. a tag) is recommended.
+Using `pyproject.toml` and locking to a Git reference (e.g. a tag) is recommended.
 
 ### `pip`
 
@@ -47,7 +47,7 @@ pdm add "apfel @ git+https://github.com/Yixuan-Wang/apfel.git@v{VERSION}"
 ```
 
 
-### In `pyprojects.toml`
+### In `pyproject.toml`
 
 ```toml
 [package]
@@ -56,7 +56,7 @@ dependencies = [
 ]
 ```
 
-### In `pyprojects.toml` with Poetry
+### In `pyproject.toml` with Poetry
 
 ```toml
 [tool.poetry.dependencies]
