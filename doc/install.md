@@ -1,7 +1,7 @@
 # Installation
 
 
-!!! warning
+Warning:
     This library is mainly personal and still in a very early stage. 
     We'll try to follow **Semantic Versioning**, but breaking changes should be expected. 
     If you are interested in using this library, please make sure to **lock** the version.
@@ -9,9 +9,10 @@
 
 ## Dependencies
 
-Currently, `apfel` requires Python 3.11 or later.
+Currently, `apfel` requires Python 3.10 or later.
+Development environment require at least Python 3.11.
 
-The following dependencies are required:
+`apfel` depends on the following packages:
 
 - [`typing-extensions`](https://pypi.org/project/typing-extensions/)
 

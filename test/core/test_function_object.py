@@ -156,7 +156,7 @@ def test_function_object_precedence():
 
 def test_function_object_typing(capsys):
     from apfel.core.function_object import fob
-    from typing import reveal_type
+    from typing_extensions import reveal_type
     from apfel.core.function_object import reveal_fob
 
     @fob

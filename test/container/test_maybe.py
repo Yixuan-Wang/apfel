@@ -1,7 +1,7 @@
-from typing import Any
-from weakref import ref
-from apfel.container.maybe import Maybe, just, nothing, some
 import pytest
+from typing import Any
+
+from apfel.container.maybe import Maybe, just, nothing, some
 
 def fail():
     assert False

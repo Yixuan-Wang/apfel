@@ -8,26 +8,25 @@ authors = [
 dependencies = [
     "typing-extensions>=4.12.0",
 ]
-requires-python = ">=3.11"
+requires-python = ">=3.10"
 readme = "README.md"
 license = {text = "MIT"}
 
 [project.optional-dependencies]
-test-external = [
-    "numpy",
-]
+
+
 [dependency-groups]
 doc = [
-    "mkdocs>=1.6.0",
-    "mkdocstrings[python]>=0.25.1",
-    "mkdocs-material>=9.5.24",
-    "mkdocs-awesome-nav>=3.0.0",
+    "mkdocs>=1.6.0; python_version >= '3.11'",
+    "mkdocstrings[python]>=0.25.1; python_version >= '3.11'",
+    "mkdocs-material>=9.5.24; python_version >= '3.11'",
+    "mkdocs-awesome-nav>=3.0.0; python_version >= '3.11'",
 ]
 pilot = [
-    "ipykernel>=6.29.4",
-    "ipython>=8.24.0",
-    "jupyter-server>=2.14.0",
-    "ipdb>=0.13.13",
+    "ipykernel>=6.29.4; python_version >= '3.11'",
+    "ipython>=8.24.0; python_version >= '3.11'",
+    "jupyter-server>=2.14.0; python_version >= '3.11'",
+    "ipdb>=0.13.13; python_version >= '3.11'",
 ]
 test = ["pytest>=8.3.4"]
 
