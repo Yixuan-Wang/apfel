@@ -2,7 +2,7 @@
 
 🍎 `apfel` stands for A Personal Functional Extension Library, which provides a set of basic utilities designed for academic experiments.
 
-!!! note ""
+!!! note "Trivia"
     [Apfel](https://en.wiktionary.org/wiki/Apfel#German) is the Deutsch word for apple.
 
 ## Motivation
@@ -39,3 +39,7 @@ are expected.
 
 - **Minimal dependencies**.
   The library is kept (almost) self-contained, except those listed inside [dependencies](/install#dependencies).
+
+## Acknowledgement
+
+The apple logo used in the document is from the [Noto Color Emoji](https://fonts.google.com/specimen/Noto+Color+Emoji) font by Google.
