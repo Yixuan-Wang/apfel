@@ -5,7 +5,7 @@ from typing import Any
 
 from apfel.core.monad import Functor, Applicative, Monad
 
-class Maybe(Monad):
+class MyMaybe(Monad):
     value: Any
     is_nothing: bool
 
@@ -26,17 +26,17 @@ class Maybe(Monad):
         return f(self.value)
     
     def __eq__(self, other):
-        return isinstance(other, Maybe) and self.is_nothing == other.is_nothing and self.value == other.value
+        return isinstance(other, MyMaybe) and self.is_nothing == other.is_nothing and self.value == other.value
 
 
 def test_monad_maybe():
-    assert Maybe.__abstractmethods__ == set()
+    assert MyMaybe.__abstractmethods__ == set()
 
-    maybe = Maybe(42)
+    maybe = MyMaybe(42)
     
-    assert maybe.map(lambda x: x + 1) == Maybe(43) # type: ignore
-    assert maybe.apply(Maybe(lambda x: x + 1)) == Maybe(43) # type: ignore
-    assert maybe.bind(lambda x: Maybe(x + 1)) == Maybe(43) # type: ignore
+    assert maybe.map(lambda x: x + 1) == MyMaybe(43) # type: ignore
+    assert maybe.apply(MyMaybe(lambda x: x + 1)) == MyMaybe(43) # type: ignore
+    assert maybe.bind(lambda x: MyMaybe(x + 1)) == MyMaybe(43) # type: ignore
 
 def test_monad_impl_list():
     assert issubclass(list, Functor)

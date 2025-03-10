@@ -1,5 +1,4 @@
 from abc import abstractmethod
-from sys import version_info
 
 # override is in typing only since Python 3.12
 from typing_extensions import override
@@ -114,8 +113,8 @@ class Applicative(Functor, ABCDispatch):
         # ? map f x = pure f <*> x
         # ? ```
 
-        # return self.apply(self.pure(f))
-        return Applicative.apply[self](self, Applicative.pure[self](f))  # type: ignore
+        cls = type(self)
+        return Applicative.apply[cls](self, Applicative.pure[cls](f))  # type: ignore
 
 
 class Monad(Applicative, ABCDispatch):
@@ -174,7 +173,7 @@ class Monad(Applicative, ABCDispatch):
         # ? ```
 
         return Monad.bind( # type: ignore
-            f, lambda g: Monad.bind(self, lambda y: Applicative.pure[self](g(y))) # type: ignore
+            f, lambda g: Monad.bind(self, lambda y: Applicative.pure[type(self)](g(y))) # type: ignore
         )
 
     @override
@@ -184,6 +183,6 @@ class Monad(Applicative, ABCDispatch):
         # ? map f x = x >>= \a -> return (f a)
         # ? ```
 
-        return Monad.bind(self, lambda a: Applicative.pure[self](f(a)))  # type: ignore
+        return Monad.bind(self, lambda a: Applicative.pure[type(self)](f(a)))  # type: ignore
 
 __all__ = ["Functor", "Applicative", "Monad"]
