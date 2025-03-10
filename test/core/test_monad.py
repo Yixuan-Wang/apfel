@@ -1,14 +1,15 @@
 # type: ignore
 
 from __future__ import annotations
+from typing import Any
 
 from apfel.core.monad import Functor, Applicative, Monad
 
-class Maybe[T](Monad):
-    value: T
+class Maybe(Monad):
+    value: Any
     is_nothing: bool
 
-    def __init__(self, value: T | None = None):
+    def __init__(self, value = None):
         if value is None:
             self.is_nothing = True
         else:

@@ -1,5 +1,8 @@
 from abc import abstractmethod
-from typing import override
+from sys import version_info
+
+# override is in typing only since Python 3.12
+from typing_extensions import override
 
 from apfel.core.dispatch import ABCDispatch
 
