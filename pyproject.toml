@@ -44,3 +44,7 @@ doc = "mkdocs serve"
 only-include = ["pdm.lock", "src", "test"]
 
 [tool.ruff]
+[tool.ruff.lint]
+extend-select = ["ISC", "COM818"]
+ignore = ["E741", "F821"]
+flake8-implicit-str-concat.allow-multiline = false
