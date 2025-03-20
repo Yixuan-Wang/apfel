@@ -22,6 +22,12 @@ def test_once():
     once.get_or_init(lambda: 2)
     assert once.unwrap() == 1
 
+def test_once_of_type():
+    from apfel.container.once import Once
+
+    once = Once.of_type(int) 
+    
+
 def test_lazy():
     from apfel.container.once import Lazy
 
