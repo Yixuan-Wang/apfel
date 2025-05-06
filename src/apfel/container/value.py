@@ -56,6 +56,10 @@ class Value(Functor):
         Run the function to process the inner value, and place the
         result back to the container.
 
+        Warning:
+            Compare to [`Value.map`][apfel.container.value.Value.map], this method
+            mutates the container in place. No new container is created.
+
         Args:
             func (Callable[[T], R]): A function to mutate the value.
 
