@@ -52,4 +52,4 @@ def unimplemented(message = None):
     raise NotImplementedError("Not implemented" + f": {message}" if message else "")
 
 
-__all__ = ["unimplemented", "todo", "identity"]
+__all__ = ["unimplemented", "todo", "identity", "imperative"]
