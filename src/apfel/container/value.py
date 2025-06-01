@@ -25,26 +25,26 @@ class Value(Monad):
 
     def __repr__(self):
         return f"<Value {self._value!r} at {hex(id(self))}>"
-    
+
     def apply(self, f):
         """
         Apply a function wrapped inside a `Value` to the inner value.
 
         Args:
             f (Value[Callable[[T], R]]): A `Value` containing a function to apply.
-        
+
         Returns:
             (Value[R]): A new `Value` containing the result of the function application.
         """
-        return Value(f._value(self._value)) # pyright: ignore[reportAttributeAccessIssue]
-    
+        return Value(f._value(self._value))  # pyright: ignore[reportAttributeAccessIssue]
+
     def bind(self, f):
         """
         Monadically bind a function that maps the inner value to a new `Value`.
 
         Args:
             f (Callable[[T], Value[R]]): A function that takes the inner value and returns a `Value`.
-        
+
         Returns:
             (Value[R]): A new `Value` containing the result of the function.
         """
@@ -127,4 +127,3 @@ class Value(Monad):
 
         func(self._value)
         return self
-
