@@ -1,5 +1,8 @@
 from typing import NoReturn, overload
 
+
+def not_none[T](x: T | None) -> T: ...
+
 def identity[T](x: T) -> T: ...
 
 @overload

@@ -1,3 +1,36 @@
+"""
+Common helper functions.
+All functions are exposed under the `apfel` main package.
+"""
+
+from apfel.experimental.introspect import call_expr
+
+def not_none(x):
+    """
+    Type narrowing: assert the value isn't None.
+
+    Args:
+        x (T): Any value that type-checked to be `None`,
+        but guarantees to be non-`None`.
+
+    Returns:
+        out (T): The same value passed to it.
+
+    Raises:
+        ValueError: if the input is actually `None`.
+        
+    """
+    if x is None:
+        args = call_expr()
+        if args:
+            import ast
+            arg = ast.unparse(args[0])
+            raise ValueError(f"`{arg}` should not have been `None`")
+        else:
+            raise ValueError("The value should not have been `None`")
+
+    return x
+
 def identity(x):
     """
     Returns the sole argument passed to it doing nothing.
