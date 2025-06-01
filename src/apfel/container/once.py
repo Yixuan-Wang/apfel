@@ -18,7 +18,6 @@ Primitives for containers that can be written only once. Inspired by [`OnceCell`
 | `set` | [:material-dots-horizontal-circle:][apfel.container.once.Once.set] |
 | `take` | :material-close-circle: |
 | `try_insert` | :material-close-circle: |
-
 """
 
 from functools import wraps
@@ -44,6 +43,19 @@ class Once:
 
     def __class_getitem__(cls, item):
         return cls
+    
+    @classmethod
+    def of_hint(cls, type, /):
+        """
+        Create a `Once` container hinting the given type.
+        
+        Args:
+            type (Type[T]): The type of the value to be stored in the `Once` container.
+
+        Returns:
+            container (Once[T]): A `Once` container hinting the given type.
+        """
+        return cls()
 
     def __bool__(self):
         """
@@ -192,9 +204,8 @@ class Lazy:
         """
         if self._has_value:
             return self._value
-        
+
         self._value = self._init()
         self._has_value = True
         return self._value
 
-    
