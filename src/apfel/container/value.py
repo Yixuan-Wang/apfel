@@ -1,12 +1,14 @@
 """
 `apfel.container.value` provides a container that simply wraps a value
 designed to aid chained method calls.
+
+See also [`Identity`](https://hackage.haskell.org/package/base/docs/Data-Functor-Identity.html){ .ref .hs }.
 """
 
-from apfel.core.monad import Functor
+from apfel.core.monad import Monad
 
 
-class Value(Functor):
+class Value(Monad):
     __slots__ = ("_value",)
 
     def __init__(self, value):
@@ -23,6 +25,30 @@ class Value(Functor):
 
     def __repr__(self):
         return f"<Value {self._value!r} at {hex(id(self))}>"
+    
+    def apply(self, f):
+        """
+        Apply a function wrapped inside a `Value` to the inner value.
+
+        Args:
+            f (Value[Callable[[T], R]]): A `Value` containing a function to apply.
+        
+        Returns:
+            (Value[R]): A new `Value` containing the result of the function application.
+        """
+        return Value(f._value(self._value)) # pyright: ignore[reportAttributeAccessIssue]
+    
+    def bind(self, f):
+        """
+        Monadically bind a function that maps the inner value to a new `Value`.
+
+        Args:
+            f (Callable[[T], Value[R]]): A function that takes the inner value and returns a `Value`.
+        
+        Returns:
+            (Value[R]): A new `Value` containing the result of the function.
+        """
+        return f(self._value)
 
     def done(self):
         """
@@ -33,11 +59,11 @@ class Value(Functor):
         """
         return self._value
 
-    def map(self, func):
+    def map(self, f):
         """
         Map a function over the `Value` container.
         """
-        return Value(func(self._value))
+        return Value(f(self._value))
 
     def pipe(self, func):
         """
@@ -61,6 +87,19 @@ class Value(Functor):
         val = func(self._value)
         self._value = val if val is not None else self._value
         return self
+
+    @classmethod
+    def pure(cls, x):
+        """
+        Wrap a value into the `Value` container.
+
+        Args:
+            x (T): The value to wrap.
+
+        Returns:
+            (Value[T]): A new instance of `Value` with the value wrapped.
+        """
+        return cls(x)
 
     def run(self, func):
         """
@@ -88,3 +127,4 @@ class Value(Functor):
 
         func(self._value)
         return self
+
