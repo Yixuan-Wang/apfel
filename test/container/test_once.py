@@ -25,7 +25,7 @@ def test_once():
 def test_once_of_type():
     from apfel.container.once import Once
 
-    once = Once.of_type(int) 
+    once = Once.of_hint(int) 
     
 
 def test_lazy():
