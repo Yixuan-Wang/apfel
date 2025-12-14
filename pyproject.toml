@@ -22,6 +22,7 @@ doc = [
     "mkdocstrings[python]>=0.25.1; python_version >= '3.11'",
     "mkdocs-material>=9.5.24; python_version >= '3.11'",
     "mkdocs-awesome-nav>=3.0.0; python_version >= '3.11'",
+    "mike>=2.1.0; python_version >= '3.11'",
 ]
 pilot = [
     "ipykernel>=6.29.4; python_version >= '3.11'",

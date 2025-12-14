@@ -5,7 +5,7 @@
 groups = ["default", "doc", "pilot", "test"]
 strategy = []
 lock_version = "4.5.0"
-content_hash = "sha256:997ef2913b86398ec0066344949819946e7892f758facd6b127c8806e25ead9a"
+content_hash = "sha256:da567474cfe8c103f5de12aa7d3c1916bcc188b4e4e0e33321560914fc821a3d"
 
 [[metadata.targets]]
 requires_python = ">=3.10"
@@ -652,6 +652,27 @@ files = [
 ]
 
 [[package]]
+name = "importlib-metadata"
+version = "8.7.0"
+summary = ""
+dependencies = [
+    "zipp; python_full_version >= \"3.11\"",
+]
+files = [
+    {file = "importlib_metadata-8.7.0-py3-none-any.whl", hash = "sha256:e5dd1551894c77868a30651cef00984d50e1002d06942a7101d34870c5f02afd"},
+    {file = "importlib_metadata-8.7.0.tar.gz", hash = "sha256:d13b81ad223b890aa16c5471f2ac3056cf76c5f10f82d6f9292f0b415f389000"},
+]
+
+[[package]]
+name = "importlib-resources"
+version = "6.5.2"
+summary = ""
+files = [
+    {file = "importlib_resources-6.5.2-py3-none-any.whl", hash = "sha256:789cfdc3ed28c78b67a06acb8126751ced69a3d5f79c095a98298cd8a760ccec"},
+    {file = "importlib_resources-6.5.2.tar.gz", hash = "sha256:185f87adef5bcc288449d98fb4fba07cea78bc036455dd44c5fc4a2fe78fed2c"},
+]
+
+[[package]]
 name = "iniconfig"
 version = "2.0.0"
 summary = ""
@@ -859,7 +880,7 @@ name = "jupyter-events"
 version = "0.12.0"
 summary = ""
 dependencies = [
-    "jsonschema; python_full_version >= \"3.11\"",
+    "jsonschema[format-nongpl]; python_full_version >= \"3.11\"",
     "packaging; python_full_version >= \"3.11\"",
     "python-json-logger; python_full_version >= \"3.11\"",
     "pyyaml; python_full_version >= \"3.11\"",
@@ -1011,6 +1032,25 @@ summary = ""
 files = [
     {file = "mergedeep-1.3.4-py3-none-any.whl", hash = "sha256:70775750742b25c0d8f36c55aed03d24c3384d17c951b3175d898bd778ef0307"},
     {file = "mergedeep-1.3.4.tar.gz", hash = "sha256:0096d52e9dad9939c3d975a774666af186eda617e6ca84df4c94dec30004f2a8"},
+]
+
+[[package]]
+name = "mike"
+version = "2.1.3"
+summary = ""
+dependencies = [
+    "importlib-metadata; python_full_version >= \"3.11\"",
+    "importlib-resources; python_full_version >= \"3.11\"",
+    "jinja2; python_full_version >= \"3.11\"",
+    "mkdocs; python_full_version >= \"3.11\"",
+    "pyparsing; python_full_version >= \"3.11\"",
+    "pyyaml-env-tag; python_full_version >= \"3.11\"",
+    "pyyaml; python_full_version >= \"3.11\"",
+    "verspec; python_full_version >= \"3.11\"",
+]
+files = [
+    {file = "mike-2.1.3-py3-none-any.whl", hash = "sha256:d90c64077e84f06272437b464735130d380703a76a5738b152932884c60c062a"},
+    {file = "mike-2.1.3.tar.gz", hash = "sha256:abd79b8ea483fb0275b7972825d3082e5ae67a41820f8d8a0dc7a3f49944e810"},
 ]
 
 [[package]]
@@ -1196,7 +1236,7 @@ version = "7.16.6"
 summary = ""
 dependencies = [
     "beautifulsoup4; python_full_version >= \"3.11\"",
-    "bleach; python_full_version >= \"3.11\"",
+    "bleach[css]; python_full_version >= \"3.11\"",
     "defusedxml; python_full_version >= \"3.11\"",
     "jinja2; python_full_version >= \"3.11\"",
     "jupyter-core; python_full_version >= \"3.11\"",
@@ -1498,6 +1538,15 @@ files = [
 ]
 
 [[package]]
+name = "pyparsing"
+version = "3.2.5"
+summary = ""
+files = [
+    {file = "pyparsing-3.2.5-py3-none-any.whl", hash = "sha256:e38a4f02064cf41fe6593d328d0512495ad1f3d8a91c4f73fc401b3079a59a5e"},
+    {file = "pyparsing-3.2.5.tar.gz", hash = "sha256:2df8d5b7b2802ef88e8d016a2eb9c7aeaa923529cd251ed0fe4608275d4105b6"},
+]
+
+[[package]]
 name = "pytest"
 version = "8.3.5"
 summary = ""
@@ -1519,7 +1568,7 @@ name = "pytest-cov"
 version = "7.0.0"
 summary = ""
 dependencies = [
-    "coverage",
+    "coverage[toml]",
     "pluggy",
     "pytest",
 ]
@@ -2024,6 +2073,15 @@ files = [
 ]
 
 [[package]]
+name = "verspec"
+version = "0.1.0"
+summary = ""
+files = [
+    {file = "verspec-0.1.0-py3-none-any.whl", hash = "sha256:741877d5633cc9464c45a469ae2a31e801e6dbbaa85b9675d481cda100f11c31"},
+    {file = "verspec-0.1.0.tar.gz", hash = "sha256:c4504ca697b2056cdb4bfa7121461f5a0e81809255b41c03dda4ba823637c01e"},
+]
+
+[[package]]
 name = "watchdog"
 version = "6.0.0"
 summary = ""
@@ -2101,4 +2159,13 @@ summary = ""
 files = [
     {file = "websocket_client-1.8.0-py3-none-any.whl", hash = "sha256:17b44cc997f5c498e809b22cdf2d9c7a9e71c02c8cc2b6c56e7c2d1239bfa526"},
     {file = "websocket_client-1.8.0.tar.gz", hash = "sha256:3239df9f44da632f96012472805d40a23281a991027ce11d2f45a6f24ac4c3da"},
+]
+
+[[package]]
+name = "zipp"
+version = "3.23.0"
+summary = ""
+files = [
+    {file = "zipp-3.23.0-py3-none-any.whl", hash = "sha256:071652d6115ed432f5ce1d34c336c0adfd6a884660d1e9712a256d3d3bd4b14e"},
+    {file = "zipp-3.23.0.tar.gz", hash = "sha256:a07157588a12518c9d4034df3fbbee09c814741a33ff63c05fa29d26a2404166"},
 ]

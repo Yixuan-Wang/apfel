@@ -40,6 +40,10 @@ theme:
 watch:
   - src/apfel
 
+extra:
+  version:
+    provider: mike
+
 extra_css:
   - stylesheet/extra.css
 
