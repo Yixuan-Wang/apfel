@@ -1,7 +1,12 @@
 import builtins
+import sys
 import apfel.core.common as common
 import pytest
-from typing import reveal_type
+
+if sys.version_info >= (3, 11):
+    from typing import reveal_type
+else:
+    from typing_extensions import reveal_type
 
 def test_not_none():
     assert common.not_none(42) == 42

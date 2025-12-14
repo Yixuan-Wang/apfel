@@ -65,9 +65,14 @@ Some available forms of predicates:
 from abc import abstractmethod
 import ast
 from functools import lru_cache
+import sys
 import textwrap
 from types import FunctionType, GenericAlias
-from typing import override
+
+if sys.version_info >= (3, 12):
+    from typing import override
+else:
+    from typing_extensions import override
 
 from apfel.core.dispatch import ABCDispatch, impl
 from apfel.experimental.introspect import call_expr
