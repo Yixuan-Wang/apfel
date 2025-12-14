@@ -40,21 +40,15 @@ jobs:
 
       - name: Deploy documentation
         run: |
-          # Fetch gh-pages branch if it exists to ensure mike can see history/versions
-          git fetch origin gh-pages:gh-pages || echo "gh-pages branch does not exist yet"
+          git fetch origin docs:docs || echo "docs branch does not exist yet"
 
           if [[ $GITHUB_REF == refs/heads/main ]]; then
-            pdm run mike deploy --push --update-aliases main
+            pdm run mike deploy --push --update-aliases main --branch docs
           elif [[ $GITHUB_REF == refs/heads/dev ]]; then
             pdm run mike deploy --push --update-aliases dev
           elif [[ $GITHUB_REF == refs/tags/v* ]]; then
-            # Extract tag name (e.g., v1.2.3)
             TAG=${GITHUB_REF#refs/tags/}
-            # Remove 'v' prefix
             VERSION_CLEAN=${TAG#v}
-            # Extract Major.Minor (e.g., 1.2)
             MAJOR_MINOR=$(echo $VERSION_CLEAN | cut -d. -f1,2)
-            
-            # Deploy minor version and alias 'latest' to it
-            pdm run mike deploy --push --update-aliases $MAJOR_MINOR latest
+            pdm run mike deploy --push --update-aliases $MAJOR_MINOR latest --branch docs
           fi
