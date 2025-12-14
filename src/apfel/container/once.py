@@ -7,7 +7,7 @@ Primitives for containers that can be written only once. Inspired by [`OnceCell`
 
 | Reference [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){ .ref .rs } | Counterpart |
 | --- | --- |
-| `get` | :material-close-circle: |
+| `get` | [:material-check-circle:][apfel.container.once.Once.get] |
 | `get_mut` | :material-minus-circle: |
 | `get_mut_or_init` | :material-minus-circle: |
 | `get_mut_or_try_init` | :material-minus-circle: |
@@ -20,6 +20,7 @@ Primitives for containers that can be written only once. Inspired by [`OnceCell`
 | `try_insert` | :material-close-circle: |
 """
 
+import apfel.container.maybe as _maybe
 import apfel.container.result as _result
 
 class Once:
@@ -64,11 +65,38 @@ class Once:
             is_set (bool): `True` if the `Once` container has been set, `False` otherwise.
         """
         return self._has_value
+    
+    def get(self):
+        """
+        Get the inner value of the `Once` container if it has been set.
+
+        Returns:
+            value (Maybe[T]): A `Just`-wrapped inner value of the `Once` container if it has been set, a `Nothing` otherwise.
+        """
+        if self._has_value:
+            return _maybe.Maybe.just(self._value)
+        return _maybe.Maybe.nothing()
+
+    def get_or_init(self, f, /):
+        """
+        Get the inner value of the `Once` container, or initialize it with the given function if no value has been set.
+
+        Args:
+            f (Callable[[], T]): The function to initialize the `Once` container with if no value has been set.
+
+        Returns:
+            value (T): The inner value (maybe newly set) of the `Once` container.
+        """
+        if not self._has_value:
+            self._value = f()
+            self._has_value = True
+        
+        return self._value
 
     def set(self, value):
         """
         Set the inner value of the `Once` container.
-        If a value has already been set, this method currently does nothing.
+        If a value has already been set, this method returns an `Err` containing the existing value.
 
         Args:
             value (T): The value to set the `Once` container to.
@@ -99,22 +127,105 @@ class Once:
             raise ValueError("called `Once.unwrap()` on an unset value.")
         
         return self._value
+
+
+class OnceLock:
+    """
+    A thread-safe version of [`Once`][apfel.container.once.Once].
+    See [`OnceLock`](https://doc.rust-lang.org/std/sync/struct.OnceLock.html){.ref .rs} for more information.
+    """
+    __slots__ = ("_value", "_has_value", "_lock")
+
+    def __init__(self):
+        """
+        Create an unpopulated `OnceLock` container.
+
+        Returns:
+            container (OnceLock): An unpopulated `OnceLock` container.
+        """
+        import threading
+
+        self._value = ...
+        self._has_value = False
+        self._lock = threading.Lock()
+
+    def __class_getitem__(cls, item):
+        return cls
+    
+    def __bool__(self):
+        """
+        Check if the `OnceLock` container has been set.
+
+        Returns:
+            is_set (bool): `True` if the `OnceLock` container has been set, `False` otherwise.
+        """
+        with self._lock:
+            return self._has_value
+        
+    def get(self):
+        """
+        Get the inner value of the `OnceLock` container if it has been set.
+
+        Returns:
+            value (Maybe[T]): A `Just`-wrapped inner value of the `OnceLock` container if it has been set, a `Nothing` otherwise.
+        """
+        with self._lock:
+            if self._has_value:
+                return _maybe.Maybe.just(self._value)
+            return _maybe.Maybe.nothing()
     
     def get_or_init(self, f, /):
         """
-        Get the inner value of the `Once` container, or initialize it with the given function if no value has been set.
+        Get the inner value of the `OnceLock` container, or initialize it with the given function if no value has been set.
 
         Args:
-            f (Callable[[], T]): The function to initialize the `Once` container with if no value has been set.
+            f (Callable[[], T]): The function to initialize the `OnceLock` container with if no value has been set.
 
         Returns:
-            value (T): The inner value (maybe newly set) of the `Once` container.
+            value (T): The inner value (maybe newly set) of the `OnceLock`
         """
-        if not self._has_value:
-            self._value = f()
+        with self._lock:
+            if not self._has_value:
+                self._value = f()
+                self._has_value = True
+            
+            return self._value
+                    
+    def set(self, value):
+        """
+        Set the inner value of the `OnceLock` container.
+        If a value has already been set, this method returns an `Err` containing the existing value.
+
+        Args:
+            value (T): The value to set the `OnceLock` container to.
+
+        Returns:
+            result (Result[None, T]):
+                `Ok(None)` if the value was set successfully.
+                `Err(value)` if the value has already been set, containing the existing value.
+        """
+        with self._lock:
+            if self._has_value:
+                return _result.err(self._value)
+            self._value = value
             self._has_value = True
-        
-        return self._value
+            return _result.ok(None)
+
+    def unwrap(self):
+        """
+        Get the inner value of the `OnceLock` container.
+        If no value has been set, this method raises a `ValueError`.
+
+        Returns:
+            value (T): The inner value of the `OnceLock` container.
+
+        Raises:
+            ValueError: If no value has been set.
+        """
+        with self._lock:
+            if not self._has_value:
+                raise ValueError("called `OnceLock.unwrap()` on an unset value.")
+            return self._value
 
 class Lazy:
     """
@@ -211,3 +322,86 @@ class Lazy:
         self._has_value = True
         return self._value
 
+
+class LazyLock:
+    """
+    A thread-safe version of [`Lazy`][apfel.container.once.Lazy].
+    See [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs} for more information.
+    """
+
+    __slots__ = ("_value", "_has_value", "_init", "_lock")
+
+    def __init__(self, f, /):
+        """
+        Create a thread-safe lazily initialized `LazyLock` container.
+
+        Args:
+            f (Callable[[], T]): The function to be lazily initialized.
+        """
+        import threading
+
+        self._value = ...
+        self._has_value = False
+        self._init = f
+        self._lock = threading.Lock()
+
+    def __class_getitem__(cls, item):
+        return cls
+    
+    def __bool__(self):
+        with self._lock:
+            return self._has_value
+        
+    def __call__(self):
+        """
+        An alias for [`LazyLock.value`][apfel.container.once.LazyLock.value].
+        Notice that this operator overloading might be slower than calling `value` directly.
+
+        Example:
+            ```python
+            from apfel.container.once import LazyLock
+
+            lazy_lock = LazyLock(lambda: object())
+            obj = lazy_lock()
+            assert lazy_lock() is obj
+            ```
+        """
+        with self._lock:
+            if self._has_value:
+                return self._value
+            
+            self._value = self._init()
+            self._has_value = True
+            return self._value
+
+    def unwrap(self):
+        """
+        Get the inner value of the `LazyLock` container.
+        If no value has been set, this method raises a `ValueError`.
+
+        Returns:
+            value (T): The inner value of the `LazyLock` container.
+
+        Raises:
+            ValueError: If no value has been set.
+        """
+        with self._lock:
+            if not self._has_value:
+                raise ValueError("called `LazyLock.unwrap()` on an unset value.")
+            return self._value
+        
+    def value(self):
+        """
+        Get the inner value of the `LazyLock` container.
+        If no value has been set, this method initializes the value with the stored function.
+
+        Returns:
+            value (T): The lazily initialized value of the `LazyLock` container.
+        """
+        with self._lock:
+            if self._has_value:
+                return self._value
+
+            self._value = self._init()
+            self._has_value = True
+            return self._value
