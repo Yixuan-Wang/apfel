@@ -43,6 +43,7 @@ jobs:
           git fetch origin docs:docs || echo "docs branch does not exist yet"
 
           if [[ $GITHUB_REF == refs/heads/main ]]; then
+            pdm run mike set-default --allow-undefined main --branch docs
             pdm run mike deploy --push --update-aliases main --branch docs
           elif [[ $GITHUB_REF == refs/heads/dev ]]; then
             pdm run mike deploy --push --update-aliases dev
@@ -52,3 +53,4 @@ jobs:
             MAJOR_MINOR=$(echo $VERSION_CLEAN | cut -d. -f1,2)
             pdm run mike deploy --push --update-aliases $MAJOR_MINOR latest --branch docs
           fi
+        
