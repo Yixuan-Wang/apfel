@@ -1,7 +1,7 @@
 """
 A container that optionally holds a value.
 
-See [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs } and [`Maybe`](https://hackage.haskell.org/package/base/docs/Prelude.html#t:Maybe){ .ref .hs }.
+See [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs } and [`Maybe`](https://hackage.haskell.org/package/base/docs/Data-Maybe.html){ .ref .hs }.
 
 A `Maybe` has two possible states, `Just` or `Nothing`. `Just` means a value is present, and `Nothing` means the value is absent.
 The reason that we don't use `Some`-`None` or `Nil` nomencalture is to avoid [confusion with the built-in `None`][apfel.container.maybe--rationale].
@@ -109,8 +109,8 @@ and the comparison table is provided below.
 | `map` | [:material-check-circle:][apfel.container.maybe.Maybe.map] |
 | `map_or` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or] |
 | `map_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or_else] |
-| `ok_or` | :material-close-circle: |
-| `ok_or_else` | :material-close-circle: |
+| `ok_or` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or] |
+| `ok_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or_else] |
 | `or` | [:material-arrow-right-circle: `or_`][apfel.container.maybe.Maybe.__or__] |
 | `or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.or_else] |
 | `replace` | [:material-check-circle:][apfel.container.maybe.Maybe.replace] |
@@ -129,6 +129,7 @@ and the comparison table is provided below.
 """
 
 from apfel.core.monad import Monad
+import apfel.container.result as _result
 
 from apfel.experimental.adt import variant
 
@@ -412,7 +413,7 @@ class Maybe(Monad):
 
         assert j.map_or(0, lambda x: x + 1) == 43
         assert n.map_or(0, lambda x: x + 1) == 0
-        ```z
+        ```
         """
         return f(self._val) if self._has_value else default
 
@@ -429,6 +430,37 @@ class Maybe(Monad):
         ```
         """
         return f(self._val) if self._has_value else d()
+    
+    def ok_or(self, err, /):
+        """
+        Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a provided `Err` value.
+        The `Err` value is eagerly evaluated.
+
+        ```python
+        j = just[int](42)
+        n = nothing[int]()
+
+        assert j.ok_or("error").unwrap() == 42
+        assert n.ok_or("error").unwrap_err() == "error"
+        ```
+        """
+
+        return _result.Result.make_ok(self._val) if self._has_value else _result.Result.make_err(err)
+    
+    def ok_or_else(self, f, /):
+        """
+        Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a lazily evaluated `Err` value.
+
+        ```python
+        j = just[int](42)
+        n = nothing[int]()
+
+        assert j.ok_or_else(lambda: 0).unwrap() == 42
+        assert n.ok_or_else(lambda: "error").unwrap_err() == "error"
+        ```
+        """
+
+        return _result.Result.make_ok(self._val) if self._has_value else _result.Result.make_err(f())
 
     def or_(self, other, /):
             """

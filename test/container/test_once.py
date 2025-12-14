@@ -7,12 +7,14 @@ def test_once():
     once = Once[int]()
     assert not once
 
-    once.set(1)
+    ok = once.set(1)
     assert once
+    assert ok.is_ok() and ok.unwrap() is None
     assert once.unwrap() == 1
 
-    once.set(2)
+    prev = once.set(2)
     assert once.unwrap() == 1
+    assert prev.is_err() and prev.unwrap_err() == 1
 
     once = Once[int]()
     once.get_or_init(lambda: 1)

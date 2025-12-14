@@ -262,6 +262,17 @@ def test_maybe_method_map_or_else():
     assert j.map_or_else(lambda: fail(), lambda x: x + 1) == 43
     assert n.map_or_else(lambda: 0, lambda x: fail()) == 0
 
+def test_maybe_method_ok_or():
+    j = just[int](42)
+    n = nothing[int]()
+
+    assert j.ok_or("error").unwrap() == 42
+    assert n.ok_or("error").unwrap_err() == "error"
+
+    assert j.ok_or_else(lambda: "error").unwrap() == 42
+    assert n.ok_or_else(lambda: "error").unwrap_err() == "error"
+
+
 def test_maybe_method_or():
     j1 = just[int](42)
     j2 = just[int](114514)

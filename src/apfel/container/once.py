@@ -15,13 +15,12 @@ Primitives for containers that can be written only once. Inspired by [`OnceCell`
 | `get_or_try_init` | :material-close-circle: |
 | `into_inner` | :material-close-circle: |
 | `new` | :material-close-circle: |
-| `set` | [:material-dots-horizontal-circle:][apfel.container.once.Once.set] |
+| `set` | [:material-check-circle:][apfel.container.once.Once.set] |
 | `take` | :material-close-circle: |
 | `try_insert` | :material-close-circle: |
 """
 
-from functools import wraps
-
+import apfel.container.result as _result
 
 class Once:
     """
@@ -73,14 +72,17 @@ class Once:
 
         Args:
             value (T): The value to set the `Once` container to.
-
-        Experimental:
-            This method will return a `Result` type in the future.
+        
+        Returns:
+            result (Result[None, T]):
+                `Ok(None)` if the value was set successfully.
+                `Err(value)` if the value has already been set, containing the existing value.
         """
         if self._has_value:
-            return
+            return _result.err(self._value)
         self._value = value
         self._has_value = True
+        return _result.ok(None)
 
     def unwrap(self):
         """
