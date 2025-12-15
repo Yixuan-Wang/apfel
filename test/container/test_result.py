@@ -273,7 +273,7 @@ def test_unwrap():
 
 def test_caught():
     from apfel.container.result import caught
-    from typing import reveal_type
+    from typing_extensions import reveal_type
 
     @caught[ZeroDivisionError]()
     def result_unchecked(value: float):
