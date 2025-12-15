@@ -1,6 +1,7 @@
 import apfel
 import builtins
 
+
 def test_apfel_namespace():
     assert apfel.identity is getattr(builtins, "identity")
     assert apfel.imperative is getattr(builtins, "imperative")

@@ -4,10 +4,11 @@ Common yet miscellaneous utilities functions.
 
 from apfel.experimental.introspect import call_expr
 
+
 def identity(x):
     """
     Returns the sole argument passed to it doing nothing.
-    
+
     Args:
         x (T): Any object.
 
@@ -23,12 +24,13 @@ def imperative(*exprs):
     If no expression are passed, returns `None`, per Python's convention.
 
     Args:
-        *exprs (*tuple[*Ts, R]): Any number of expressions. 
-    
+        *exprs (*tuple[*Ts, R]): Any number of expressions.
+
     Returns:
         out (R): The last expression passed into the function.
     """
     return exprs[-1] if exprs else None
+
 
 def not_none(x):
     """
@@ -43,12 +45,13 @@ def not_none(x):
 
     Raises:
         ValueError: if the input is actually `None`.
-        
+
     """
     if x is None:
         args = call_expr()
         if args:
             import ast
+
             arg = ast.unparse(args[0])
             raise ValueError(f"`{arg}` should not have been `None`")
         else:
@@ -56,7 +59,8 @@ def not_none(x):
 
     return x
 
-def todo(message = None):
+
+def todo(message=None):
     """
     Marks an unimplemented location that **might** be implemented in the future.
     See [`todo!`](https://doc.rust-lang.org/std/macro.todo.html){ .ref .rs } for usage.
@@ -70,7 +74,7 @@ def todo(message = None):
     raise NotImplementedError("Todo" + f": {message}" if message else "")
 
 
-def unimplemented(message = None):
+def unimplemented(message=None):
     """
     Marks an unimplemented location that **might not** be implemented in the future.
     See [`unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html){ .ref .rs } for usage.

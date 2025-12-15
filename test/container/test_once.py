@@ -29,57 +29,63 @@ def test_once():
     assert once.get().unwrap() == 1
     assert once.unwrap() == 1
 
+
 def test_once_of_type():
     from apfel.container.once import Once
 
-    once = Once.of_hint(int) 
-    
+    once = Once.of_hint(int)
+
 
 def test_lazy():
     from apfel.container.once import Lazy
 
     a = 0
+
     @Lazy
     def f():
         nonlocal a
         a += 1
         return object()
-    
+
     obj = f.value()
     assert a == 1
 
-    assert f.value() is obj # the function `f` will not be called again.
+    assert f.value() is obj  # the function `f` will not be called again.
     assert a == 1
 
     b = 0
+
     @Lazy[int]
     def g():
         nonlocal b
         b += 1
         return b
-    
+
     assert g() == 1
     assert g() == 1
+
 
 def test_lazy_bool():
     from apfel.container.once import Lazy
 
     l = Lazy(lambda: 42)
     assert not l
-    
+
     l()
     assert l
+
 
 def test_lazy_unwrap():
     from apfel.container.once import Lazy
 
     l = Lazy(lambda: 42)
-    
+
     with pytest.raises(ValueError):
         l.unwrap()
-    
+
     l()
     assert l.unwrap() == 42
+
 
 def test_lazy_value():
     from apfel.container.once import Lazy
@@ -87,9 +93,10 @@ def test_lazy_value():
     @Lazy
     def f():
         return object()
-    
+
     obj = f.value()
     assert f.value() is obj
+
 
 def test_once_lock():
     from apfel.container.once import OnceLock
@@ -116,7 +123,9 @@ def test_once_lock():
         lock.unwrap()
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
-        results = list(executor.map(lambda _: lock.set(random.randint(0, 100)), range(20)))
+        results = list(
+            executor.map(lambda _: lock.set(random.randint(0, 100)), range(20))
+        )
 
     assert (lock_val := lock.unwrap())
     for result in results:
@@ -124,6 +133,7 @@ def test_once_lock():
             assert result.unwrap() is None
         else:
             assert result.unwrap_err() == lock_val
+
 
 def test_lazy_lock():
     from apfel.container.once import LazyLock
@@ -135,7 +145,7 @@ def test_lazy_lock():
     def init():
         time.sleep(random.random())
         return random.randint(0, 100)
-    
+
     assert not init
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
@@ -144,7 +154,7 @@ def test_lazy_lock():
     assert (lock_val := init())
     assert all(result == lock_val for result in results)
 
-    init= LazyLock[int](init)
+    init = LazyLock[int](init)
     with pytest.raises(ValueError):
         init.unwrap()
 
@@ -155,4 +165,4 @@ def test_lazy_lock():
     assert all(result == lock_val for result in results)
 
     init = LazyLock[int](init)
-    assert init.value() == init() 
+    assert init.value() == init()

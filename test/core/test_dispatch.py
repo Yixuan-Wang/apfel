@@ -3,6 +3,7 @@ from abc import abstractmethod
 
 import pytest
 
+
 class TestSingleDispatch:
     class ITest(ABCDispatch):
         """
@@ -27,7 +28,7 @@ class TestSingleDispatch:
                 "args": args,
                 "kwargs": kwargs,
             }
-        
+
         @staticmethod
         @abstractmethod
         def static_method(*args, **kwargs):
@@ -46,8 +47,10 @@ class TestSingleDispatch:
         # even if the abstract methods have blanket impl.
 
         with pytest.raises(TypeError):
+
             class TestNotInitiable(TestSingleDispatch.ITest):
                 pass
+
             _ = TestNotInitiable()  # type: ignore
 
         # Given a class that neither subclasses nor registers any methods,
@@ -56,13 +59,13 @@ class TestSingleDispatch:
         empty = EmptyClass()
 
         with pytest.raises(NotImplementedError):
-            TestSingleDispatch.ITest.normal_method(empty) # type: ignore
+            TestSingleDispatch.ITest.normal_method(empty)  # type: ignore
 
         with pytest.raises(NotImplementedError):
-            TestSingleDispatch.ITest.class_method[empty]() # type: ignore
+            TestSingleDispatch.ITest.class_method[empty]()  # type: ignore
 
         with pytest.raises(NotImplementedError):
-            TestSingleDispatch.ITest.static_method[empty]() # type: ignore
+            TestSingleDispatch.ITest.static_method[empty]()  # type: ignore
 
     class A(ITest):
         def normal_method(self, *args, **kwargs):
@@ -81,7 +84,7 @@ class TestSingleDispatch:
                 "args": args,
                 "kwargs": kwargs,
             }
-        
+
         @staticmethod
         def static_method(*args, **kwargs):
             return {
@@ -90,11 +93,11 @@ class TestSingleDispatch:
                 "args": args,
                 "kwargs": kwargs,
             }
-    
+
     def test_dispatch_abc_inherit_normal(self):
         A = TestSingleDispatch.A
         a = A()
-        
+
         # Using normal method call
         assert a.normal_method(1, a="a") == {
             "type": "normal",
@@ -122,7 +125,7 @@ class TestSingleDispatch:
     def test_dispatch_abc_inherit_class(self):
         A = self.A
         a = A()
-    
+
         assert a.class_method(1, a="a") == {
             "type": "class",
             "implementation": "A",
@@ -135,19 +138,18 @@ class TestSingleDispatch:
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method[a](1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.class_method[a](1, a="a") == {  # type: ignore
             "type": "class",
             "implementation": "A",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method[A](1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.class_method[A](1, a="a") == {  # type: ignore
             "type": "class",
             "implementation": "A",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-
 
     def test_dispatch_abc_inherit_static(self):
         A = self.A
@@ -167,13 +169,13 @@ class TestSingleDispatch:
         }
 
         # Using function call
-        assert TestSingleDispatch.ITest.static_method[a](1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.static_method[a](1, a="a") == {  # type: ignore
             "type": "static",
             "implementation": "A",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.static_method[A](1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.static_method[A](1, a="a") == {  # type: ignore
             "type": "static",
             "implementation": "A",
             "args": (1,),
@@ -199,7 +201,7 @@ class TestSingleDispatch:
                     "args": args,
                     "kwargs": kwargs,
                 }
-            
+
             @staticmethod
             def static_method(*args, **kwargs):
                 return {
@@ -208,28 +210,29 @@ class TestSingleDispatch:
                     "args": args,
                     "kwargs": kwargs,
                 }
-            
+
         i = 1
-        assert TestSingleDispatch.ITest.normal_method(i, 1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.normal_method(i, 1, a="a") == {  # type: ignore
             "type": "normal",
             "implementation": "int",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method[1](1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.class_method[1](1, a="a") == {  # type: ignore
             "type": "class",
             "implementation": "int",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
-        assert TestSingleDispatch.ITest.class_method[int](1, a="a") == { # type: ignore
+        assert TestSingleDispatch.ITest.class_method[int](1, a="a") == {  # type: ignore
             "type": "class",
             "implementation": "int",
             "args": (1,),
             "kwargs": {"a": "a"},
         }
 
-class TestSingleDispatchFuncAPI:    
+
+class TestSingleDispatchFuncAPI:
     def test_dispatch_func_api(self):
         from typing import Any
 
@@ -237,12 +240,12 @@ class TestSingleDispatchFuncAPI:
         def f(x: Any) -> str:
             return str(x)
 
-        # Empty registry before dispatch        
+        # Empty registry before dispatch
         assert f.__dispatch__.registry == {}
 
         # Fallback implementation used
         with pytest.raises(NotImplementedError):
-            f(1/3)
+            f(1 / 3)
 
         # Register an implementation
         @f.impl_for(float)
@@ -250,10 +253,10 @@ class TestSingleDispatchFuncAPI:
             return f"{x:.2f}"
 
         assert f.__dispatch__.registry == {float: impl_float}
-        assert f(1/3) == "0.33"
+        assert f(1 / 3) == "0.33"
 
         # Single-inheritance should work
         class MyFloat(float):
             pass
 
-        assert f(MyFloat(1/3)) == "0.33"
+        assert f(MyFloat(1 / 3)) == "0.33"

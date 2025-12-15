@@ -168,7 +168,9 @@ class Result(Monad):
         Convert a `Result[T, E]` to a `Maybe[E]`.
         """
         return (
-            _maybe.Maybe.make_just(self._val) if not self._is_ok else _maybe.Maybe.make_nothing()
+            _maybe.Maybe.make_just(self._val)
+            if not self._is_ok
+            else _maybe.Maybe.make_nothing()
         )
 
     def expect(self, message):
@@ -250,7 +252,11 @@ class Result(Monad):
         """
         Convert a `Result[T, E]` to a `Maybe[T]`.
         """
-        return _maybe.Maybe.make_just(self._val) if self._is_ok else _maybe.Maybe.make_nothing()
+        return (
+            _maybe.Maybe.make_just(self._val)
+            if self._is_ok
+            else _maybe.Maybe.make_nothing()
+        )
 
     def or_(self, other, /):
         """

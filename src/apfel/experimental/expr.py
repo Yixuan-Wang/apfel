@@ -2,6 +2,7 @@ from __future__ import annotations
 from typing_extensions import Never
 import functools
 
+
 def cover_up(func):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
@@ -12,6 +13,7 @@ def cover_up(func):
             raise
 
     return wrapper
+
 
 def throw(ex: BaseException) -> Never:
     """
@@ -24,9 +26,9 @@ def throw(ex: BaseException) -> Never:
         raise ex
     except BaseException as e:
         if (
-            hasattr(e, '__traceback__')
+            hasattr(e, "__traceback__")
             and e.__traceback__ is not None
-            and hasattr(e.__traceback__, 'tb_next')
+            and hasattr(e.__traceback__, "tb_next")
         ):
             e.__traceback__ = e.__traceback__.tb_next  # pyright: ignore[reportOptionalMemberAccess]
         raise

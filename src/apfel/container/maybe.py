@@ -187,7 +187,7 @@ class Maybe(Monad):
         ```
         """
         return cls(val) if val is not None else cls(has_value=False)
-    
+
     @classmethod
     def duplicate(cls, m, /):
         """
@@ -209,7 +209,11 @@ class Maybe(Monad):
         assert (nothing[int]() & j2).is_nothing()
         ```
         """
-        return Maybe(other._val, has_value=other._has_value) if self._has_value else Maybe(has_value=False)
+        return (
+            Maybe(other._val, has_value=other._has_value)
+            if self._has_value
+            else Maybe(has_value=False)
+        )
 
     __and__ = and_
     """
@@ -242,7 +246,7 @@ class Maybe(Monad):
             if self._has_value
             else Maybe(has_value=False)
         )
-    
+
     def bind(self, f):
         """
         Implementation of [`Monad.bind`][apfel.core.monad.Monad.bind].
@@ -291,8 +295,12 @@ class Maybe(Monad):
         assert j.filter(lambda x: x < 0).is_nothing()
         ```
         """
-        return Maybe(has_value=False) if not self._has_value or not p(self._val) else Maybe(self._val)
-    
+        return (
+            Maybe(has_value=False)
+            if not self._has_value or not p(self._val)
+            else Maybe(self._val)
+        )
+
     def flatten(self):
         """
         Flatten a nested `Maybe` value for one level.
@@ -309,7 +317,7 @@ class Maybe(Monad):
         ```
         """
         return self._val if self._has_value and isinstance(self._val, Maybe) else self
-    
+
     def get_or_insert(self, val, /):
         """
         Get the inner value, if any. Otherwise, insert the new value and return the value.
@@ -346,7 +354,7 @@ class Maybe(Monad):
 
     def __hash__(self):
         return hash((id(Maybe), self._has_value, self._val))
-    
+
     def insert(self, val, /):
         """
         Insert a value and returns it.
@@ -375,7 +383,7 @@ class Maybe(Monad):
             A `Just(Nothing)` value of type `Maybe[Maybe[T]]` or a `Just(None)` value of type `Maybe[Optional[T]]` are not `Nothing`s.
         """
         return not self._has_value
-    
+
     def __len__(self):
         """
         Return 1 if the value is `Just`, otherwise 0.
@@ -430,7 +438,7 @@ class Maybe(Monad):
         ```
         """
         return f(self._val) if self._has_value else d()
-    
+
     def ok_or(self, err, /):
         """
         Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a provided `Err` value.
@@ -445,8 +453,12 @@ class Maybe(Monad):
         ```
         """
 
-        return _result.Result.make_ok(self._val) if self._has_value else _result.Result.make_err(err)
-    
+        return (
+            _result.Result.make_ok(self._val)
+            if self._has_value
+            else _result.Result.make_err(err)
+        )
+
     def ok_or_else(self, f, /):
         """
         Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a lazily evaluated `Err` value.
@@ -460,26 +472,34 @@ class Maybe(Monad):
         ```
         """
 
-        return _result.Result.make_ok(self._val) if self._has_value else _result.Result.make_err(f())
+        return (
+            _result.Result.make_ok(self._val)
+            if self._has_value
+            else _result.Result.make_err(f())
+        )
 
     def or_(self, other, /):
-            """
-            If the value is `Just`, return a shallow copy of itself. Otherwise, return the other `Maybe`'s shallow copy.
+        """
+        If the value is `Just`, return a shallow copy of itself. Otherwise, return the other `Maybe`'s shallow copy.
 
-            Notice that the right-hand side should be a `Maybe` object with the same inner type,
-            although this is not enforced at runtime.
-            And also this method does not short-circuit.
+        Notice that the right-hand side should be a `Maybe` object with the same inner type,
+        although this is not enforced at runtime.
+        And also this method does not short-circuit.
 
-            ```python
-            j1 = just[int](42)
-            j2 = just[int](114514)
+        ```python
+        j1 = just[int](42)
+        j2 = just[int](114514)
 
-            assert (j1 | j2).unwrap() == 42
-            assert (nothing[int]() | j2).unwrap() == 114514
-            assert (j1 | nothing[int]()).unwrap() == 42
-            ```
-            """
-            return Maybe(self._val, has_value=self._has_value) if self._has_value else Maybe(other._val, has_value=other._has_value)
+        assert (j1 | j2).unwrap() == 42
+        assert (nothing[int]() | j2).unwrap() == 114514
+        assert (j1 | nothing[int]()).unwrap() == 42
+        ```
+        """
+        return (
+            Maybe(self._val, has_value=self._has_value)
+            if self._has_value
+            else Maybe(other._val, has_value=other._has_value)
+        )
 
     __or__ = or_
     """
@@ -504,7 +524,7 @@ class Maybe(Monad):
         """
         Replace the inner value with a new value, returning the old value.
         After replacement, `self` will always have a value.
-        
+
         ```python
         j = just[int](42)
         old = j.replace(114514)
@@ -551,7 +571,7 @@ class Maybe(Monad):
             return out
         else:
             return Maybe(has_value=False)
-        
+
     def take_if(self, p, /):
         """
         Take the inner value out if it satisfies the predicate, and leave no value in place.
@@ -638,7 +658,7 @@ class Maybe(Monad):
         Return the inner value without checking if it is a `Just` or `Nothing`.
         """
         return self._val
-    
+
     def xor(self, other, /):
         """
         If only one side has a value, return that side. Otherwise, return a `Nothing`.
@@ -652,11 +672,9 @@ class Maybe(Monad):
         return (
             Maybe(has_value=False)
             if self._has_value == other._has_value
-            else (
-                Maybe(self._val) if self._has_value else Maybe(other._val)
-            )
+            else (Maybe(self._val) if self._has_value else Maybe(other._val))
         )
-    
+
     def zip(self, *others):
         """
         Combine multiple `Maybe` values into a single `Maybe` value containing a tuple of them.
@@ -679,6 +697,7 @@ class Maybe(Monad):
         if not (self._has_value and all(other._has_value for other in others)):
             return Maybe(has_value=False)
         return Maybe((self._val, *(other._val for other in others)))  # type: ignore
+
 
 @variant(Maybe)
 class just:
@@ -734,7 +753,7 @@ class nothing:
 
     def __new__(cls):
         return Maybe(has_value=False)
-    
+
     @classmethod
     def __instancecheck__(cls, instance):
         return not instance._has_value

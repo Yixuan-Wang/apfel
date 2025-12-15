@@ -3,8 +3,10 @@ from typing import Any
 
 from apfel.container.maybe import Maybe, just, nothing, some
 
+
 def fail():
     assert False
+
 
 def test_maybe_match_stmt():
     j = just(1)
@@ -29,6 +31,7 @@ def test_maybe_match_stmt():
         case nothing():
             assert True
 
+
 def test_maybe_constructor_just():
     j1 = Maybe.make_just(1)
     assert j1.is_just()
@@ -41,6 +44,7 @@ def test_maybe_constructor_just():
     jn = just(None)
     assert jn.is_just()
 
+
 def test_maybe_constructor_nothing():
     n1 = Maybe.make_nothing()
     assert n1.is_nothing()
@@ -49,6 +53,7 @@ def test_maybe_constructor_nothing():
     assert n2.is_nothing()
 
     assert n1 == n2
+
 
 def test_maybe_constructor_some():
     j = Maybe.make_some(1)
@@ -63,6 +68,7 @@ def test_maybe_constructor_some():
     n = some(None)
     assert n.is_nothing()
 
+
 def test_maybe_constructor_duplicate():
     j = just(42)
     n = nothing()
@@ -72,6 +78,7 @@ def test_maybe_constructor_duplicate():
 
     n1 = Maybe.duplicate(n)
     assert n1 is not n
+
 
 def test_maybe_method_and():
     j1 = just[int](42)
@@ -99,6 +106,7 @@ def test_maybe_method_and():
     assert n.and_(n).is_nothing()
     assert n.and_(n) is not n
 
+
 def test_maybe_method_and_then():
     j = just[int](114514)
 
@@ -109,15 +117,18 @@ def test_maybe_method_and_then():
     assert n.and_then(lambda x: some(x + 1805296)).is_nothing()
     assert n.and_then(lambda x: fail()).is_nothing()
 
+
 def test_maybe_method_apply():
     from collections.abc import Callable
+
     j = just[int](42)
     f = just[Callable[[int], str]](str)
 
-    assert j.apply(f).unwrap() == '42'
+    assert j.apply(f).unwrap() == "42"
     assert nothing[int]().apply(f).is_nothing()
     assert j.apply(nothing[Callable[[int], str]]()).is_nothing()
     assert nothing[int]().apply(nothing[Callable[[int], str]]()).is_nothing()
+
 
 def test_maybe_method_bind():
     """
@@ -132,9 +143,11 @@ def test_maybe_method_bind():
     assert n.bind(lambda x: some(x + 1805296)).is_nothing()
     assert n.bind(lambda x: nothing()).is_nothing()
 
+
 def test_maybe_method_bool():
     assert just(1)
     assert not nothing()
+
 
 def test_maybe_method_eq():
     assert just(1) == just(1)
@@ -142,18 +155,20 @@ def test_maybe_method_eq():
     assert not nothing() == just(1)
     assert nothing() == nothing()
 
-    assert not nothing() == False # noqa: E712
-    assert not nothing() == None # noqa: E711
+    assert not nothing() == False  # noqa: E712
+    assert not nothing() == None  # noqa: E711
+
 
 def test_maybe_method_expect():
     j = just(1)
-    assert j.expect('error') == 1
+    assert j.expect("error") == 1
 
     n = nothing()
     try:
-        n.expect('error')
+        n.expect("error")
     except ValueError as e:
-        assert str(e) == 'error'
+        assert str(e) == "error"
+
 
 def test_maybe_method_filter():
     j = just[int](42)
@@ -167,6 +182,7 @@ def test_maybe_method_filter():
     n = nothing()
     assert n.filter(lambda x: x == 1).is_nothing()
     assert n.filter(lambda x: fail()).is_nothing()
+
 
 def test_maybe_method_flatten():
     j = just[Maybe[int]](just(42))
@@ -182,6 +198,7 @@ def test_maybe_method_flatten():
     noop = just(42)
     assert noop.flatten() == just(42)
 
+
 def test_maybe_method_get_or_insert():
     j = just[int](42)
     assert j.get_or_insert(114514) == 42
@@ -190,6 +207,7 @@ def test_maybe_method_get_or_insert():
     n = nothing[int]()
     assert n.get_or_insert(114514) == 114514
     assert n == just(114514)
+
 
 def test_maybe_method_get_or_insert_with():
     j = just[int](42)
@@ -201,10 +219,12 @@ def test_maybe_method_get_or_insert_with():
     assert n.get_or_insert_with(lambda: 114514) == 114514
     assert n == just(114514)
 
+
 def test_maybe_method_hash():
     assert hash(just(1)) == hash(just(1))
     assert hash(just(1)) != hash(just(2))
     assert hash(nothing()) == hash(nothing())
+
 
 def test_maybe_method_insert():
     j = just[int](42)
@@ -215,9 +235,11 @@ def test_maybe_method_insert():
     assert n.insert(114514) == 114514
     assert n == just(114514)
 
+
 def test_maybe_method_is_just():
     assert just(1).is_just()
     assert not nothing().is_just()
+
 
 def test_maybe_method_is_just_and():
     j = just(42)
@@ -226,14 +248,17 @@ def test_maybe_method_is_just_and():
     assert not nothing().is_just_and(lambda x: x == 42)
     assert not nothing().is_just_and(lambda x: fail())
 
+
 def test_maybe_method_is_nothing():
     assert not just(1).is_nothing()
     assert not just(None).is_nothing()
     assert nothing().is_nothing()
 
+
 def test_maybe_method_len():
     assert len(just(1)) == 1
     assert len(nothing()) == 0
+
 
 def test_maybe_method_map():
     j = just[int](42)
@@ -245,6 +270,7 @@ def test_maybe_method_map():
     n = nothing()
     assert n.map(lambda _: fail()) == nothing()
 
+
 def test_maybe_method_map_or():
     j = just[int](42)
     n = nothing[int]()
@@ -252,6 +278,7 @@ def test_maybe_method_map_or():
     assert j.map_or(0, lambda x: x + 1) == 43
     assert n.map_or(0, lambda x: x + 1) == 0
     assert n.map_or(0, lambda x: fail()) == 0
+
 
 def test_maybe_method_map_or_else():
     j = just[int](42)
@@ -261,6 +288,7 @@ def test_maybe_method_map_or_else():
     assert n.map_or_else(lambda: 0, lambda x: x + 1) == 0
     assert j.map_or_else(lambda: fail(), lambda x: x + 1) == 43
     assert n.map_or_else(lambda: 0, lambda x: fail()) == 0
+
 
 def test_maybe_method_ok_or():
     j = just[int](42)
@@ -291,6 +319,7 @@ def test_maybe_method_or():
 
     assert j1 | j2 == j1
 
+
 def test_maybe_method_or_else():
     j = just[int](42)
     n = nothing[int]()
@@ -302,8 +331,10 @@ def test_maybe_method_or_else():
     assert jo.unwrap() == 42
     assert no.unwrap() == 1
 
+
 def test_pure():
     assert Maybe.pure(1) == just(1)
+
 
 def test_maybe_method_replace():
     j = just[int](42)
@@ -315,6 +346,7 @@ def test_maybe_method_replace():
     old = n.replace(1919810)
     assert n == just(1919810)
     assert old == nothing()
+
 
 def test_maybe_method_take():
     j = just[int](42)
@@ -330,6 +362,7 @@ def test_maybe_method_take():
     assert n.take() == nothing()
     assert n == nothing()
 
+
 def test_maybe_method_take_if():
     j = just[int](42)
     out = j.take_if(lambda x: x > 0)
@@ -341,14 +374,16 @@ def test_maybe_method_take_if():
     assert j.is_just()
     assert out == nothing()
 
+
 def test_tap(capfd):
     just(42).tap(print)
     out, _ = capfd.readouterr()
-    assert out == '42\n'
+    assert out == "42\n"
 
     nothing().tap(print)
     out, _ = capfd.readouterr()
-    assert out == ''
+    assert out == ""
+
 
 def test_maybe_method_unwrap():
     assert just(42).unwrap() == 42
@@ -357,11 +392,13 @@ def test_maybe_method_unwrap():
     with pytest.raises(ValueError):
         nothing().unwrap()
 
+
 def test_maybe_method_unwrap_or():
     j = just[int](42)
     n = nothing[int]()
     assert j.unwrap_or(0) == 42
     assert n.unwrap_or(0) == 0
+
 
 def test_maybe_method_unwrap_or_else():
     j = just[int](42)
@@ -369,8 +406,10 @@ def test_maybe_method_unwrap_or_else():
     assert j.unwrap_or_else(lambda: fail()) == 42
     assert n.unwrap_or_else(lambda: 0) == 0
 
+
 def test_maybe_method_unwrap_unchecked():
     assert just(42).unwrap_unchecked() == 42
+
 
 def test_maybe_method_xor():
     j1 = just(1)
@@ -378,20 +417,21 @@ def test_maybe_method_xor():
     n = nothing()
 
     assert j1.xor(j2) == n
-    
+
     assert j1.xor(n) == j1
     assert j1.xor(n) is not j1
 
     assert n.xor(j1) == j1
     assert n.xor(j1) is not j1
-    
+
     assert n.xor(n) == n
     assert n.xor(n) is not n
+
 
 def test_maybe_method_zip():
     j1 = just[int](42)
     j2 = just[int](114514)
-    assert j1.zip().unwrap() == (42, )
+    assert j1.zip().unwrap() == (42,)
     assert j1.zip(j2).unwrap() == (42, 114514)
 
     n = nothing[int]()

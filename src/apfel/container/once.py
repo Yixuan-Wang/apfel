@@ -23,12 +23,13 @@ Primitives for containers that can be written only once. Inspired by [`OnceCell`
 import apfel.container.maybe as _maybe
 import apfel.container.result as _result
 
+
 class Once:
     """
     A container that can be written only once.
     See [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} for more information.
     """
-    
+
     __slots__ = ("_value", "_has_value")
 
     def __init__(self):
@@ -43,12 +44,12 @@ class Once:
 
     def __class_getitem__(cls, item):
         return cls
-    
+
     @classmethod
     def of_hint(cls, type, /):
         """
         Create a `Once` container hinting the given type.
-        
+
         Args:
             type (Type[T]): The type of the value to be stored in the `Once` container.
 
@@ -65,7 +66,7 @@ class Once:
             is_set (bool): `True` if the `Once` container has been set, `False` otherwise.
         """
         return self._has_value
-    
+
     def get(self):
         """
         Get the inner value of the `Once` container if it has been set.
@@ -90,7 +91,7 @@ class Once:
         if not self._has_value:
             self._value = f()
             self._has_value = True
-        
+
         return self._value
 
     def set(self, value):
@@ -100,7 +101,7 @@ class Once:
 
         Args:
             value (T): The value to set the `Once` container to.
-        
+
         Returns:
             result (Result[None, T]):
                 `Ok(None)` if the value was set successfully.
@@ -125,7 +126,7 @@ class Once:
         """
         if not self._has_value:
             raise ValueError("called `Once.unwrap()` on an unset value.")
-        
+
         return self._value
 
 
@@ -134,6 +135,7 @@ class OnceLock:
     A thread-safe version of [`Once`][apfel.container.once.Once].
     See [`OnceLock`](https://doc.rust-lang.org/std/sync/struct.OnceLock.html){.ref .rs} for more information.
     """
+
     __slots__ = ("_value", "_has_value", "_lock")
 
     def __init__(self):
@@ -151,7 +153,7 @@ class OnceLock:
 
     def __class_getitem__(cls, item):
         return cls
-    
+
     def __bool__(self):
         """
         Check if the `OnceLock` container has been set.
@@ -161,7 +163,7 @@ class OnceLock:
         """
         with self._lock:
             return self._has_value
-        
+
     def get(self):
         """
         Get the inner value of the `OnceLock` container if it has been set.
@@ -173,7 +175,7 @@ class OnceLock:
             if self._has_value:
                 return _maybe.Maybe.make_just(self._value)
             return _maybe.Maybe.make_nothing()
-    
+
     def get_or_init(self, f, /):
         """
         Get the inner value of the `OnceLock` container, or initialize it with the given function if no value has been set.
@@ -188,9 +190,9 @@ class OnceLock:
             if not self._has_value:
                 self._value = f()
                 self._has_value = True
-            
+
             return self._value
-                    
+
     def set(self, value):
         """
         Set the inner value of the `OnceLock` container.
@@ -227,6 +229,7 @@ class OnceLock:
                 raise ValueError("called `OnceLock.unwrap()` on an unset value.")
             return self._value
 
+
 class Lazy:
     """
     A container that can be lazily initialized only once.
@@ -241,7 +244,7 @@ class Lazy:
         def f():
             print("called")
             return object()
-        
+
         obj = f.value()
         # print "called"
         # here, the function `f` will be called and the result will be cached.
@@ -262,10 +265,10 @@ class Lazy:
         self._value = ...
         self._has_value = False
         self._init = f
-    
+
     def __class_getitem__(cls, item):
         return cls
-    
+
     def __bool__(self):
         return self._has_value
 
@@ -279,14 +282,14 @@ class Lazy:
             @Lazy
             def f():
                 return object()
-            
+
             obj = f()
             assert f() is obj
             ```
         """
         if self._has_value:
             return self._value
-        
+
         self._value = self._init()
         self._has_value = True
         return self._value
@@ -295,10 +298,10 @@ class Lazy:
         """
         Get the inner value of the `Lazy` container.
         If no value has been set, this method raises a `ValueError`.
-        
+
         Returns:
             value (T): The lazily initialized value of the `Lazy` container.
-        
+
         Raises:
             ValueError: If no value has been set.
         """
@@ -347,11 +350,11 @@ class LazyLock:
 
     def __class_getitem__(cls, item):
         return cls
-    
+
     def __bool__(self):
         with self._lock:
             return self._has_value
-        
+
     def __call__(self):
         """
         An alias for [`LazyLock.value`][apfel.container.once.LazyLock.value].
@@ -369,7 +372,7 @@ class LazyLock:
         with self._lock:
             if self._has_value:
                 return self._value
-            
+
             self._value = self._init()
             self._has_value = True
             return self._value
@@ -389,7 +392,7 @@ class LazyLock:
             if not self._has_value:
                 raise ValueError("called `LazyLock.unwrap()` on an unset value.")
             return self._value
-        
+
     def value(self):
         """
         Get the inner value of the `LazyLock` container.

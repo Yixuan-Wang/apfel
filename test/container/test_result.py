@@ -4,12 +4,14 @@ import apfel.container.maybe as _maybe
 from apfel.core.monad import Monad
 import pytest
 
+
 def test_make():
     a = Result[int, NoReturn].make_ok(10)
     b = Result[NoReturn, str].make_err("error")
 
     assert a.unwrap() == 10
     assert b.unwrap_err() == "error"
+
 
 def test_and():
     result_1 = ok(1)
@@ -26,6 +28,7 @@ def test_and():
     assert (result_err.and_(result_err)).is_err()
     assert (result_err & result_err) is not result_err
 
+
 def test_and_then():
     result = ok(2)
     result_err = err("error")
@@ -38,6 +41,7 @@ def test_and_then():
     assert result.bind(lambda x: ok(x + 5)).unwrap() == 7
     assert Monad.bind(result, lambda x: err("failed")).unwrap_err() == "failed"  # type: ignore
 
+
 def test_apply():
     result_func = ok(lambda x: x + 3)
     result_value = ok(7)
@@ -48,12 +52,14 @@ def test_apply():
     assert result_err.apply(result_func).unwrap_err() == "error"
     assert result_err.apply(err("failed")).unwrap_err() == "error"
 
+
 def test_done():
     a = ok[str](10)
     b = err[int]("error")
 
     assert a.done() == (10, None)
     assert b.done() == (None, "error")
+
 
 def test_eq():
     a1 = ok[NoReturn](10)
@@ -69,12 +75,14 @@ def test_eq():
     assert b1 != b3
     assert a1 != b1
 
+
 def test_err():
     result_ok = ok[int](10)
     result_err = err[str]("error")
 
     assert result_ok.err().is_nothing()
     assert result_err.err().unwrap() == "error"
+
 
 def test_expect():
     a = ok[NoReturn](10)
@@ -85,11 +93,12 @@ def test_expect():
     with pytest.raises(ValueError) as excinfo:
         b.expect("Expected an error")
     assert excinfo.value.args[0] == "Expected an error"
-    
+
     assert b.expect_err("Should be error") == "error"
     with pytest.raises(ValueError) as excinfo:
         a.expect_err("Expected an ok")
     assert excinfo.value.args[0] == "Expected an ok"
+
 
 def test_flatten():
     a = ok(ok(10))
@@ -100,11 +109,13 @@ def test_flatten():
     assert b.flatten().unwrap_err() == "error"
     assert c.flatten().unwrap_err() == "outer error"
 
+
 def test_hash():
     assert hash(ok[NoReturn](10)) == hash(ok[NoReturn](10))
     assert hash(err[NoReturn]("error")) == hash(err[NoReturn]("error"))
     assert hash(ok[NoReturn](10)) != hash(ok[NoReturn](20))
     assert hash(ok[NoReturn](10)) != hash(err[NoReturn](10))
+
 
 def test_is():
     a = ok[NoReturn](10)
@@ -122,6 +133,7 @@ def test_is():
     assert b.is_err_and(lambda e: e == "error")
     assert not b.is_err_and(lambda e: e == "different")
 
+
 def test_map():
     result = ok(5)
     result_err = err("error")
@@ -137,6 +149,7 @@ def test_map():
 
     assert result.map_or_else(lambda e: len(e), lambda x: x + 4) == 9
     assert result_err.map_or_else(lambda e: len(e), lambda x: x + 4) == 5
+
 
 @no_type_check
 def test_match():
@@ -155,12 +168,14 @@ def test_match():
         case err(e):
             assert e == "error"
 
+
 def test_ok():
     result_ok = ok[int](10)
     result_err = err[str]("error")
 
     assert result_ok.ok().unwrap() == 10
     assert result_err.ok().is_nothing()
+
 
 def test_or():
     result1 = ok(10)
@@ -178,6 +193,7 @@ def test_or():
     assert result_err.or_(result_err).is_err()
     assert (result_err | result_err) is not result_err
 
+
 def test_or_else():
     result = ok(10)
     result_err = err("error")
@@ -187,12 +203,14 @@ def test_or_else():
     assert result_err.or_else(lambda e: ok(20)).unwrap() == 20
     assert result_err.or_else(lambda e: err(f"{e}!")).unwrap_err() == "error!"
 
+
 def test_pure():
     a = Result.pure(10)
-    b = Monad.pure[Result](20) # type: ignore
+    b = Monad.pure[Result](20)  # type: ignore
 
     assert a.unwrap() == 10
     assert b.unwrap() == 20
+
 
 def test_tap():
     result = ok(10)
@@ -217,6 +235,7 @@ def test_tap():
     assert result_err_tapped_err is result_err
     assert side_effects == [10, "error"]
 
+
 def test_throw():
     a = ok[NoReturn](10)
     b = err[NoReturn](ValueError("error"))
@@ -227,6 +246,7 @@ def test_throw():
         b.throw()
     assert excinfo.value.args[0] == "error"
 
+
 def test_transpose():
     a = ok(_maybe.just(10))
     b = ok(_maybe.nothing())
@@ -235,6 +255,7 @@ def test_transpose():
     assert a.transpose().unwrap().unwrap() == 10
     assert b.transpose().is_nothing()
     assert c.transpose().unwrap().unwrap_err() == "error"
+
 
 def test_unwrap():
     a = ok[NoReturn](10)
@@ -248,6 +269,7 @@ def test_unwrap():
 
     with pytest.raises(ValueError):
         a.unwrap_err()
+
 
 def test_caught():
     from apfel.container.result import caught
@@ -272,7 +294,6 @@ def test_caught():
     with pytest.raises(ValueError):
         result_checked(1.0)
 
-
     @caught(ZeroDivisionError, ValueError, TypeError)
     def result_multiple(value: float):
         if value == 2.0:
@@ -289,7 +310,6 @@ def test_caught():
     assert isinstance(result_multiple(3.0).unwrap_err(), TypeError)
     with pytest.raises(RuntimeError):
         result_multiple(1.0)
-
 
     @caught(ZeroDivisionError | ValueError | TypeError)
     def result_union(value: float):

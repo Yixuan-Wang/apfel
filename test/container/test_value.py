@@ -12,6 +12,7 @@ def test_value_apply():
     v2 = v.apply(vf)
     assert v2.done() == 43
 
+
 def test_value_bind():
     def f(x: int):
         return Value(x + 1)
@@ -22,6 +23,7 @@ def test_value_bind():
 
     v3 = v.bind(lambda x: Value(x * 2))
     assert v3.done() == 84
+
 
 def test_value_method_done():
     v = Value(42)
