@@ -2,7 +2,33 @@
 Common yet miscellaneous utilities functions.
 """
 
+from functools import reduce as _reduce
 from apfel.experimental.introspect import call_expr
+
+
+def apply(value, func, /):
+    """
+    Applies a single-argument function to a value.
+    For chained calls, see [`pipe`][apfel.core.common.pipe].
+
+    See also [<code><del>apply</del></code>](https://docs.python.org/2.7/library/functions.html#apply){ .ref .py } from Python 2.7.
+
+    This function is different from [`Value.apply`][apfel.container.value.Value.apply],
+      which is an implementation of [`Applicative`][apfel.core.monad.Applicative]
+      who requires the function to be wrapped in `Value`.
+    In contrast, this function accepts arbitrary callables.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
+      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+
+    Args:
+        value (T): The value to be passed to the function.
+        func (Callable[[T], R]): The function to apply.
+
+    Returns:
+        out (R): The result of applying the function to the value.
+    """
+    return func(value)
 
 
 def identity(x):
@@ -68,6 +94,32 @@ def not_none(x):
     return x
 
 
+def pipe(
+    value,
+    /,
+    *funcs,
+):
+    """
+    Pipes a value through a sequence of functions.
+    For single function application, see [`apply`][apfel.core.common.apply].
+
+    See also [`Value.pipe`][apfel.container.value.Value.pipe],
+      [`FunctionObject.__rand__`][apfel.core.function_object.FunctionObject.__rand__].
+    See also [`&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-){ .ref .hs }, [`|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping){ .ref .jl } or roughly [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html){ .ref .rl }.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
+        and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+
+    Args:
+        value (T): The initial value to be piped.
+        *funcs (Callable[[Any], Any]): A sequence of functions to apply to the value.
+
+    Returns:
+        out (Any): The final result after applying all functions.
+    """
+    return _reduce(apply, funcs, value)
+
+
 def todo(message=None):
     """
     Marks an unimplemented location that **might** be implemented in the future.
@@ -102,4 +154,4 @@ def unimplemented(message=None):
     raise NotImplementedError("Not implemented" + f": {message}" if message else "")
 
 
-__all__ = ["unimplemented", "todo", "identity", "imperative", "not_none"]
+__all__ = ["apply", "identity", "imperative", "not_none", "pipe", "todo", "unimplemented"]

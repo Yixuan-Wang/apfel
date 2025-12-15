@@ -31,9 +31,11 @@ If you are using Pyright, you can follow the [builtins extension](https://github
 
 | Module | Function | Package? | Builtins? |
 | : --- | :--- | :--: | :--: |
+| `core.common` | [`apply`][apfel.core.common.apply] | :material-earth: | :material-airballoon: |
 | `core.common` | [`identity`][apfel.core.common.identity] | :material-earth: | :material-airballoon: |
 | `core.common` | [`imperative`][apfel.core.common.imperative] | :material-earth: | :material-airballoon: |
 | `core.common` | [`not_none`][apfel.core.common.not_none] | :material-earth: |  |
+| `core.common` | [`pipe`][apfel.core.common.pipe] | :material-earth: | :material-airballoon: |
 | `core.common` | [`todo`][apfel.core.common.todo] | :material-earth: | :material-airballoon: |
 | `core.common` | [`unimplemented`][apfel.core.common.unimplemented] | :material-earth: |:material-airballoon: |
 | `container.maybe` | [`just`][apfel.container.maybe.just] | :material-earth: |  |
