@@ -109,13 +109,13 @@ def test_once_lock():
     assert lock.get().is_nothing()
 
     def init():
-        time.sleep(random.random())
-        return random.randint(0, 100)
+        time.sleep(random.random() / 10)
+        return random.randint(1, 100)
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         results = list(executor.map(lambda _: lock.get_or_init(init), range(20)))
 
-    assert (lock_val := lock.get().unwrap())
+    assert (lock_val := lock.get().unwrap()) is not None
     assert all(result == lock_val for result in results)
 
     lock = OnceLock[int]()
@@ -124,10 +124,10 @@ def test_once_lock():
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         results = list(
-            executor.map(lambda _: lock.set(random.randint(0, 100)), range(20))
+            executor.map(lambda _: lock.set(random.randint(1, 100)), range(20))
         )
 
-    assert (lock_val := lock.unwrap())
+    assert (lock_val := lock.unwrap()) is not None
     for result in results:
         if result.is_ok():
             assert result.unwrap() is None
@@ -143,15 +143,15 @@ def test_lazy_lock():
 
     @LazyLock
     def init():
-        time.sleep(random.random())
-        return random.randint(0, 100)
+        time.sleep(random.random() / 10)
+        return random.randint(1, 100)
 
     assert not init
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=4) as executor:
         results = list(executor.map(lambda _: init(), range(20)))
 
-    assert (lock_val := init())
+    assert (lock_val := init()) is not None
     assert all(result == lock_val for result in results)
 
     init = LazyLock[int](init)
