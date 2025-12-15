@@ -545,8 +545,8 @@ def add_impl(definition, impl, *impl_for_args, **impl_for_kwargs):
     Args:
         definition (type): The dispatchable class.
         impl (Mapping[str, Callable]): A mapping from method names to implementations.
-        *impl_for_args: Arguments that the dispatch mechanism will use for selecting the implementation.
-        **impl_for_kwargs: Keyword arguments that the dispatch mechanism will use for selecting the implementation.
+        *impl_for_args (Any): Arguments that the dispatch mechanism will use for selecting the implementation.
+        **impl_for_kwargs (Any): Keyword arguments that the dispatch mechanism will use for selecting the implementation.
 
     Example:
         ```python

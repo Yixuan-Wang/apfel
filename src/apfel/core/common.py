@@ -46,7 +46,7 @@ def not_none(x):
 
     Args:
         x (T): Any value that type-checked to be `None`,
-        but guarantees to be non-`None`.
+            but guarantees to be non-`None`.
 
     Returns:
         out (T): The same value passed to it.

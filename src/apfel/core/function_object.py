@@ -116,7 +116,7 @@ class FunctionObject:
 
         Function application operator `|` for `FunctionObject`s.
 
-        `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](./#operator-at), but with a different precedence.
+        `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](#operator-at), but with a different precedence.
 
         Example:
             ```python
@@ -164,7 +164,7 @@ class FunctionObject:
 
         Function application operator `@` for `FunctionObject`s.
 
-        `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](./#operator-or), but with a different precedence.
+        `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](#operator-or), but with a different precedence.
 
         Example:
             ```python

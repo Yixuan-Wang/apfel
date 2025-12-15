@@ -113,7 +113,7 @@ and the comparison table is provided below.
 | `map_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or_else] |
 | `ok_or` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or] |
 | `ok_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or_else] |
-| `or` | [:material-arrow-right-circle: `or_`][apfel.container.maybe.Maybe.__or__] |
+| `or` | [:material-arrow-right-circle: `or_`][apfel.container.maybe.Maybe.or_] |
 | `or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.or_else] |
 | `replace` | [:material-check-circle:][apfel.container.maybe.Maybe.replace] |
 | `take` | [:material-check-circle:][apfel.container.maybe.Maybe.take] |

@@ -38,7 +38,7 @@ are expected.
   Try to use the most efficient underlying implementation.
 
 - **Minimal dependencies**.
-  The library is kept (almost) self-contained, except those listed inside [dependencies](/install#dependencies).
+  The library is kept (almost) self-contained, except those listed inside [dependencies](install.md#dependencies).
 
 ## Acknowledgement
 
