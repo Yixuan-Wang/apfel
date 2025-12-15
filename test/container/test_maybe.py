@@ -30,7 +30,7 @@ def test_maybe_match_stmt():
             assert True
 
 def test_maybe_constructor_just():
-    j1 = Maybe.just(1)
+    j1 = Maybe.make_just(1)
     assert j1.is_just()
 
     j2 = just(1)
@@ -42,7 +42,7 @@ def test_maybe_constructor_just():
     assert jn.is_just()
 
 def test_maybe_constructor_nothing():
-    n1 = Maybe.nothing()
+    n1 = Maybe.make_nothing()
     assert n1.is_nothing()
 
     n2 = nothing()
@@ -51,13 +51,13 @@ def test_maybe_constructor_nothing():
     assert n1 == n2
 
 def test_maybe_constructor_some():
-    j = Maybe.some(1)
+    j = Maybe.make_some(1)
     assert j.is_just()
 
     j = some(1)
     assert j.is_just()
 
-    n = Maybe.some(None)
+    n = Maybe.make_some(None)
     assert n.is_nothing()
 
     n = some(None)

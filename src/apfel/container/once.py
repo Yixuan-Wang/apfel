@@ -74,8 +74,8 @@ class Once:
             value (Maybe[T]): A `Just`-wrapped inner value of the `Once` container if it has been set, a `Nothing` otherwise.
         """
         if self._has_value:
-            return _maybe.Maybe.just(self._value)
-        return _maybe.Maybe.nothing()
+            return _maybe.Maybe.make_just(self._value)
+        return _maybe.Maybe.make_nothing()
 
     def get_or_init(self, f, /):
         """
@@ -171,8 +171,8 @@ class OnceLock:
         """
         with self._lock:
             if self._has_value:
-                return _maybe.Maybe.just(self._value)
-            return _maybe.Maybe.nothing()
+                return _maybe.Maybe.make_just(self._value)
+            return _maybe.Maybe.make_nothing()
     
     def get_or_init(self, f, /):
         """

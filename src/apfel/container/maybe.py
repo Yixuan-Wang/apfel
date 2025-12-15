@@ -150,7 +150,7 @@ class Maybe(Monad):
         return cls
 
     @classmethod
-    def just(cls, val, /):
+    def make_just(cls, val, /):
         """
         Construct a `Just` value.
 
@@ -160,7 +160,7 @@ class Maybe(Monad):
         return cls(val)
 
     @classmethod
-    def nothing(cls):
+    def make_nothing(cls):
         """
         Construct a `Nothing` value.
 
@@ -171,7 +171,7 @@ class Maybe(Monad):
         return cls(has_value=False)
 
     @classmethod
-    def some(cls, val, /):
+    def make_some(cls, val, /):
         """
         Convert an `Optional[T]` value to a `Maybe` value.
 
@@ -179,10 +179,10 @@ class Maybe(Monad):
             Prefer using [`some`][apfel.container.maybe.some] function instead, unless in performance-critical code.
 
         ```python
-        some = Maybe.some(42)
+        some = Maybe.make_some(42)
         assert some.is_just()
 
-        none = Maybe.some(None)
+        none = Maybe.make_some(None)
         assert none.is_nothing()
         ```
         """
@@ -496,7 +496,7 @@ class Maybe(Monad):
     @classmethod
     def pure(cls, x):
         """
-        Implementation of [Applicative.pure][apfel.core.monad.Applicative.pure], which is equivalent to [Maybe.just][apfel.container.maybe.Maybe.just].
+        Implementation of [Applicative.pure][apfel.core.monad.Applicative.pure], which is equivalent to [Maybe.make_just][apfel.container.maybe.Maybe.make_just].
         """
         return cls(x)
 
@@ -760,7 +760,7 @@ class some:
         return cls
 
     def __new__(cls, val, /):
-        return Maybe.some(val)
+        return Maybe.make_some(val)
 
 
 __all__ = ["Maybe", "just", "nothing", "some"]
