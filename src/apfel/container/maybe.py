@@ -1,13 +1,15 @@
 """
 A container that optionally holds a value.
 
-See [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs } and [`Maybe`](https://hackage.haskell.org/package/base/docs/Prelude.html#t:Maybe){ .ref .hs }.
+See [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs } and [`Maybe`](https://hackage.haskell.org/package/base/docs/Data-Maybe.html){ .ref .hs }.
 
 A `Maybe` has two possible states, `Just` or `Nothing`. `Just` means a value is present, and `Nothing` means the value is absent.
 The reason that we don't use `Some`-`None` or `Nil` nomencalture is to avoid [confusion with the built-in `None`][apfel.container.maybe--rationale].
 
 This module also provides a [`some`][apfel.container.maybe.some] constructor, which converts an `Optional[T]` value to a `Maybe[T]` value.
 
+The [`Maybe`][apfel.container.maybe.Maybe] class, and the [`just`][apfel.container.maybe.just], [`nothing`][apfel.container.maybe.nothing], and [`some`][apfel.container.maybe.some] functions
+  are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
 # Rationale
 
@@ -109,9 +111,9 @@ and the comparison table is provided below.
 | `map` | [:material-check-circle:][apfel.container.maybe.Maybe.map] |
 | `map_or` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or] |
 | `map_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or_else] |
-| `ok_or` | :material-close-circle: |
-| `ok_or_else` | :material-close-circle: |
-| `or` | [:material-arrow-right-circle: `or_`][apfel.container.maybe.Maybe.__or__] |
+| `ok_or` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or] |
+| `ok_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or_else] |
+| `or` | [:material-arrow-right-circle: `or_`][apfel.container.maybe.Maybe.or_] |
 | `or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.or_else] |
 | `replace` | [:material-check-circle:][apfel.container.maybe.Maybe.replace] |
 | `take` | [:material-check-circle:][apfel.container.maybe.Maybe.take] |
@@ -129,6 +131,7 @@ and the comparison table is provided below.
 """
 
 from apfel.core.monad import Monad
+import apfel.container.result as _result
 
 from apfel.experimental.adt import variant
 
@@ -137,6 +140,8 @@ class Maybe(Monad):
     """
     A container that optionally holds a value.
     See [module-level documentation](maybe.md#maybe) for more information.
+
+    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
     """
 
     __slots__ = ("_val", "_has_value")
@@ -149,7 +154,7 @@ class Maybe(Monad):
         return cls
 
     @classmethod
-    def just(cls, val, /):
+    def make_just(cls, val, /):
         """
         Construct a `Just` value.
 
@@ -159,7 +164,7 @@ class Maybe(Monad):
         return cls(val)
 
     @classmethod
-    def nothing(cls):
+    def make_nothing(cls):
         """
         Construct a `Nothing` value.
 
@@ -170,7 +175,7 @@ class Maybe(Monad):
         return cls(has_value=False)
 
     @classmethod
-    def some(cls, val, /):
+    def make_some(cls, val, /):
         """
         Convert an `Optional[T]` value to a `Maybe` value.
 
@@ -178,15 +183,15 @@ class Maybe(Monad):
             Prefer using [`some`][apfel.container.maybe.some] function instead, unless in performance-critical code.
 
         ```python
-        some = Maybe.some(42)
+        some = Maybe.make_some(42)
         assert some.is_just()
 
-        none = Maybe.some(None)
+        none = Maybe.make_some(None)
         assert none.is_nothing()
         ```
         """
         return cls(val) if val is not None else cls(has_value=False)
-    
+
     @classmethod
     def duplicate(cls, m, /):
         """
@@ -208,7 +213,11 @@ class Maybe(Monad):
         assert (nothing[int]() & j2).is_nothing()
         ```
         """
-        return Maybe(other._val, has_value=other._has_value) if self._has_value else Maybe(has_value=False)
+        return (
+            Maybe(other._val, has_value=other._has_value)
+            if self._has_value
+            else Maybe(has_value=False)
+        )
 
     __and__ = and_
     """
@@ -241,7 +250,7 @@ class Maybe(Monad):
             if self._has_value
             else Maybe(has_value=False)
         )
-    
+
     def bind(self, f):
         """
         Implementation of [`Monad.bind`][apfel.core.monad.Monad.bind].
@@ -290,8 +299,12 @@ class Maybe(Monad):
         assert j.filter(lambda x: x < 0).is_nothing()
         ```
         """
-        return Maybe(has_value=False) if not self._has_value or not p(self._val) else Maybe(self._val)
-    
+        return (
+            Maybe(has_value=False)
+            if not self._has_value or not p(self._val)
+            else Maybe(self._val)
+        )
+
     def flatten(self):
         """
         Flatten a nested `Maybe` value for one level.
@@ -308,7 +321,7 @@ class Maybe(Monad):
         ```
         """
         return self._val if self._has_value and isinstance(self._val, Maybe) else self
-    
+
     def get_or_insert(self, val, /):
         """
         Get the inner value, if any. Otherwise, insert the new value and return the value.
@@ -345,7 +358,7 @@ class Maybe(Monad):
 
     def __hash__(self):
         return hash((id(Maybe), self._has_value, self._val))
-    
+
     def insert(self, val, /):
         """
         Insert a value and returns it.
@@ -374,7 +387,7 @@ class Maybe(Monad):
             A `Just(Nothing)` value of type `Maybe[Maybe[T]]` or a `Just(None)` value of type `Maybe[Optional[T]]` are not `Nothing`s.
         """
         return not self._has_value
-    
+
     def __len__(self):
         """
         Return 1 if the value is `Just`, otherwise 0.
@@ -412,7 +425,7 @@ class Maybe(Monad):
 
         assert j.map_or(0, lambda x: x + 1) == 43
         assert n.map_or(0, lambda x: x + 1) == 0
-        ```z
+        ```
         """
         return f(self._val) if self._has_value else default
 
@@ -430,24 +443,67 @@ class Maybe(Monad):
         """
         return f(self._val) if self._has_value else d()
 
+    def ok_or(self, err, /):
+        """
+        Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a provided `Err` value.
+        The `Err` value is eagerly evaluated.
+
+        ```python
+        j = just[int](42)
+        n = nothing[int]()
+
+        assert j.ok_or("error").unwrap() == 42
+        assert n.ok_or("error").unwrap_err() == "error"
+        ```
+        """
+
+        return (
+            _result.Result.make_ok(self._val)
+            if self._has_value
+            else _result.Result.make_err(err)
+        )
+
+    def ok_or_else(self, f, /):
+        """
+        Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a lazily evaluated `Err` value.
+
+        ```python
+        j = just[int](42)
+        n = nothing[int]()
+
+        assert j.ok_or_else(lambda: 0).unwrap() == 42
+        assert n.ok_or_else(lambda: "error").unwrap_err() == "error"
+        ```
+        """
+
+        return (
+            _result.Result.make_ok(self._val)
+            if self._has_value
+            else _result.Result.make_err(f())
+        )
+
     def or_(self, other, /):
-            """
-            If the value is `Just`, return a shallow copy of itself. Otherwise, return the other `Maybe`'s shallow copy.
+        """
+        If the value is `Just`, return a shallow copy of itself. Otherwise, return the other `Maybe`'s shallow copy.
 
-            Notice that the right-hand side should be a `Maybe` object with the same inner type,
-            although this is not enforced at runtime.
-            And also this method does not short-circuit.
+        Notice that the right-hand side should be a `Maybe` object with the same inner type,
+        although this is not enforced at runtime.
+        And also this method does not short-circuit.
 
-            ```python
-            j1 = just[int](42)
-            j2 = just[int](114514)
+        ```python
+        j1 = just[int](42)
+        j2 = just[int](114514)
 
-            assert (j1 | j2).unwrap() == 42
-            assert (nothing[int]() | j2).unwrap() == 114514
-            assert (j1 | nothing[int]()).unwrap() == 42
-            ```
-            """
-            return Maybe(self._val, has_value=self._has_value) if self._has_value else Maybe(other._val, has_value=other._has_value)
+        assert (j1 | j2).unwrap() == 42
+        assert (nothing[int]() | j2).unwrap() == 114514
+        assert (j1 | nothing[int]()).unwrap() == 42
+        ```
+        """
+        return (
+            Maybe(self._val, has_value=self._has_value)
+            if self._has_value
+            else Maybe(other._val, has_value=other._has_value)
+        )
 
     __or__ = or_
     """
@@ -464,7 +520,7 @@ class Maybe(Monad):
     @classmethod
     def pure(cls, x):
         """
-        Implementation of [Applicative.pure][apfel.core.monad.Applicative.pure], which is equivalent to [Maybe.just][apfel.container.maybe.Maybe.just].
+        Implementation of [Applicative.pure][apfel.core.monad.Applicative.pure], which is equivalent to [Maybe.make_just][apfel.container.maybe.Maybe.make_just].
         """
         return cls(x)
 
@@ -472,7 +528,7 @@ class Maybe(Monad):
         """
         Replace the inner value with a new value, returning the old value.
         After replacement, `self` will always have a value.
-        
+
         ```python
         j = just[int](42)
         old = j.replace(114514)
@@ -519,7 +575,7 @@ class Maybe(Monad):
             return out
         else:
             return Maybe(has_value=False)
-        
+
     def take_if(self, p, /):
         """
         Take the inner value out if it satisfies the predicate, and leave no value in place.
@@ -606,7 +662,7 @@ class Maybe(Monad):
         Return the inner value without checking if it is a `Just` or `Nothing`.
         """
         return self._val
-    
+
     def xor(self, other, /):
         """
         If only one side has a value, return that side. Otherwise, return a `Nothing`.
@@ -620,11 +676,9 @@ class Maybe(Monad):
         return (
             Maybe(has_value=False)
             if self._has_value == other._has_value
-            else (
-                Maybe(self._val) if self._has_value else Maybe(other._val)
-            )
+            else (Maybe(self._val) if self._has_value else Maybe(other._val))
         )
-    
+
     def zip(self, *others):
         """
         Combine multiple `Maybe` values into a single `Maybe` value containing a tuple of them.
@@ -648,10 +702,13 @@ class Maybe(Monad):
             return Maybe(has_value=False)
         return Maybe((self._val, *(other._val for other in others)))  # type: ignore
 
+
 @variant(Maybe)
 class just:
     """
     Constructs a `Just` value.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
     ```python
     j: Maybe[int] = just(42)
@@ -687,6 +744,8 @@ class nothing:
     Constructs a `Nothing` value.
     Notice that this is not a literal.
 
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+
     ```python
     n: Maybe[int] = nothing()
     n = nothing[int]()
@@ -702,7 +761,7 @@ class nothing:
 
     def __new__(cls):
         return Maybe(has_value=False)
-    
+
     @classmethod
     def __instancecheck__(cls, instance):
         return not instance._has_value
@@ -711,6 +770,8 @@ class nothing:
 class some:
     """
     Converts an `Optional[T]` to a `Maybe[T]` value.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
     ```python
     something: Maybe[int] = some(42)
@@ -728,7 +789,7 @@ class some:
         return cls
 
     def __new__(cls, val, /):
-        return Maybe.some(val)
+        return Maybe.make_some(val)
 
 
 __all__ = ["Maybe", "just", "nothing", "some"]

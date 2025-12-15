@@ -4,8 +4,9 @@ on:
   push:
     branches:
       - main
-    paths:
-      - 'doc/**'
+      - dev
+    tags:
+      - 'v*'
   workflow_dispatch:
 
 permissions:
@@ -17,6 +18,8 @@ jobs:
     steps:
       - name: Check out
         uses: actions/checkout@v4
+        with:
+          fetch-depth: ${{ github.event_name == 'workflow_dispatch' && 0 || 1 }}
 
       - name: Setup PDM
         uses: pdm-project/setup-pdm@v4
@@ -30,13 +33,24 @@ jobs:
         run: |
           pdm install -dG doc
 
-      - name: Build documentation
-        run: pdm run mkdocs build
+      - name: Configure Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
 
       - name: Deploy documentation
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./site
-          publish_branch: docs
-          cname: apfel.yixuan-wang.site
+        run: |
+          git fetch origin docs:docs || echo "docs branch does not exist yet"
+
+          if [[ $GITHUB_REF == refs/heads/main ]]; then
+            pdm run mike set-default --branch docs --allow-undefined main
+            pdm run mike deploy --branch docs --push --update-aliases main
+          elif [[ $GITHUB_REF == refs/heads/dev ]]; then
+            pdm run mike deploy --branch docs --push --update-aliases dev
+          elif [[ $GITHUB_REF == refs/tags/v* ]]; then
+            TAG=${GITHUB_REF#refs/tags/}
+            VERSION_CLEAN=${TAG#v}
+            MAJOR_MINOR=$(echo $VERSION_CLEAN | cut -d. -f1,2)
+            pdm run mike deploy --branch docs --push --update-aliases $MAJOR_MINOR latest
+          fi
+        

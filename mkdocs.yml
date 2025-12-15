@@ -39,6 +39,11 @@ theme:
 
 watch:
   - src/apfel
+  - doc
+
+extra:
+  version:
+    provider: mike
 
 extra_css:
   - stylesheet/extra.css

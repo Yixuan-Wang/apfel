@@ -78,7 +78,7 @@ Tip:
     Do not use them in type-checked code.
 
 Warning:
-    Wrapping callables other than functions with `FunctionObject` may lose attributes 
+    Wrapping callables other than functions with `FunctionObject` may lose attributes
     and methods of the original callable.
 
 Warning:
@@ -87,15 +87,13 @@ Warning:
 
 from collections.abc import Sequence as _Sequence, Mapping as _Mapping
 
-class FunctionObject:
-    #? This class cannot have docstring, as class level docstring will
-    #? conflict with object specific __doc__ used to wrap the original
-    #? function's docstring.
 
-    __slots__ = (
-        "__call__",
-        "__wrapped__", "__doc__", "__name__", "__qualname__"
-    )
+class FunctionObject:
+    # ? This class cannot have docstring, as class level docstring will
+    # ? conflict with object specific __doc__ used to wrap the original
+    # ? function's docstring.
+
+    __slots__ = ("__call__", "__wrapped__", "__doc__", "__name__", "__qualname__")
 
     def __init__(self, f):
         self.__doc__ = f.__doc__
@@ -118,7 +116,7 @@ class FunctionObject:
 
         Function application operator `|` for `FunctionObject`s.
 
-        `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](./#operator-at), but with a different precedence.
+        `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](#operator-at), but with a different precedence.
 
         Example:
             ```python
@@ -157,7 +155,7 @@ class FunctionObject:
             ```
         """
         return self.__call__(lhs)
-    
+
     def __matmul__(self, rhs):
         """\
         ```python
@@ -166,7 +164,7 @@ class FunctionObject:
 
         Function application operator `@` for `FunctionObject`s.
 
-        `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](./#operator-or), but with a different precedence.
+        `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](#operator-or), but with a different precedence.
 
         Example:
             ```python
@@ -179,7 +177,7 @@ class FunctionObject:
             ```
         """
         return self.__call__(rhs)
-            
+
     def __pow__(self, rhs):
         """\
         ```python
@@ -208,7 +206,7 @@ class FunctionObject:
             ```
         """
         return self.__call__(rhs)
-    
+
     def __mod__(self, rhs):
         """\
         ```python
@@ -241,7 +239,9 @@ class FunctionObject:
             return self.__call__(*rhs)
         elif isinstance(rhs, _Mapping):
             if ... in rhs:
-                return self.__call__(*rhs[...], **{k: v for k, v in rhs.items() if k is not ...})
+                return self.__call__(
+                    *rhs[...], **{k: v for k, v in rhs.items() if k is not ...}
+                )
             return self.__call__(**rhs)
         else:
             return self.__call__(rhs)
@@ -276,6 +276,7 @@ def fob(f, *fs):
     """
     return tuple(map(FunctionObject, [f, *fs])) if fs else FunctionObject(f)
 
+
 def reveal_fob(f):
     """\
     ```python
@@ -288,5 +289,7 @@ def reveal_fob(f):
         This function performs runtime check and raises `TypeError` if the input is not a `FunctionObject`.
     """
     if not isinstance(f, FunctionObject):
-        raise TypeError(f"`reveal_fob` must be called on a FunctionObject, not {type(f)}")
+        raise TypeError(
+            f"`reveal_fob` must be called on a FunctionObject, not {type(f)}"
+        )
     return f

@@ -52,7 +52,6 @@ class Functor(ABCDispatch):
         ...
 
 
-
 class Applicative(Functor, ABCDispatch):
     """\
     ```python
@@ -86,7 +85,6 @@ class Applicative(Functor, ABCDispatch):
             A new instance of the applicative with the value wrapped.
         """
         ...
-
 
     @abstractmethod
     def apply(self, f):
@@ -172,8 +170,9 @@ class Monad(Applicative, ABCDispatch):
         # ? apply f x = f >>= \g -> x >>= \y -> return (g y)
         # ? ```
 
-        return Monad.bind( # type: ignore
-            f, lambda g: Monad.bind(self, lambda y: Applicative.pure[type(self)](g(y))) # type: ignore
+        return Monad.bind(  # type: ignore
+            f,
+            lambda g: Monad.bind(self, lambda y: Applicative.pure[type(self)](g(y))),  # type: ignore
         )
 
     @override
@@ -184,5 +183,6 @@ class Monad(Applicative, ABCDispatch):
         # ? ```
 
         return Monad.bind(self, lambda a: Applicative.pure[type(self)](f(a)))  # type: ignore
+
 
 __all__ = ["Functor", "Applicative", "Monad"]

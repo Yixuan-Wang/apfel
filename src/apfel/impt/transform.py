@@ -49,6 +49,7 @@ class TransformPathFinder(_frozen_importlib_external.PathFinder):
     A subclass of [`importlib.machinery.PathFinder`](https://docs.python.org/3/library/importlib.html#importlib.machinery.PathFinder){ .ref .py }
     that injects [`TransformSourceFileLoader`][apfel.impt.transform.TransformSourceFileLoader] to the import process.
     """
+
     _hook_registry = {}
 
     @classmethod
@@ -79,7 +80,7 @@ def register_transform_hook(name, hook):
 
     Args:
         name (str): The name of the module or package to hook.
-        hook (Callable[[str], str]): The hook function that takes the original source code as input and returns the transformed source code. 
+        hook (Callable[[str], str]): The hook function that takes the original source code as input and returns the transformed source code.
     """
     if name not in TransformPathFinder._hook_registry:
         TransformPathFinder._hook_registry[name] = []

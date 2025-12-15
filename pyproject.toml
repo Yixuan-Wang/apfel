@@ -1,6 +1,6 @@
 [project]
 name = "apfel"
-version = "0.1.0"
+version = "0.2.0"
 description = "A personal functional extension library."
 authors = [
     {name = "Yixuan-Wang", email = "tom-yx_wang@outlook.com"},
@@ -8,7 +8,7 @@ authors = [
 dependencies = [
     "typing-extensions>=4.12.0",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
 
@@ -16,23 +16,24 @@ license = {text = "MIT"}
 requires = ["hatchling"]
 build-backend = "hatchling.build"
 
-[project.optional-dependencies]
-
-
 [dependency-groups]
 doc = [
-    "mkdocs>=1.6.0; python_version >= '3.11'",
-    "mkdocstrings[python]>=0.25.1; python_version >= '3.11'",
-    "mkdocs-material>=9.5.24; python_version >= '3.11'",
-    "mkdocs-awesome-nav>=3.0.0; python_version >= '3.11'",
+    "mkdocs>=1.6.0",
+    "mkdocstrings[python]>=0.25.1",
+    "mkdocs-material>=9.5.24",
+    "mkdocs-awesome-nav>=3.0.0",
+    "mike>=2.1.0",
 ]
-pilot = [
-    "ipykernel>=6.29.4; python_version >= '3.11'",
-    "ipython>=8.24.0; python_version >= '3.11'",
-    "jupyter-server>=2.14.0; python_version >= '3.11'",
-    "ipdb>=0.13.13; python_version >= '3.11'",
+test = [
+    "pytest>=8.3.4",
+    "pytest-cov>=7.0.0",
 ]
-test = ["pytest>=8.3.4"]
+dev = [
+    "tox-pdm>=0.7.2",
+    "ipython>=9",
+    "ipdb",
+    "marimo",
+]
 
 [tool.pdm]
 distribution = true
@@ -44,3 +45,16 @@ doc = "mkdocs serve"
 only-include = ["pdm.lock", "src", "test"]
 
 [tool.ruff]
+[tool.ruff.lint]
+extend-select = ["ISC", "COM818"]
+ignore = ["E741", "F821"]
+flake8-implicit-str-concat.allow-multiline = false
+
+[tool.tox]
+requires = ["tox>=4"]
+env_list = ["3.14", "3.13", "3.12", "3.11"]
+
+[tool.tox.env_run_base]
+groups = ["dev", "test"]
+description = "Run test under {base_python}"
+commands = [["pytest", "test/"]]

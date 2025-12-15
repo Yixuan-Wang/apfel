@@ -16,7 +16,7 @@ It partially resembles the [`extension`](https://kotlinlang.org/docs/extensions.
 - It does not enable [`virtual`](https://cppreference.com/w/cpp/language/virtual){ .ref .cpp }-like or [`dyn`](https://doc.rust-lang.org/book/ch18-02-trait-objects.html){ .ref .rs }-like dispatch.
 An [`abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py } in an abstract class will not forward the call to the concrete implementation based on the real type.
 i.e., there is no facilities for implementation selection based on concrete types.
-- Although [`ABCMeta.register`](https://docs.python.org/3/library/abc.html#abc.ABCMeta.register){ .ref .py } can be used to register non-child classes, it cannot inject implementations to the registered classes. 
+- Although [`ABCMeta.register`](https://docs.python.org/3/library/abc.html#abc.ABCMeta.register){ .ref .py } can be used to register non-child classes, it cannot inject implementations to the registered classes.
 Some classes do not allow monkey-patching and the implementations must be stored elsewhere, registering them to the ABC is logical error, as the implementations are not part of the concrete class.
 
 Using [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] defined in this module,
@@ -304,7 +304,7 @@ class DispatchRegistry(IDispatchRegistry):
             and isinstance(receiver, self.enclosing_class)
             and (impl := getattr(ty_receiver, self.function.__name__, None)) is not None
         ):
-            return impl 
+            return impl
 
         for cls in ty_receiver.__mro__:
             if cls in self.registry:
@@ -446,7 +446,7 @@ def dispatch(func):
         @show.impl_for(str)
         def _(x: str):
             return f"str: {x}"
-        
+
         show(1)       # "int: 1"
         show("hello") # "str: hello"
         ```
@@ -525,7 +525,7 @@ def impl(definition):
                 setattr(impl, name, func)
         except AttributeError:
             pass
-        
+
         if isinstance(definition, ABCMeta):
             definition.register(impl_for)
 
@@ -545,8 +545,8 @@ def add_impl(definition, impl, *impl_for_args, **impl_for_kwargs):
     Args:
         definition (type): The dispatchable class.
         impl (Mapping[str, Callable]): A mapping from method names to implementations.
-        *impl_for_args: Arguments that the dispatch mechanism will use for selecting the implementation.
-        **impl_for_kwargs: Keyword arguments that the dispatch mechanism will use for selecting the implementation.
+        *impl_for_args (Any): Arguments that the dispatch mechanism will use for selecting the implementation.
+        **impl_for_kwargs (Any): Keyword arguments that the dispatch mechanism will use for selecting the implementation.
 
     Example:
         ```python
@@ -560,4 +560,6 @@ def add_impl(definition, impl, *impl_for_args, **impl_for_kwargs):
         ```
     """
     for name, func in impl.items():
-        getattr(definition, name).__dispatch__.add_impl(func, *impl_for_args, **impl_for_kwargs)
+        getattr(definition, name).__dispatch__.add_impl(
+            func, *impl_for_args, **impl_for_kwargs
+        )

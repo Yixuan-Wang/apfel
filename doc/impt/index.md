@@ -4,4 +4,4 @@
 
 ## Low-level
 
-- [`Transform`](transform): Transform source files during import.
+- [`Transform`](transform.md): Transform source files during import.

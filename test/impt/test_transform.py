@@ -8,7 +8,7 @@ def test_transform():
 
     def hook(source: str) -> str:
         return source + "\nHI = 'Hello, World!'\n"
-    
+
     register_transform_hook("typing_extensions", hook)
     import typing_extensions
 
