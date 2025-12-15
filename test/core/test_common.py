@@ -3,10 +3,7 @@ import sys
 import apfel.core.common as common
 import pytest
 
-if sys.version_info >= (3, 11):
-    from typing_extensions import reveal_type
-else:
-    from typing_extensions import reveal_type
+from typing_extensions import reveal_type
 
 
 def test_not_none():

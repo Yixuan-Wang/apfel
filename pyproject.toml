@@ -8,7 +8,7 @@ authors = [
 dependencies = [
     "typing-extensions>=4.12.0",
 ]
-requires-python = ">=3.10"
+requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
 
@@ -18,21 +18,21 @@ build-backend = "hatchling.build"
 
 [dependency-groups]
 doc = [
-    "mkdocs>=1.6.0; python_version >= '3.11'",
-    "mkdocstrings[python]>=0.25.1; python_version >= '3.11'",
-    "mkdocs-material>=9.5.24; python_version >= '3.11'",
-    "mkdocs-awesome-nav>=3.0.0; python_version >= '3.11'",
-    "mike>=2.1.0; python_version >= '3.11'",
+    "mkdocs>=1.6.0",
+    "mkdocstrings[python]>=0.25.1",
+    "mkdocs-material>=9.5.24",
+    "mkdocs-awesome-nav>=3.0.0",
+    "mike>=2.1.0",
 ]
 test = [
     "pytest>=8.3.4",
     "pytest-cov>=7.0.0",
 ]
 dev = [
-    "tox-pdm>=0.7.2; python_version >= '3.11'",
-    "ipython>=9; python_version >= '3.11'",
-    "ipdb; python_version >= '3.11'",
-    "marimo; python_version >= '3.11'",
+    "tox-pdm>=0.7.2",
+    "ipython>=9",
+    "ipdb",
+    "marimo",
 ]
 
 [tool.pdm]
@@ -52,7 +52,7 @@ flake8-implicit-str-concat.allow-multiline = false
 
 [tool.tox]
 requires = ["tox>=4"]
-env_list = ["3.14", "3.13", "3.12", "3.11", "3.10"]
+env_list = ["3.14", "3.13", "3.12", "3.11"]
 
 [tool.tox.env_run_base]
 groups = ["dev", "test"]

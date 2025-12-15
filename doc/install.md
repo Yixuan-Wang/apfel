@@ -9,7 +9,7 @@ Warning:
 
 ## Dependencies
 
-Currently, `apfel` requires Python 3.10 or later.
+Currently, `apfel` requires Python 3.11 or later.
 Development environment require at least Python 3.11.
 
 `apfel` depends on the following packages:
