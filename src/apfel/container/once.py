@@ -1,6 +1,8 @@
 """
 Primitives for containers that can be written only once. Inspired by [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs}.
 
+The [`Once`][apfel.container.once.Once] and [`Lazy`][apfel.container.once.Lazy] classes, are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+
 # Implementation
 
 [`Once`][apfel.container.once.Once] takes reference from [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and the current status is as follows:
@@ -28,6 +30,8 @@ class Once:
     """
     A container that can be written only once.
     See [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} for more information.
+
+    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
     """
 
     __slots__ = ("_value", "_has_value")
@@ -235,6 +239,8 @@ class Lazy:
     A container that can be lazily initialized only once.
     The stored function will be actually called only on the first retrieval, and the result will be cached for consequent calls.
     See [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs} for more information.
+
+    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
     Example:
         ```python

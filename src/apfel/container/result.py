@@ -10,6 +10,9 @@ A `Result` has two possible states, `Ok` or `Err`.
 
 This module also provides a [`caught`][apfel.container.result.caught] decorator, which wraps a partial function to a total function returning a `Result`.
 
+The [`Result`][apfel.container.result.Result] class, and the [`ok`][apfel.container.result.ok], [`err`][apfel.container.result.err], and [`caught`][apfel.container.result.caught] functions
+  are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+
 ## Rationale
 
 Python [`raise`](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement){ .ref .py }
@@ -82,6 +85,8 @@ if TYPE_CHECKING:
 class Result(Monad):
     """A container that holds either a success or a failure.
     See [module-level documentation](result.md#result) for more details.
+
+    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
     """
 
     __slots__ = ("_val", "_is_ok")
@@ -396,6 +401,8 @@ class ok:
     """
     Construct an `Ok` value.
 
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+
     ```python
     some_ok = ok(42)
 
@@ -428,6 +435,8 @@ class err:
     """
     Construct an `Err` value.
 
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+
     ```python
     some_err = err("Something went wrong")
     match some_err:
@@ -457,6 +466,8 @@ class err:
 class caught:
     """
     A decorator that wraps a partial function to a total function returning a `Result`.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
     Usage:
         ```python

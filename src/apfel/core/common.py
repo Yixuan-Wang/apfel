@@ -9,6 +9,9 @@ def identity(x):
     """
     Returns the sole argument passed to it doing nothing.
 
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
+      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+
     Args:
         x (T): Any object.
 
@@ -23,6 +26,9 @@ def imperative(*exprs):
     Returns the last expression passed into the function.
     If no expression are passed, returns `None`, per Python's convention.
 
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
+      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+
     Args:
         *exprs (*tuple[*Ts, R]): Any number of expressions.
 
@@ -35,6 +41,8 @@ def imperative(*exprs):
 def not_none(x):
     """
     Type narrowing: assert the value isn't None.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
     Args:
         x (T): Any value that type-checked to be `None`,
@@ -65,6 +73,9 @@ def todo(message=None):
     Marks an unimplemented location that **might** be implemented in the future.
     See [`todo!`](https://doc.rust-lang.org/std/macro.todo.html){ .ref .rs } for usage.
 
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
+      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+
     Args:
         message (str | None): The extra message to be displayed.
 
@@ -78,6 +89,9 @@ def unimplemented(message=None):
     """
     Marks an unimplemented location that **might not** be implemented in the future.
     See [`unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html){ .ref .rs } for usage.
+
+    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
+        and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.
