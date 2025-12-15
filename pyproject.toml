@@ -39,7 +39,7 @@ dev = [
 distribution = true
 
 [tool.pdm.scripts]
-doc = "mkdocs serve"
+doc = "mkdocs serve --livereload"
 
 [tool.hatch.build.targets.sdist]
 only-include = ["pdm.lock", "src", "test"]
