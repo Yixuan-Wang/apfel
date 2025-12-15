@@ -39,6 +39,7 @@ theme:
 
 watch:
   - src/apfel
+  - doc
 
 extra:
   version:
