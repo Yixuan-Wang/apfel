@@ -29,10 +29,10 @@ test = [
     "pytest-cov>=7.0.0",
 ]
 dev = [
-    "tox-pdm>=0.7.2",
-    "ipython>=9",
-    "ipdb",
-    "marimo",
+    "tox-pdm>=0.7.2; python_version >= '3.11'",
+    "ipython>=9; python_version >= '3.11'",
+    "ipdb; python_version >= '3.11'",
+    "marimo; python_version >= '3.11'",
 ]
 
 [tool.pdm]
