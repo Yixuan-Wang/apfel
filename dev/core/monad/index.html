@@ -42,7 +42,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wdth,wght@0,94,100..700;1,94,100..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
@@ -1369,7 +1369,7 @@ structured ways to compose and manipulate computations on a single effectful con
 <h2 id="apfel.core.monad--rationale">Rationale<a class="headerlink" href="#apfel.core.monad--rationale" title="Permanent link">#</a></h2>
 <p>Monadic abstractions like <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Functor.html"><code>Functor</code></a>, <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Control-Applicative.html"><code>Applicative</code></a>, and <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Control-Monad.html"><code>Monad</code></a> are popularized by Haskell.
 Although Python has weak support for functional programming, we include these abstractions to provide a uniform interface for such calculations.</p>
-<p>Under the hood, these abstractions use dynamic single dispatch provided in <a href="/core/dispatch"><code>apfel.core.dispatch</code></a>, which
+<p>Under the hood, these abstractions use dynamic single dispatch provided in <a href="../dispatch/"><code>apfel.core.dispatch</code></a>, which
 allows us to define monadic helper functions for standard built-in types.
 This module provides default implementations for <code>list</code>, <code>tuple</code>, <code>set</code>, and <code>function</code> as <code>Functor</code>, <code>Applicative</code>, and <code>Monad</code>, <code>dict</code> as <code>Functor</code>.</p>
 <p>Note that we losen the constraints of such abstractions, as writing pure functional code is not a goal of this library.</p>

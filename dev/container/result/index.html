@@ -42,7 +42,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wdth,wght@0,94,100..700;1,94,100..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
@@ -1900,6 +1900,8 @@
 <code>Ok</code> means a successful value is present,
   and <code>Err</code> means a failure value is present.</p>
 <p>This module also provides a <a class="autorefs autorefs-internal" href="#apfel.container.result.caught"><code>caught</code></a> decorator, which wraps a partial function to a total function returning a <code>Result</code>.</p>
+<p>The <a class="autorefs autorefs-internal" href="#apfel.container.result.Result"><code>Result</code></a> class, and the <a class="autorefs autorefs-internal" href="#apfel.container.result.ok"><code>ok</code></a>, <a class="autorefs autorefs-internal" href="#apfel.container.result.err"><code>err</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.container.result.caught"><code>caught</code></a> functions
+  are exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <h3 id="apfel.container.result--rationale">Rationale<a class="headerlink" href="#apfel.container.result--rationale" title="Permanent link">#</a></h3>
 <p>Python <a class="ref py" href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement"><code>raise</code></a>
   is easily missed, since the gradual typing system does not support checked exceptions.
@@ -2105,6 +2107,7 @@ and the comparison table is provided below.</p>
 
         <p>A container that holds either a success or a failure.
 See <a href="./#result">module-level documentation</a> for more details.</p>
+<p>This class is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 
 
 
@@ -2924,6 +2927,7 @@ this method does not require the function to return <code>None</code>.</p>
 
 
         <p>Construct an <code>Ok</code> value.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_ok</span> <span class="o">=</span> <span class="n">ok</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">match</span> <span class="n">some_ok</span><span class="p">:</span>
@@ -2978,6 +2982,7 @@ this method does not require the function to return <code>None</code>.</p>
 
 
         <p>Construct an <code>Err</code> value.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_err</span> <span class="o">=</span> <span class="n">err</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">)</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">match</span> <span class="n">some_err</span><span class="p">:</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">case</span> <span class="n">ok</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
@@ -3031,6 +3036,7 @@ this method does not require the function to return <code>None</code>.</p>
 
 
         <p>A decorator that wraps a partial function to a total function returning a <code>Result</code>.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 
 
 <details class="usage" open>

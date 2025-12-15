@@ -42,7 +42,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wdth,wght@0,94,100..700;1,94,100..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     
       <link rel="stylesheet" href="../assets/_mkdocstrings.css">
@@ -382,10 +382,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#global-namespace" class="md-nav__link">
+  <a href="#package-namespace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Global Namespace
+        Package Namespace
       
     </span>
   </a>
@@ -393,10 +393,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#preflight" class="md-nav__link">
+  <a href="#builtins-namespace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Preflight
+        Builtins Namespace
       
     </span>
   </a>
@@ -411,6 +411,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Catalog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1001,10 +1029,10 @@
     <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#global-namespace" class="md-nav__link">
+  <a href="#package-namespace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Global Namespace
+        Package Namespace
       
     </span>
   </a>
@@ -1012,10 +1040,10 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#preflight" class="md-nav__link">
+  <a href="#builtins-namespace" class="md-nav__link">
     <span class="md-ellipsis">
       
-        Preflight
+        Builtins Namespace
       
     </span>
   </a>
@@ -1030,6 +1058,34 @@
       
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Catalog">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#functions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Functions
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#classes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Classes
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
       
@@ -1063,15 +1119,15 @@
 
 <h1 id="prelude">Prelude<a class="headerlink" href="#prelude" title="Permanent link">#</a></h1>
 <p><code>apfel</code> comes with a set of predefined namespace tricks to help you use the library more effectively.</p>
-<h2 id="global-namespace">Global Namespace<a class="headerlink" href="#global-namespace" title="Permanent link">#</a></h2>
+<h2 id="package-namespace">Package Namespace<a class="headerlink" href="#package-namespace" title="Permanent link">#</a></h2>
 <p>Shown as <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> in the documentation.</p>
-<p>Some common utilities are re-exported to the global <code>apfel</code> namespace.
+<p>Some common utilities are re-exported to the package-top <code>apfel</code> namespace.
 These can be directly imported from the <code>apfel</code> package.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>The global namespace is properly typed, so it's best to explicitly use these instead of relying on <a href="#preflight">preflights</a>.</p>
+<p>The package namespace is properly typed, so it's best to explicitly use these instead of relying on <a href="#builtins-namespace">builtins namespace</a>.</p>
 </div>
-<h2 id="preflight">Preflight<a class="headerlink" href="#preflight" title="Permanent link">#</a></h2>
+<h2 id="builtins-namespace">Builtins Namespace<a class="headerlink" href="#builtins-namespace" title="Permanent link">#</a></h2>
 <p>Shown as <span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 23a2 2 0 0 1-2-2v-2h6v2a2 2 0 0 1-2 2zm1-22c.71 0 1.39.09 2.05.26C15.22 2.83 16 5.71 16 9c0 2.28-.38 4.37-1 7a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2c-.62-2.63-1-4.72-1-7 0-3.29.78-6.17 1.95-7.74C10.61 1.09 11.29 1 12 1m8 7c0 3.18-1.85 7.92-4.54 9.21C16.41 15.39 17 11.83 17 9s-.59-5.39-1.54-7.21C18.15 3.08 20 4.82 20 8M4 8c0-3.18 1.85-4.92 4.54-6.21C7.59 3.61 7 6.17 7 9s.59 6.39 1.54 8.21C5.85 15.92 4 11.18 4 8"/></svg></span> in the documentation.</p>
 <p>Some extremely common utilities are injected to the <code>builtins</code> namespace as module-level side effects.
 These can be used directly in the code as soon as the <code>apfel</code> package is imported.</p>
@@ -1081,13 +1137,14 @@ These can be used directly in the code as soon as the <code>apfel</code> package
 </div>
 <p>If you are using Pyright, you can follow the <a href="https://github.com/microsoft/pyright/blob/main/docs/builtins.md">builtins extension</a> documentation to enable autocompletion for these functions.</p>
 <h2 id="catalog">Catalog<a class="headerlink" href="#catalog" title="Permanent link">#</a></h2>
+<h3 id="functions">Functions<a class="headerlink" href="#functions" title="Permanent link">#</a></h3>
 <table>
 <thead>
 <tr>
 <th style="text-align: left;">Module</th>
-<th style="text-align: left;">API</th>
-<th style="text-align: center;">Global?</th>
-<th style="text-align: center;">Preflight?</th>
+<th style="text-align: left;">Function</th>
+<th style="text-align: center;">Package?</th>
+<th style="text-align: center;">Builtins?</th>
 </tr>
 </thead>
 <tbody>
@@ -1120,6 +1177,79 @@ These can be used directly in the code as soon as the <code>apfel</code> package
 <td style="text-align: left;"><a class="autorefs autorefs-internal" title="unimplemented(message=None)" href="../core/common/#apfel.core.common.unimplemented"><code>unimplemented</code></a></td>
 <td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
 <td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 23a2 2 0 0 1-2-2v-2h6v2a2 2 0 0 1-2 2zm1-22c.71 0 1.39.09 2.05.26C15.22 2.83 16 5.71 16 9c0 2.28-.38 4.37-1 7a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2c-.62-2.63-1-4.72-1-7 0-3.29.78-6.17 1.95-7.74C10.61 1.09 11.29 1 12 1m8 7c0 3.18-1.85 7.92-4.54 9.21C16.41 15.39 17 11.83 17 9s-.59-5.39-1.54-7.21C18.15 3.08 20 4.82 20 8M4 8c0-3.18 1.85-4.92 4.54-6.21C7.59 3.61 7 6.17 7 9s.59 6.39 1.54 8.21C5.85 15.92 4 11.18 4 8"/></svg></span></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.maybe</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/maybe/#apfel.container.maybe.just"><code>just</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.maybe</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/maybe/#apfel.container.maybe.nothing"><code>nothing</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.maybe</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/maybe/#apfel.container.maybe.some"><code>some</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.result</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/result/#apfel.container.result.ok"><code>ok</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.result</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/result/#apfel.container.result.err"><code>err</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.result</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/result/#apfel.container.result.caught"><code>caught</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+</tbody>
+</table>
+<h3 id="classes">Classes<a class="headerlink" href="#classes" title="Permanent link">#</a></h3>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Module</th>
+<th style="text-align: left;">Class</th>
+<th style="text-align: center;">Package?</th>
+<th style="text-align: center;">Builtins?</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>container.maybe</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/maybe/#apfel.container.maybe.Maybe"><code>Maybe</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.result</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/result/#apfel.container.result.Result"><code>Result</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.once</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/once/#apfel.container.once.Once"><code>Once</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>container.once</code></td>
+<td style="text-align: left;"><a class="autorefs autorefs-internal" href="../container/once/#apfel.container.once.Lazy"><code>Lazy</code></a></td>
+<td style="text-align: center;"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td style="text-align: center;"></td>
 </tr>
 </tbody>
 </table>

@@ -42,7 +42,7 @@
     
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:ital,wdth,wght@0,94,100..700;1,94,100..700&family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&display=swap" rel="stylesheet">
 
     
       <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
@@ -2030,6 +2030,8 @@
 <p>A <code>Maybe</code> has two possible states, <code>Just</code> or <code>Nothing</code>. <code>Just</code> means a value is present, and <code>Nothing</code> means the value is absent.
 The reason that we don't use <code>Some</code>-<code>None</code> or <code>Nil</code> nomencalture is to avoid <a class="autorefs autorefs-internal" title="Rationale" href="#apfel.container.maybe--rationale">confusion with the built-in <code>None</code></a>.</p>
 <p>This module also provides a <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> constructor, which converts an <code>Optional[T]</code> value to a <code>Maybe[T]</code> value.</p>
+<p>The <a class="autorefs autorefs-internal" href="#apfel.container.maybe.Maybe"><code>Maybe</code></a> class, and the <a class="autorefs autorefs-internal" href="#apfel.container.maybe.just"><code>just</code></a>, <a class="autorefs autorefs-internal" href="#apfel.container.maybe.nothing"><code>nothing</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> functions
+  are exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <h2 id="apfel.container.maybe--rationale">Rationale<a class="headerlink" href="#apfel.container.maybe--rationale" title="Permanent link">#</a></h2>
 <p>Python has a built-in <a class="ref py" href="https://docs.python.org/3/reference/datamodel.html#none"><code>None</code></a> object that represents the absence of a value,
 and a corresponding type hint <a class="ref py" href="https://docs.python.org/3/library/html#Optional"><code>Optional[T]</code></a>.
@@ -2235,7 +2237,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>or</code></td>
-<td>[<span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>or_</code>][apfel.container.maybe.Maybe.__or__]</td>
+<td><a class="autorefs autorefs-internal" title="or_(other)" href="#apfel.container.maybe.Maybe.or_"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>or_</code></a></td>
 </tr>
 <tr>
 <td><code>or_else</code></td>
@@ -2329,6 +2331,7 @@ and the comparison table is provided below.</p>
 
 
         <p>Constructs a <code>Just</code> value.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2385,6 +2388,7 @@ If you want to map <code>None</code> to <code>Nothing</code>, use <a class="auto
 
         <p>Constructs a <code>Nothing</code> value.
 Notice that this is not a literal.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">n</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">()</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
@@ -2434,6 +2438,7 @@ Notice that this is not a literal.</p>
 
 
         <p>Converts an <code>Optional[T]</code> to a <code>Maybe[T]</code> value.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">something</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">some</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">something</span><span class="o">.</span><span class="n">is_just</span><span class="p">()</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">something</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
@@ -2486,6 +2491,7 @@ Notice that this is not a literal.</p>
 
         <p>A container that optionally holds a value.
 See <a href="./#maybe">module-level documentation</a> for more information.</p>
+<p>This class is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
 
 
 
