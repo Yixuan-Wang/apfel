@@ -327,3 +327,37 @@ def test_caught():
     assert isinstance(result_union(3.0).unwrap_err(), TypeError)
     with pytest.raises(RuntimeError):
         result_union(1.0)
+
+    iterator = iter([0, 1, 2])
+    next_ = caught(next, StopIteration)
+    assert next_(iterator).unwrap() == 0
+    assert next_(iterator).unwrap() == 1
+    assert next_(iterator).unwrap() == 2
+    assert isinstance(next_(iterator).unwrap_err(), StopIteration)
+
+    def spurious_next(it):
+        value = next(it)
+        if value == 2:
+            raise ValueError("Spurious error on value 2")
+        return value
+    
+    iterator = iter([1, 2])
+    next_ = caught(spurious_next, StopIteration)
+    assert next_(iterator).unwrap() == 1
+    with pytest.raises(ValueError):
+        next_(iterator).unwrap()
+    assert isinstance(next_(iterator).unwrap_err(), StopIteration)
+
+    iterator = iter([0, 1, 2])
+    next_ = caught[StopIteration](spurious_next)
+    assert next_(iterator).unwrap() == 0
+    assert next_(iterator).unwrap() == 1
+    assert isinstance(next_(iterator).unwrap_err(), ValueError)
+    assert isinstance(next_(iterator).unwrap_err(), StopIteration)
+
+    iterator = iter([0, 1, 2])
+    next_ = caught(spurious_next)
+    assert next_(iterator).unwrap() == 0
+    assert next_(iterator).unwrap() == 1
+    assert isinstance(next_(iterator).unwrap_err(), ValueError)
+    assert isinstance(next_(iterator).unwrap_err(), StopIteration)

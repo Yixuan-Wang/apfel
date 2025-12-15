@@ -467,11 +467,19 @@ class caught:
     """
     A decorator that wraps a partial function to a total function returning a `Result`.
 
+    It supports multiple usages:
+
+    - Use as a decorator without arguments (`@caught`) to catch all exceptions.
+    - Use as a decorator with specific exception types (either type union `@caught(ExceptionA | ExceptionB)` or args `@caught(ExceptionA, ExceptionB)`) to catch only those exceptions.
+    - Use as a higher-order function by passing the target function (`caught(func)`) to catch all exceptions.
+    - Use as a higher-order function with specific exception types as args (`caught(func, ExceptionA, ExceptionB)`) to catch only those exceptions.
+    - Use generic syntax to provide type hints (`@caught[ExceptionA]`, `@caught[ExceptionA]()`, `caught[ExceptionA]()`), *without affecting runtime behavior*.
+
     This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
     Usage:
         ```python
-        @caught[ZeroDivisionError]
+        @caught(ZeroDivisionError)
         def divide(a: float, b: float) -> float:
             return a / b
 
@@ -503,6 +511,9 @@ class caught:
 
             if isinstance(first, types.UnionType):
                 first = first.__args__
+            elif not isinstance(first, type) or not issubclass(first, BaseException):
+                exception = Exception if not exceptions else exceptions
+                return cls.__wrap_func(first, exception)
 
             if exceptions:
                 first = tuple([first, *exceptions])
