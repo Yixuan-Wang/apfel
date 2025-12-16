@@ -79,4 +79,11 @@ class caught[E = Exception, T = Any]:
         *exceptions: type[Es],
     ) -> Callable[[Callable[P, U]], Callable[P, Result[U, E0 | Es]]]: ...
     @overload
+    def __new__[U, Es, **P](
+        cls,
+        func: Callable[P, U],
+        /,
+        *exceptions: type[Es],
+    ) -> Callable[P, Result[U, Es]]: ...
+    @overload
     def __new__[U, **P](cls, func: Callable[P, U], /) -> Callable[P, Result[U, E]]: ...
