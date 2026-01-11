@@ -11,6 +11,7 @@ dependencies = [
 requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
+classifiers = ["Private :: Do Not Upload"]
 
 [build-system]
 requires = ["hatchling"]
@@ -29,20 +30,14 @@ test = [
     "pytest-cov>=7.0.0",
 ]
 dev = [
-    "tox-pdm>=0.7.2",
+    "tox-uv",
     "ipython>=9",
     "ipdb",
     "marimo",
 ]
 
-[tool.pdm]
-distribution = true
-
-[tool.pdm.scripts]
-doc = "mkdocs serve --livereload"
-
 [tool.hatch.build.targets.sdist]
-only-include = ["pdm.lock", "src", "test"]
+only-include = ["uv.lock", "src", "test"]
 
 [tool.ruff]
 [tool.ruff.lint]
@@ -55,6 +50,7 @@ requires = ["tox>=4"]
 env_list = ["3.14", "3.13", "3.12", "3.11"]
 
 [tool.tox.env_run_base]
-groups = ["dev", "test"]
+dependency_groups = ["test"]
 description = "Run test under {base_python}"
 commands = [["pytest", "test/"]]
+runner = "uv-venv-lock-runner"
