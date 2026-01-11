@@ -9,10 +9,10 @@ class Variant(type):
         return isinstance(instance, cls.__union__) and cls.__instancecheck__(instance)
 
 
-def variant(union):
+def variant(ty, /):
     def decorator(cls):
         cls = Variant(cls.__name__, cls.__bases__, dict(cls.__dict__))
-        cls.__union__ = union
+        cls.__union__ = ty
         return cls
 
     return decorator

@@ -36,7 +36,7 @@ Warning:
     The `@abstractmethod` decorator must be placed after the `@classmethod` or `@staticmethod` decorator.
 
 ```python
-class Trait(ABCDispatch):
+class Interface(ABCDispatch):
     @abstractmethod
     def method(self, f): ...
 
@@ -49,14 +49,19 @@ class Trait(ABCDispatch):
     def static_method(f): ...
 ```
 
-Then, we can implement the "trait" for a class by using the [`@impl`][apfel.core.dispatch.impl] decorator.
+Then, we can implement the "interface" for a class by using the [`@impl`][apfel.core.dispatch.impl] decorator.
 The implementor class is passed as the first argument to the decorator.
-The implementation is written in the `class` syntax, with each trait method implemented as a method of the class.
-The class name doesn't matter, but it should subclass the trait class.
+The implementation is written in the `class` syntax, with each interface method implemented as a method of the class.
+The class name doesn't matter, but it should subclass the implementor class.
+This syntax provides you the ability to reference concrete attributes and methods defined on the implementor class.
+
+!!! Warning
+    Note that some built-in classes are not allowed to be subclassed in Python.
+    You may need to use the [`add_impl`][apfel.core.dispatch.add_impl] function to add implementations imperatively in such cases.
 
 ```python
-@impl(Class)
-class _(Trait):
+@impl(Interface)
+class _(Implementor):
     def method(self, f): \"""Concrete implementation goes here\"""
 
     @classmethod
@@ -66,22 +71,22 @@ class _(Trait):
     def static_method(f): \"""Concrete implementation goes here\"""
 ```
 
-In this case, `Class.method` does not exist during runtime so you may not call it, and calling `.method` on an instance of `Class` will also fail.
-But you can call `Trait.method` on an instance of `Class` and it will dispatch to the concrete implementation defined in the `@impl` construct.
+In this case, `Implementor.method` does not exist during runtime so you may not call it, and calling `.method` on an instance of `Implementor` will also fail.
+But you can call `Interface.method` on an instance of `Implementor` and it will dispatch to the concrete implementation defined in the `@impl` construct.
 
 ```python
-c = Class()
-Trait.method(c, f)  # Calls the implementation within the @impl
+c = Implementor()
+Interface.method(c, f)  # Calls the implementation within the @impl
 ```
 
-If you have control to the source code, you can add `Trait` to the base classes of `Class`,
-so `Class.method(instance)` and `instance.method()` will work as expected, `Trait.method(instance, f)` shall also work.
+If you have control to the source code, you can add `Interface` to the base classes of `Implementor`,
+so `Implementor.method(instance)` and `instance.method()` will work as expected, `Interface.method(instance, f)` shall also work.
 
-Class methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.
+Implementor methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.
 
 ```python
-Trait.class_method[Class](f)
-Trait.static_method[Class](f)
+Interface.class_method[Implementor](f)
+Interface.static_method[Implementor](f)
 ```
 
 It's also possible to define a dispatchable function using the [`@dispatch`][apfel.core.dispatch.dispatch] decorator.
@@ -108,7 +113,7 @@ from __future__ import annotations
 from abc import ABCMeta
 from collections.abc import Callable, Sequence
 from functools import update_wrapper, WRAPPER_ASSIGNMENTS
-from typing import Protocol
+from typing import Protocol, ClassVar
 from types import FunctionType, MethodType
 
 from apfel import unimplemented
@@ -150,8 +155,7 @@ class IABCDispatch(Protocol):
     A protocol for ABCs that supports dispatching regardless of dispatch flavor.
     """
 
-    @property
-    def __dispatch_methods__(self): ...
+    __dispatch_methods__: ClassVar[set[str]]
 
 
 class ABCDispatch(metaclass=ABCDispatchMeta):
@@ -425,7 +429,7 @@ class DispatchRegistryForStaticMethod(DispatchRegistryForClassMethod):
         return super().add_impl(func, *args, **kwargs)
 
 
-def dispatch(func):
+def dispatch(func, /):
     """
     A decorator for creating a single-dispatchable function.
     It will add an `impl_for` method to the function, which can be used to register implementations.
@@ -457,6 +461,8 @@ def dispatch(func):
     setattr(func, "__dispatch__", dispatch)
 
     def impl_for(cls):
+        # ? Here the wrapper function doesn't need to use `functools.wraps`
+        # ?  because the original function is not being replaced.
         def wrapper(impl):
             dispatch.add_impl(impl, cls)
             return impl
@@ -468,17 +474,20 @@ def dispatch(func):
     return func
 
 
-def impl(definition):
+def impl(interface, /):
     """
     Decorator for registering an implementation using the `class` syntax.
 
     See the [usage section][apfel.core.dispatch--usage] for more information.
 
+    Args:
+        interface (IABCDispatch): The dispatchable interface.
+
     Example:
-        Here `Class` is a concrete class and `Trait` is an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
+        Here `Implementor` is a concrete class and `Interface` is an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
         ```python
-        @impl(Class)
-        class _(Trait):
+        @impl(Interface)
+        class _(Implementor):
             def method(self, f): \"""Concrete implementation goes here\"""
 
             @classmethod
@@ -489,11 +498,11 @@ def impl(definition):
         ```
     """
 
-    is_class = isinstance(definition, type)
+    is_class = isinstance(interface, type)
     if not is_class:
-        raise TypeError(f"{definition} of type {type(definition)} cannot dispatch")
+        raise TypeError(f"{interface} of type {type(interface)} cannot dispatch")
 
-    dispatchable_methods = getattr(definition, "__dispatch_methods__", set())
+    dispatchable_methods = getattr(interface, "__dispatch_methods__", set())
 
     def decorator(impl):
         if not isinstance(impl, type):
@@ -512,10 +521,10 @@ def impl(definition):
 
             if name not in dispatchable_methods:
                 raise ValueError(
-                    f"{name} of {definition.__name__} does not support dispatching"
+                    f"{name} of {interface.__name__} does not support dispatching"
                 )
 
-            getattr(definition, name).__dispatch__.add_impl(func, impl_for)
+            getattr(interface, name).__dispatch__.add_impl(func, impl_for)
 
         try:
             for name, func in vars(impl).items():
@@ -526,40 +535,40 @@ def impl(definition):
         except AttributeError:
             pass
 
-        if isinstance(definition, ABCMeta):
-            definition.register(impl_for)
+        if isinstance(interface, ABCMeta):
+            interface.register(impl_for)
 
         return impl
 
     return decorator
 
 
-def add_impl(definition, impl, *impl_for_args, **impl_for_kwargs):
+def add_impl(interface, implementation, *impl_for_args, **impl_for_kwargs):
     """
-    An imperative interface for adding implementations to a dispatchable class.
+    An imperative interface for adding implementations to a dispatchable interface.
     For a declarative interface, use the [`@impl`][apfel.core.dispatch.impl] decorator.
 
-    If the dispatchable class is an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] which does single dispatch,
+    If the dispatchable interface is an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] which does single dispatch,
     the `impl_for_args` param should be the type of the implementor class.
 
     Args:
-        definition (type): The dispatchable class.
-        impl (Mapping[str, Callable]): A mapping from method names to implementations.
+        interface (IABCDispatch): The dispatchable interface.
+        implementation (Mapping[str, Callable]): A mapping from method names to implementations.
         *impl_for_args (Any): Arguments that the dispatch mechanism will use for selecting the implementation.
         **impl_for_kwargs (Any): Keyword arguments that the dispatch mechanism will use for selecting the implementation.
 
     Example:
         ```python
         # The following imperative code ...
-        add_impl(Trait, {"method": lambda self, f: f}, Class)
+        add_impl(Interface, {"method": lambda self, f: f}, Implementor)
 
         # ... is equivalent to the following declarative code:
-        @impl(Class)
-        class _(Trait):
+        @impl(Interface)
+        class _(Implementor):
             def method(self, f): return f
         ```
     """
-    for name, func in impl.items():
-        getattr(definition, name).__dispatch__.add_impl(
+    for name, func in implementation.items():
+        getattr(interface, name).__dispatch__.add_impl(
             func, *impl_for_args, **impl_for_kwargs
         )

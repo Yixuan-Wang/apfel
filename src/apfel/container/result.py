@@ -78,7 +78,6 @@ import apfel.experimental.expr as _expr
 import apfel.experimental.introspect as _introspect
 
 if TYPE_CHECKING:
-    from collections.abc import Callable
     from typing import Any
 
 
@@ -91,26 +90,26 @@ class Result(Monad):
 
     __slots__ = ("_val", "_is_ok")
 
-    def __init__(self, val, /, *, is_ok=True):
-        self._val = val
+    def __init__(self, value, /, *, is_ok=True):
+        self._val = value
         self._is_ok = is_ok
 
     def __class_getitem__(cls, item):
         return cls
 
     @classmethod
-    def make_ok(cls, val, /):
+    def make_ok(cls, value, /):
         """
         Construct an `Ok` value.
         """
-        return cls(val)
+        return cls(value)
 
     @classmethod
-    def make_err(cls, val, /):
+    def make_err(cls, value, /):
         """
         Construct an `Err` value.
         """
-        return cls(val, is_ok=False)
+        return cls(value, is_ok=False)
 
     def and_(self, other, /):
         """
@@ -124,35 +123,35 @@ class Result(Monad):
 
     __and__ = and_
 
-    def and_then(self, f, /):
+    def and_then(self, func, /):
         """
         If the value is `Ok`, apply a function that maps the inner value to a `Result[U, E]` value. Otherwise, return `Err` of type `Result[U, E]`.
         """
-        return f(self._val) if self._is_ok else Result(self._val, is_ok=False)
+        return func(self._val) if self._is_ok else Result(self._val, is_ok=False)
 
     def apply(
         self,
-        f,  # pyright: ignore[reportRedeclaration]
+        func,
+        /,
     ):
         """
         Implementation of [Applicative.apply][apfel.core.monad.Applicative.apply].
         Applies the callable wrapped within a `Result` to the inner value, if both are `Ok`.
         """
         if self._is_ok:
-            f: "Result[Callable[[Any], Any], Any]" = f  # type: ignore[type-var]
-            if f._is_ok:
-                return Result(f._val(self._val))
+            if func._is_ok:  # pyright: ignore[reportAttributeAccessIssue]
+                return Result(func._val(self._val))  # pyright: ignore[reportAttributeAccessIssue]
             else:
-                return Result(f._val, is_ok=False)
+                return Result(func._val, is_ok=False)  # pyright: ignore[reportAttributeAccessIssue]
         else:
             return Result(self._val, is_ok=False)
 
-    def bind(self, f):
+    def bind(self, func, /):
         """
         Implementation of [`Monad.bind`][apfel.core.monad.Monad.bind].
         Alias of [`and_then`][apfel.container.result.Result.and_then].
         """
-        return f(self._val) if self._is_ok else Result(self._val, is_ok=False)
+        return func(self._val) if self._is_ok else Result(self._val, is_ok=False)
 
     def __bool__(self):
         return self._is_ok
@@ -211,11 +210,11 @@ class Result(Monad):
         """
         return not self._is_ok
 
-    def is_err_and(self, p, /):
+    def is_err_and(self, pred, /):
         """
         Check if the value is an `Err` and satisfies the predicate.
         """
-        return not self._is_ok and p(self._val)
+        return not self._is_ok and pred(self._val)
 
     def is_ok(self):
         """
@@ -223,35 +222,37 @@ class Result(Monad):
         """
         return self._is_ok
 
-    def is_ok_and(self, p, /):
+    def is_ok_and(self, pred, /):
         """
         Check if the value is an `Ok` and satisfies the predicate.
         """
-        return self._is_ok and p(self._val)
+        return self._is_ok and pred(self._val)
 
-    def map(self, f, /):
+    def map(self, func, /):
         """
         Map a `Result[T, E]` to `Result[U, E]` by applying a function to a contained `Ok` value, leaving an `Err` value untouched.
         """
-        return Result(f(self._val)) if self._is_ok else Result(self._val, is_ok=False)
+        return (
+            Result(func(self._val)) if self._is_ok else Result(self._val, is_ok=False)
+        )
 
-    def map_err(self, f, /):
+    def map_err(self, func, /):
         """
         Map a `Result[T, E]` to `Result[T, F]` by applying a function to a contained `Err` value, leaving an `Ok` value untouched.
         """
-        return Result(self._val) if self._is_ok else Result(f(self._val), is_ok=False)
+        return Result(self._val) if self._is_ok else Result(func(self._val), is_ok=False)
 
-    def map_or(self, default, f, /):
+    def map_or(self, default, func):
         """
         Apply a function to a contained `Ok` value, or return a provided default value.
         """
-        return f(self._val) if self._is_ok else default
+        return func(self._val) if self._is_ok else default
 
-    def map_or_else(self, d, f, /):
+    def map_or_else(self, default, func):
         """
         Map a `Result[T, E]` to `U` by applying a function to a contained `Ok` value, or a fallback function to a contained `Err` value.
         """
-        return f(self._val) if self._is_ok else d(self._val)
+        return func(self._val) if self._is_ok else default(self._val)
 
     def ok(self):
         """
@@ -273,18 +274,18 @@ class Result(Monad):
 
     __or__ = or_
 
-    def or_else(self, f, /):
+    def or_else(self, func, /):
         """
         Return a shallow copy of the `Result` if it contains an `Ok` value, otherwise call a function to get a result.
         """
-        return Result(self._val) if self._is_ok else f(self._val)
+        return Result(self._val) if self._is_ok else func(self._val)
 
     @classmethod
-    def pure(cls, x):
+    def pure(cls, value, /):
         """
         Implementation of [`Applicative.pure`][apfel.core.monad.Applicative.pure], which is equivalent to [`Result.make_ok`][apfel.container.result.Result.make_ok].
         """
-        return cls(x)
+        return cls(value)
 
     def __repr__(self):
         return (
@@ -296,7 +297,7 @@ class Result(Monad):
     def __str__(self):
         return f"Ok({self._val})" if self._is_ok else f"Err({self._val})"
 
-    def tap(self, f, /):
+    def tap(self, func, /):
         """
         Call a function with the contained `Ok` value if it exists.
 
@@ -311,15 +312,15 @@ class Result(Monad):
         ```
         """
         if self._is_ok:
-            f(self._val)
+            func(self._val)
         return self
 
-    def tap_err(self, f, /):
+    def tap_err(self, func, /):
         """
         Call a function with the contained `Err` value if it exists.
         """
         if not self._is_ok:
-            f(self._val)
+            func(self._val)
         return self
 
     @_expr.cover_up
@@ -338,16 +339,16 @@ class Result(Monad):
         `Result[Maybe[T], E]` -> `Maybe[Result[T, E]]`
         """
         if self._is_ok:
-            val = self._val
-            if isinstance(val, _maybe.Maybe):
+            value = self._val
+            if isinstance(value, _maybe.Maybe):
                 return (
-                    _maybe.just(Result(val.unwrap_unchecked()))
-                    if val._has_value
+                    _maybe.just(Result(value.unwrap_unchecked()))
+                    if value._has_value
                     else _maybe.nothing()
                 )
             else:
                 # Not a Maybe, so just wrap it.
-                return _maybe.just(Result(val))
+                return _maybe.just(Result(value))
         else:
             return _maybe.just(Result(self._val, is_ok=False))
 
@@ -367,11 +368,11 @@ class Result(Monad):
         """
         return self._val if self._is_ok else default
 
-    def unwrap_or_else(self, f, /):
+    def unwrap_or_else(self, func, /):
         """
         Unwrap the inner `Ok` value, or return a value computed by a function if contains an `Err`.
         """
-        return self._val if self._is_ok else f(self._val)
+        return self._val if self._is_ok else func(self._val)
 
     def unwrap_err(self):
         """
@@ -422,8 +423,8 @@ class ok:
     def __class_getitem__(cls, item):
         return cls
 
-    def __new__(cls, val, /):
-        return Result(val)
+    def __new__(cls, value, /):
+        return Result(value)
 
     @classmethod
     def __instancecheck__(cls, instance):
@@ -455,8 +456,8 @@ class err:
     def __class_getitem__(cls, item):
         return cls
 
-    def __new__(cls, val, /):
-        return Result(val, is_ok=False)
+    def __new__(cls, value, /):
+        return Result(value, is_ok=False)
 
     @classmethod
     def __instancecheck__(cls, instance):
