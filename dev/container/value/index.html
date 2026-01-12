@@ -1313,14 +1313,19 @@ designed to aid chained method calls.</p>
 
 
 <h3 id="apfel.container.value.Value.apply" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.value.Value.apply" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Apply a function wrapped inside a <code>Value</code> to the inner value.</p>
+        <p>Apply a function wrapped inside a <code>Value</code> to the inner value.
+Implementation of <a class="autorefs autorefs-internal" title="apply(func)
+
+  
+      abstractmethod
+  " href="../../core/monad/#apfel.core.monad.Applicative.apply"><code>Applicative.apply</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1336,7 +1341,7 @@ designed to aid chained method calls.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>f</code>
+                <code>func</code>
             </td>
             <td>
                   <code><a class="autorefs autorefs-internal" title="Value (apfel.container.value.Value)" href="#apfel.container.value.Value">Value</a>[<span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], <span title="apfel.container.value.Value.apply[R]">R</span>]]</code>
@@ -1390,14 +1395,19 @@ designed to aid chained method calls.</p>
 
 
 <h3 id="apfel.container.value.Value.bind" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.value.Value.bind" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Monadically bind a function that maps the inner value to a new <code>Value</code>.</p>
+        <p>Monadically bind a function that maps the inner value to a new <code>Value</code>.
+Implementation of <a class="autorefs autorefs-internal" title="bind(func)
+
+  
+      abstractmethod
+  " href="../../core/monad/#apfel.core.monad.Monad.bind"><code>Monad.bind</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1413,7 +1423,7 @@ designed to aid chained method calls.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>f</code>
+                <code>func</code>
             </td>
             <td>
                   <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], <a class="autorefs autorefs-internal" title="Value (apfel.container.value.Value)" href="#apfel.container.value.Value">Value</a>[<span title="apfel.container.value.Value.bind[R]">R</span>]]</code>
@@ -1492,14 +1502,72 @@ exceptions.</p>
 
 
 <h3 id="apfel.container.value.Value.map" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="nb">map</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.value.Value.map" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Map a function over the <code>Value</code> container.</p>
+        <p>Map a function over the <code>Value</code> container. Implementation of <a class="autorefs autorefs-internal" title="map(func)
+
+  
+      abstractmethod
+  " href="../../core/monad/#apfel.core.monad.Functor.map"><code>Functor.map</code></a>.</p>
+
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>func</code>
+            </td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], <span title="apfel.container.value.Value.map[U]">U</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A function to transform the inner value.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Value (apfel.container.value.Value)" href="#apfel.container.value.Value">Value</a>[<span title="apfel.container.value.Value.map[U]">U</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A new <code>Value</code> containing the transformed value.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
 
 
     </div>
@@ -1533,7 +1601,7 @@ Otherwise, the original reference within the container will be kept.</p>
 
 <details class="warning" open>
   <summary>Warning</summary>
-  <p>Compare to <a class="autorefs autorefs-internal" title="map(f)" href="#apfel.container.value.Value.map"><code>Value.map</code></a>, this method
+  <p>Compare to <a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.value.Value.map"><code>Value.map</code></a>, this method
 mutates the container in place. No new container is created.
 Therefore, the function must return a result of the same type as the
 previous inner type of the container, or return <code>None</code>.</p>
@@ -1606,7 +1674,7 @@ previous inner type of the container, or return <code>None</code>.</p>
 
 
 <h3 id="apfel.container.value.Value.pure" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pure</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">pure</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -1621,7 +1689,13 @@ previous inner type of the container, or return <code>None</code>.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Wrap a value into the <code>Value</code> container.</p>
+        <p>Wrap a value into the <code>Value</code> container.
+Implementation of <a class="autorefs autorefs-internal" title="pure(value)
+
+  
+      abstractmethod
+      classmethod
+  " href="../../core/monad/#apfel.core.monad.Applicative.pure"><code>Applicative.pure</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1637,7 +1711,7 @@ previous inner type of the container, or return <code>None</code>.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>x</code>
+                <code>value</code>
             </td>
             <td>
                   <code><span title="apfel.container.value.Value[T]">T</span></code>

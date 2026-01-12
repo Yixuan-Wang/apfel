@@ -1284,7 +1284,7 @@ objects that implement the function call operator.</p>
 <p>Python codes contain extensive use of parentheses, which can be cumbersome in interactive environments.
 This module simply provides a way to reduce the pain of wrapping huge expressions in parentheses.
 You can use application operators provided by <code>FunctionObject</code> to apply the function on the following expression.
-Use the <a class="autorefs autorefs-internal" title="fob(f, *fs)" href="#apfel.core.function_object.fob"><code>fob</code></a> function to turn a function or a sequence of functions into <code>FunctionObject</code>s.</p>
+Use the <a class="autorefs autorefs-internal" title="fob(func, /, *funcs)" href="#apfel.core.function_object.fob"><code>fob</code></a> function to turn a function or a sequence of functions into <code>FunctionObject</code>s.</p>
 <h2 id="apfel.core.function_object--usage">Usage<a class="headerlink" href="#apfel.core.function_object--usage" title="Permanent link">#</a></h2>
 
 
@@ -1314,10 +1314,10 @@ without worrying of breaking the <code>get_pic()</code> call:</p>
 <a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span>
 </code></pre></div>
-<p><a class="autorefs autorefs-internal" title="__or__(rhs)" href="#apfel.core.function_object.FunctionObject.__or__"><code>|</code></a> and <a class="autorefs autorefs-internal" title="__matmul__(rhs)" href="#apfel.core.function_object.FunctionObject.__matmul__"><code>@</code></a> have different operator precedence,
+<p><a class="autorefs autorefs-internal" title="__or__(value)" href="#apfel.core.function_object.FunctionObject.__or__"><code>|</code></a> and <a class="autorefs autorefs-internal" title="__matmul__(value)" href="#apfel.core.function_object.FunctionObject.__matmul__"><code>@</code></a> have different operator precedence,
 the <code>|</code> has almost the lowest precedence of all Python operators, while the <code>@</code> has almost the highest precedence.
 This allows you combine expressions more flexibly without worrying about parentheses.</p>
-<p><a class="autorefs autorefs-internal" title="__rand__(lhs)" href="#apfel.core.function_object.FunctionObject.__rand__"><code>&amp;</code></a> operator can be used to apply the function to its left-hand side,
+<p><a class="autorefs autorefs-internal" title="__rand__(value)" href="#apfel.core.function_object.FunctionObject.__rand__"><code>&amp;</code></a> operator can be used to apply the function to its left-hand side,
 if the left-hand side does not overload the <code>&amp;</code> operator.
 This is similar to <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-"><code>&amp;</code></a>, <a class="ref jl" href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping"><code>|&gt;</code></a> or roughly <a class="ref rl" href="https://magrittr.tidyverse.org/reference/pipe.html"><code>%&gt;%</code></a>.
 With <code>&amp;</code> you can write your code naturally from left to right.</p>
@@ -1330,11 +1330,11 @@ With <code>&amp;</code> you can write your code naturally from left to right.</p
 <a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="c1"># ...</span>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span> <span class="o">&amp;</span> <span class="n">ic</span>
 </code></pre></div>
-<p><a class="autorefs autorefs-internal" title="__pow__(rhs)" href="#apfel.core.function_object.FunctionObject.__pow__"><code>**</code></a> operator has the highest precedence of all, and it has a unique
+<p><a class="autorefs autorefs-internal" title="__pow__(value)" href="#apfel.core.function_object.FunctionObject.__pow__"><code>**</code></a> operator has the highest precedence of all, and it has a unique
 associtivity from right to left.
 It can be used in wrapping multiple calls together without parentheses, like <code>f(g(x))</code> can be written as <code>f ** g ** x</code>.
 It roughly simulates <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-"><code>$</code></a>.</p>
-<p><a class="autorefs autorefs-internal" title="__mod__(rhs)" href="#apfel.core.function_object.FunctionObject.__mod__"><code>%</code></a> operator is used for calling multi-argument functions.
+<p><a class="autorefs autorefs-internal" title="__mod__(value)" href="#apfel.core.function_object.FunctionObject.__mod__"><code>%</code></a> operator is used for calling multi-argument functions.
 Check its documentation for more details.</p>
 
 
@@ -1410,7 +1410,7 @@ and methods of the original callable.</p>
 
 
 <h3 id="apfel.core.function_object.FunctionObject.__matmul__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__matmul__</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__matmul__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.FunctionObject.__matmul__" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -1447,14 +1447,14 @@ and methods of the original callable.</p>
 
 
 <h3 id="apfel.core.function_object.FunctionObject.__mod__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__mod__</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__mod__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.FunctionObject.__mod__" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">%</span><span class="p">[</span><span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">%</span><span class="p">[</span><span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>%</code> for <code>FunctionObject</code>s of multi-argument functions.</p>
 <ul>
@@ -1496,14 +1496,14 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 
 
 <h3 id="apfel.core.function_object.FunctionObject.__or__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__or__</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__or__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.FunctionObject.__or__" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">|</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">|</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>|</code> for <code>FunctionObject</code>s.</p>
 <p><code>f | x</code> is equivalent to <code>f(x)</code>. This operator behaves the same as <a href="#apfel.core.function_object.FunctionObject.__or__--operator-at"><code>@</code></a>, but with a different precedence.</p>
@@ -1533,14 +1533,14 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 
 
 <h3 id="apfel.core.function_object.FunctionObject.__pow__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__pow__</span><span class="p">(</span><span class="n">rhs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__pow__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.FunctionObject.__pow__" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">**</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">**</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 <p>Function application operator <code>**</code> for <code>FunctionObject</code>s.</p>
 <p><code>f ** g ** x</code> is equivalent to <code>f(g(x))</code>.
@@ -1577,14 +1577,14 @@ It intends to simulate <a class="ref hs" href="https://hackage.haskell.org/packa
 
 
 <h3 id="apfel.core.function_object.FunctionObject.__rand__" class="doc doc-heading">
-            <code class="highlight language-python"><span class="fm">__rand__</span><span class="p">(</span><span class="n">lhs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="fm">__rand__</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.FunctionObject.__rand__" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">&amp;</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">lhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
+        <p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">&amp;</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
 </code></pre></div>
 Reverse function application operator <code>&amp;</code> for <code>FunctionObject</code>s.
 <strong>This operator overloading targets the right-hand side</strong>.</p>
@@ -1629,15 +1629,19 @@ Reverse function application operator <code>&amp;</code> for <code>FunctionObjec
 
 
 <h2 id="apfel.core.function_object.fob" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">fob</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="o">*</span><span class="n">fs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">fob</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="o">/</span><span class="p">,</span> <span class="o">*</span><span class="n">funcs</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.fob" class="headerlink" title="Permanent link">#</a></h2>
+          <div class="doc-overloads">
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">fob</span><span class="p">(</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="o">*</span><span class="n">Fs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">,]</span>
+</code></pre></div>          </div>
 
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">](</span><span class="n">f</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">](</span><span class="o">*</span><span class="n">fs</span><span class="p">:</span> <span class="o">*</span><span class="n">Fs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">]</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">](</span><span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">](</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="o">*</span><span class="n">Fs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">]</span>
 </code></pre></div>
 <p>Turn callables into <code>FunctionObject</code> yet keeps their original type hints.</p>
 
@@ -1676,9 +1680,16 @@ constructor, or use <code>reveal_fob</code> on an object with runtime type <code
 
 
 <h2 id="apfel.core.function_object.reveal_fob" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">reveal_fob</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.core.function_object.reveal_fob" class="headerlink" title="Permanent link">#</a></h2>
+          <div class="doc-overloads">
+<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[],</span> <span class="n">R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">FunctionObjectA0</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">FunctionObjectA1</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">]</span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="n">Concatenate</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="p">],</span> <span class="n">R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">FunctionObjectA1P</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]</span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">FunctionObjectA0P</span><span class="p">[</span><span class="n">P</span><span class="p">,</span> <span class="n">R</span><span class="p">]</span>
+</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionObject</span>
+</code></pre></div>          </div>
 
 
     <div class="doc doc-contents ">

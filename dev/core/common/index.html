@@ -1232,7 +1232,7 @@
         <p>Applies a single-argument function to a value.
 For chained calls, see <a class="autorefs autorefs-internal" title="pipe(value, /, *funcs)" href="#apfel.core.common.pipe"><code>pipe</code></a>.</p>
 <p>See also <a class="ref py" href="https://docs.python.org/2.7/library/functions.html#apply"><code><del>apply</del></code></a> from Python 2.7.</p>
-<p>This function is different from <a class="autorefs autorefs-internal" title="apply(f)" href="../../container/value/#apfel.container.value.Value.apply"><code>Value.apply</code></a>,
+<p>This function is different from <a class="autorefs autorefs-internal" title="apply(func)" href="../../container/value/#apfel.container.value.Value.apply"><code>Value.apply</code></a>,
   which is an implementation of <a class="autorefs autorefs-internal" href="../monad/#apfel.core.monad.Applicative"><code>Applicative</code></a>
   who requires the function to be wrapped in <code>Value</code>.
 In contrast, this function accepts arbitrary callables.</p>
@@ -1323,7 +1323,7 @@ In contrast, this function accepts arbitrary callables.</p>
 
 
 <h2 id="apfel.core.common.identity" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">identity</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">identity</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.common.identity" class="headerlink" title="Permanent link">#</a></h2>
 
@@ -1348,7 +1348,7 @@ In contrast, this function accepts arbitrary callables.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>x</code>
+                <code>value</code>
             </td>
             <td>
                   <code><span title="apfel.core.common.identity[T]">T</span></code>
@@ -1376,7 +1376,7 @@ In contrast, this function accepts arbitrary callables.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>out</code></td>            <td>
+<td><code>value</code></td>            <td>
                   <code><span title="apfel.core.common.identity[T]">T</span></code>
             </td>
             <td>
@@ -1486,7 +1486,7 @@ If no expression are passed, returns <code>None</code>, per Python's convention.
 
 
 <h2 id="apfel.core.common.not_none" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">not_none</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">not_none</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.core.common.not_none" class="headerlink" title="Permanent link">#</a></h2>
 
@@ -1608,7 +1608,7 @@ but guarantees to be non-<code>None</code>.</p>
         <p>Pipes a value through a sequence of functions.
 For single function application, see <a class="autorefs autorefs-internal" title="apply(value, func)" href="#apfel.core.common.apply"><code>apply</code></a>.</p>
 <p>See also <a class="autorefs autorefs-internal" title="pipe(func)" href="../../container/value/#apfel.container.value.Value.pipe"><code>Value.pipe</code></a>,
-  <a class="autorefs autorefs-internal" title="__rand__(lhs)" href="../function-object/#apfel.core.function_object.FunctionObject.__rand__"><code>FunctionObject.__rand__</code></a>.
+  <a class="autorefs autorefs-internal" title="__rand__(value)" href="../function-object/#apfel.core.function_object.FunctionObject.__rand__"><code>FunctionObject.__rand__</code></a>.
 See also <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-"><code>&amp;</code></a>, <a class="ref jl" href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping"><code>|&gt;</code></a> or roughly <a class="ref rl" href="https://magrittr.tidyverse.org/reference/pipe.html"><code>%&gt;%</code></a>.</p>
 <p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>
     and the <a href="../../prelude/#builtins-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M11 23a2 2 0 0 1-2-2v-2h6v2a2 2 0 0 1-2 2zm1-22c.71 0 1.39.09 2.05.26C15.22 2.83 16 5.71 16 9c0 2.28-.38 4.37-1 7a2 2 0 0 1-2 2h-2a2 2 0 0 1-2-2c-.62-2.63-1-4.72-1-7 0-3.29.78-6.17 1.95-7.74C10.61 1.09 11.29 1 12 1m8 7c0 3.18-1.85 7.92-4.54 9.21C16.41 15.39 17 11.83 17 9s-.59-5.39-1.54-7.21C18.15 3.08 20 4.82 20 8M4 8c0-3.18 1.85-4.92 4.54-6.21C7.59 3.61 7 6.17 7 9s.59 6.39 1.54 8.21C5.85 15.92 4 11.18 4 8"/></svg></span> builtins namespace</a>.</p>

@@ -1459,7 +1459,7 @@ a function to its inner value(s) without changing its structure.</p>
 
 
 <h3 id="apfel.core.monad.Functor.map" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="nb">map</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -1470,7 +1470,7 @@ a function to its inner value(s) without changing its structure.</p>
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">map</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">map</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">where</span> <span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]</span>
 </code></pre></div>
 <p>Apply a function to the inner value(s) of the functor, returning a new 
@@ -1501,10 +1501,10 @@ returns an iterator, not a new instance of the functor.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>f</code>
+                <code>func</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.core.monad._definition.Functor[T]">T</span>], <span title="apfel.core.monad._definition.Functor.map[R]">R</span>]</code>
+                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.core.monad.Functor[T]">T</span>], <span title="apfel.core.monad.Functor.map[R]">R</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1530,7 +1530,7 @@ returns an iterator, not a new instance of the functor.</p>
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Functor (apfel.core.monad._definition.Functor)" href="#apfel.core.monad.Functor">Functor</a>[<span title="apfel.core.monad._definition.Functor.map[R]">R</span>]</code>
+                  <code><a class="autorefs autorefs-internal" title="Functor (apfel.core.monad.Functor)" href="#apfel.core.monad.Functor">Functor</a>[<span title="apfel.core.monad.Functor.map[R]">R</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1606,7 +1606,7 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
 
 <h3 id="apfel.core.monad.Applicative.apply" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -1617,7 +1617,7 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">where</span> <span class="n">F</span><span class="p">:</span> <span class="n">Self</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]]</span>
 </code></pre></div>
 <p>Applies a function wrapped inside the applicative structure to the inner value(s) of this applicative.</p>
@@ -1636,14 +1636,14 @@ extended with the ability to apply an effectful function to its inner value(s).<
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>f</code>
+                <code>func</code>
             </td>
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Applicative (apfel.core.monad._definition.Applicative)" href="#apfel.core.monad.Applicative">Applicative</a>[<span title="collections.abc.Callable">Callable</span>[[<span title="apfel.core.monad._definition.Applicative[T]">T</span>], <span title="apfel.core.monad._definition.Applicative.apply[R]">R</span>]]</code>
+                  <code><a class="autorefs autorefs-internal" title="Applicative (apfel.core.monad.Applicative)" href="#apfel.core.monad.Applicative">Applicative</a>[<span title="collections.abc.Callable">Callable</span>[[<span title="apfel.core.monad.Applicative[T]">T</span>], <span title="apfel.core.monad.Applicative.apply[R]">R</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The applicative that contains the function to apply.</p>
+                <p>The function to apply, wrapped within the applicative structure.</p>
               </div>
             </td>
             <td>
@@ -1665,7 +1665,7 @@ extended with the ability to apply an effectful function to its inner value(s).<
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Applicative (apfel.core.monad._definition.Applicative)" href="#apfel.core.monad.Applicative">Applicative</a>[<span title="apfel.core.monad._definition.Applicative.apply[R]">R</span>]</code>
+                  <code><a class="autorefs autorefs-internal" title="Applicative (apfel.core.monad.Applicative)" href="#apfel.core.monad.Applicative">Applicative</a>[<span title="apfel.core.monad.Applicative.apply[R]">R</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1690,7 +1690,7 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
 
 <h3 id="apfel.core.monad.Applicative.pure" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pure</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">pure</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -1702,7 +1702,7 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">pure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">pure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>
 </code></pre></div>
 <p>Wrap a value into the applicative structure.</p>
 
@@ -1720,10 +1720,10 @@ extended with the ability to apply an effectful function to its inner value(s).<
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>x</code>
+                <code>value</code>
             </td>
             <td>
-                  <code><span title="apfel.core.monad._definition.Applicative[T]">T</span></code>
+                  <code><span title="apfel.core.monad.Applicative[T]">T</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1802,7 +1802,7 @@ extended with the ability to apply an effectful function to its inner value(s).<
 functor extended with the ability to reuse results of previous computations and chain
 effectful computations together.</p>
 <p>To implement a <code>Monad</code>, you need to implement at least the <code>bind</code> method, and
-the <a class="autorefs autorefs-internal" title="pure(x)
+the <a class="autorefs autorefs-internal" title="pure(value)
 
   
       abstractmethod
@@ -1838,7 +1838,7 @@ pointing to <a class="ref hs" href="https://hackage.haskell.org/package/base/doc
 
 
 <h3 id="apfel.core.monad.Monad.bind" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
@@ -1849,7 +1849,7 @@ pointing to <a class="ref hs" href="https://hackage.haskell.org/package/base/doc
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">bind</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">bind</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">where</span> <span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]]</span>
 </code></pre></div>
 <p>Chain a new monadic computation to the current one.</p>
@@ -1877,7 +1877,6 @@ For example, in <a class="ref rs" href="https://doc.rust-lang.org/std/option/enu
                 <code>f</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.core.monad._definition.Monad[T]">T</span>], <a class="autorefs autorefs-internal" title="Monad (apfel.core.monad._definition.Monad)" href="#apfel.core.monad.Monad">Monad</a>[<span title="apfel.core.monad._definition.Monad.bind[R]">R</span>]]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1903,7 +1902,7 @@ For example, in <a class="ref rs" href="https://doc.rust-lang.org/std/option/enu
       <tbody>
           <tr class="doc-section-item">
             <td>
-                  <code><a class="autorefs autorefs-internal" title="Monad (apfel.core.monad._definition.Monad)" href="#apfel.core.monad.Monad">Monad</a>[<span title="apfel.core.monad._definition.Monad.bind[R]">R</span>]</code>
+                  <code><a class="autorefs autorefs-internal" title="Monad (apfel.core.monad.Monad)" href="#apfel.core.monad.Monad">Monad</a>[<span title="apfel.core.monad.Monad.bind[R]">R</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1949,7 +1948,7 @@ For example, in <a class="ref rs" href="https://doc.rust-lang.org/std/option/enu
 
     <div class="doc doc-contents ">
 
-        <p>An alias for <a class="autorefs autorefs-internal" title="map(f)
+        <p>An alias for <a class="autorefs autorefs-internal" title="map(func)
 
   
       abstractmethod

@@ -1210,7 +1210,7 @@ Class methods and static methods can also be defined with the same decorator.</p
 <details class="warning" open>
   <summary>Warning</summary>
   <p>The <code>@abstractmethod</code> decorator must be placed after the <code>@classmethod</code> or <code>@staticmethod</code> decorator.</p>
-</details>        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Trait</span><span class="p">(</span><span class="n">ABCDispatch</span><span class="p">):</span>
+</details>        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Interface</span><span class="p">(</span><span class="n">ABCDispatch</span><span class="p">):</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nd">@abstractmethod</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span> <span class="o">...</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
@@ -1222,12 +1222,18 @@ Class methods and static methods can also be defined with the same decorator.</p
 <a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="nd">@abstractmethod</span>
 <a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">static_method</span><span class="p">(</span><span class="n">f</span><span class="p">):</span> <span class="o">...</span>
 </code></pre></div>
-<p>Then, we can implement the "trait" for a class by using the <a class="autorefs autorefs-internal" title="impl(definition)" href="#apfel.core.dispatch.impl"><code>@impl</code></a> decorator.
+<p>Then, we can implement the "interface" for a class by using the <a class="autorefs autorefs-internal" title="impl(interface)" href="#apfel.core.dispatch.impl"><code>@impl</code></a> decorator.
 The implementor class is passed as the first argument to the decorator.
-The implementation is written in the <code>class</code> syntax, with each trait method implemented as a method of the class.
-The class name doesn't matter, but it should subclass the trait class.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@impl</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">_</span><span class="p">(</span><span class="n">Trait</span><span class="p">):</span>
+The implementation is written in the <code>class</code> syntax, with each interface method implemented as a method of the class.
+The class name doesn't matter, but it should subclass the implementor class.
+This syntax provides you the ability to reference concrete attributes and methods defined on the implementor class.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Note that some built-in classes are not allowed to be subclassed in Python.
+You may need to use the <a class="autorefs autorefs-internal" title="add_impl(interface, implementation, *impl_for_args, **impl_for_kwargs)" href="#apfel.core.dispatch.add_impl"><code>add_impl</code></a> function to add implementations imperatively in such cases.</p>
+</div>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nd">@impl</span><span class="p">(</span><span class="n">Interface</span><span class="p">)</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">_</span><span class="p">(</span><span class="n">Implementor</span><span class="p">):</span>
 <a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span> <span class="s2">&quot;&quot;&quot;Concrete implementation goes here&quot;&quot;&quot;</span>
 <a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>
 <a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="nd">@classmethod</span>
@@ -1236,16 +1242,16 @@ The class name doesn't matter, but it should subclass the trait class.</p>
 <a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a>    <span class="nd">@staticmethod</span>
 <a id="__codelineno-1-9" name="__codelineno-1-9" href="#__codelineno-1-9"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">static_method</span><span class="p">(</span><span class="n">f</span><span class="p">):</span> <span class="s2">&quot;&quot;&quot;Concrete implementation goes here&quot;&quot;&quot;</span>
 </code></pre></div>
-<p>In this case, <code>Class.method</code> does not exist during runtime so you may not call it, and calling <code>.method</code> on an instance of <code>Class</code> will also fail.
-But you can call <code>Trait.method</code> on an instance of <code>Class</code> and it will dispatch to the concrete implementation defined in the <code>@impl</code> construct.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Class</span><span class="p">()</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">Trait</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>  <span class="c1"># Calls the implementation within the @impl</span>
+<p>In this case, <code>Implementor.method</code> does not exist during runtime so you may not call it, and calling <code>.method</code> on an instance of <code>Implementor</code> will also fail.
+But you can call <code>Interface.method</code> on an instance of <code>Implementor</code> and it will dispatch to the concrete implementation defined in the <code>@impl</code> construct.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">c</span> <span class="o">=</span> <span class="n">Implementor</span><span class="p">()</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="n">Interface</span><span class="o">.</span><span class="n">method</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>  <span class="c1"># Calls the implementation within the @impl</span>
 </code></pre></div>
-<p>If you have control to the source code, you can add <code>Trait</code> to the base classes of <code>Class</code>,
-so <code>Class.method(instance)</code> and <code>instance.method()</code> will work as expected, <code>Trait.method(instance, f)</code> shall also work.</p>
-<p>Class methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Trait</span><span class="o">.</span><span class="n">class_method</span><span class="p">[</span><span class="n">Class</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Trait</span><span class="o">.</span><span class="n">static_method</span><span class="p">[</span><span class="n">Class</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
+<p>If you have control to the source code, you can add <code>Interface</code> to the base classes of <code>Implementor</code>,
+so <code>Implementor.method(instance)</code> and <code>instance.method()</code> will work as expected, <code>Interface.method(instance, f)</code> shall also work.</p>
+<p>Implementor methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Interface</span><span class="o">.</span><span class="n">class_method</span><span class="p">[</span><span class="n">Implementor</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Interface</span><span class="o">.</span><span class="n">static_method</span><span class="p">[</span><span class="n">Implementor</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
 </code></pre></div>
 <p>It's also possible to define a dispatchable function using the <a class="autorefs autorefs-internal" title="dispatch(func)" href="#apfel.core.dispatch.dispatch"><code>@dispatch</code></a> decorator.
 Then an method <code>impl_for</code> will be on the function, which can be used to register implementations.</p>
@@ -1329,6 +1335,16 @@ Stick to built-in <a class="ref py" href="https://docs.python.org/3/library/abc.
 
 
 
+
+
+<div class="doc doc-children">
+
+
+
+
+
+  </div>
+
     </div>
 
 </div>
@@ -1387,7 +1403,7 @@ Calling the function will dispatch to the correct implementation based on the ty
 
 
 <h2 id="apfel.core.dispatch.impl" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">impl</span><span class="p">(</span><span class="n">definition</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">impl</span><span class="p">(</span><span class="n">interface</span><span class="p">)</span></code>
 
 <a href="#apfel.core.dispatch.impl" class="headerlink" title="Permanent link">#</a></h2>
 
@@ -1398,11 +1414,42 @@ Calling the function will dispatch to the correct implementation based on the ty
 <p>See the <a class="autorefs autorefs-internal" title="Usage" href="#apfel.core.dispatch--usage">usage section</a> for more information.</p>
 
 
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>interface</code>
+            </td>
+            <td>
+                  <code><span title="apfel.core.dispatch.IABCDispatch">IABCDispatch</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The dispatchable interface.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
 <details class="example" open>
   <summary>Example</summary>
-  <p>Here <code>Class</code> is a concrete class and <code>Trait</code> is an <a class="autorefs autorefs-internal" href="#apfel.core.dispatch.ABCDispatch"><code>ABCDispatch</code></a>.
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@impl</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">_</span><span class="p">(</span><span class="n">Trait</span><span class="p">):</span>
+  <p>Here <code>Implementor</code> is a concrete class and <code>Interface</code> is an <a class="autorefs autorefs-internal" href="#apfel.core.dispatch.ABCDispatch"><code>ABCDispatch</code></a>.
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@impl</span><span class="p">(</span><span class="n">Interface</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">class</span><span class="w"> </span><span class="nc">_</span><span class="p">(</span><span class="n">Implementor</span><span class="p">):</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span> <span class="s2">&quot;&quot;&quot;Concrete implementation goes here&quot;&quot;&quot;</span>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nd">@classmethod</span>
@@ -1426,16 +1473,16 @@ Calling the function will dispatch to the correct implementation based on the ty
 
 
 <h2 id="apfel.core.dispatch.add_impl" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">add_impl</span><span class="p">(</span><span class="n">definition</span><span class="p">,</span> <span class="n">impl</span><span class="p">,</span> <span class="o">*</span><span class="n">impl_for_args</span><span class="p">,</span> <span class="o">**</span><span class="n">impl_for_kwargs</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">add_impl</span><span class="p">(</span><span class="n">interface</span><span class="p">,</span> <span class="n">implementation</span><span class="p">,</span> <span class="o">*</span><span class="n">impl_for_args</span><span class="p">,</span> <span class="o">**</span><span class="n">impl_for_kwargs</span><span class="p">)</span></code>
 
 <a href="#apfel.core.dispatch.add_impl" class="headerlink" title="Permanent link">#</a></h2>
 
 
     <div class="doc doc-contents ">
 
-        <p>An imperative interface for adding implementations to a dispatchable class.
-For a declarative interface, use the <a class="autorefs autorefs-internal" title="impl(definition)" href="#apfel.core.dispatch.impl"><code>@impl</code></a> decorator.</p>
-<p>If the dispatchable class is an <a class="autorefs autorefs-internal" href="#apfel.core.dispatch.ABCDispatch"><code>ABCDispatch</code></a> which does single dispatch,
+        <p>An imperative interface for adding implementations to a dispatchable interface.
+For a declarative interface, use the <a class="autorefs autorefs-internal" title="impl(interface)" href="#apfel.core.dispatch.impl"><code>@impl</code></a> decorator.</p>
+<p>If the dispatchable interface is an <a class="autorefs autorefs-internal" href="#apfel.core.dispatch.ABCDispatch"><code>ABCDispatch</code></a> which does single dispatch,
 the <code>impl_for_args</code> param should be the type of the implementor class.</p>
 
 
@@ -1452,14 +1499,14 @@ the <code>impl_for_args</code> param should be the type of the implementor class
       <tbody>
           <tr class="doc-section-item">
             <td>
-                <code>definition</code>
+                <code>interface</code>
             </td>
             <td>
-                  <code><span title="type">type</span></code>
+                  <code><span title="apfel.core.dispatch.IABCDispatch">IABCDispatch</span></code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>The dispatchable class.</p>
+                <p>The dispatchable interface.</p>
               </div>
             </td>
             <td>
@@ -1468,7 +1515,7 @@ the <code>impl_for_args</code> param should be the type of the implementor class
           </tr>
           <tr class="doc-section-item">
             <td>
-                <code>impl</code>
+                <code>implementation</code>
             </td>
             <td>
                   <code><span title="collections.abc.Mapping">Mapping</span>[<span title="str">str</span>, <span title="collections.abc.Callable">Callable</span>]</code>
@@ -1521,11 +1568,11 @@ the <code>impl_for_args</code> param should be the type of the implementor class
 <details class="example" open>
   <summary>Example</summary>
   <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># The following imperative code ...</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">add_impl</span><span class="p">(</span><span class="n">Trait</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">},</span> <span class="n">Class</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">add_impl</span><span class="p">(</span><span class="n">Interface</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;method&quot;</span><span class="p">:</span> <span class="k">lambda</span> <span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="n">f</span><span class="p">},</span> <span class="n">Implementor</span><span class="p">)</span>
 <a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="c1"># ... is equivalent to the following declarative code:</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@impl</span><span class="p">(</span><span class="n">Class</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">_</span><span class="p">(</span><span class="n">Trait</span><span class="p">):</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@impl</span><span class="p">(</span><span class="n">Interface</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">class</span><span class="w"> </span><span class="nc">_</span><span class="p">(</span><span class="n">Implementor</span><span class="p">):</span>
 <a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">def</span><span class="w"> </span><span class="nf">method</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span> <span class="k">return</span> <span class="n">f</span>
 </code></pre></div>
 </details>
