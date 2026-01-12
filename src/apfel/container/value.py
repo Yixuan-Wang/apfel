@@ -26,29 +26,31 @@ class Value(Monad):
     def __repr__(self):
         return f"<Value {self._value!r} at {hex(id(self))}>"
 
-    def apply(self, f):
+    def apply(self, func, /):
         """
         Apply a function wrapped inside a `Value` to the inner value.
+        Implementation of [`Applicative.apply`][apfel.core.monad.Applicative.apply].
 
         Args:
-            f (Value[Callable[[T], R]]): A `Value` containing a function to apply.
+            func (Value[Callable[[T], R]]): A `Value` containing a function to apply.
 
         Returns:
             (Value[R]): A new `Value` containing the result of the function application.
         """
-        return Value(f._value(self._value))  # pyright: ignore[reportAttributeAccessIssue]
+        return Value(func._value(self._value))  # pyright: ignore[reportAttributeAccessIssue]
 
-    def bind(self, f):
+    def bind(self, func, /):
         """
         Monadically bind a function that maps the inner value to a new `Value`.
+        Implementation of [`Monad.bind`][apfel.core.monad.Monad.bind].
 
         Args:
-            f (Callable[[T], Value[R]]): A function that takes the inner value and returns a `Value`.
+            func (Callable[[T], Value[R]]): A function that takes the inner value and returns a `Value`.
 
         Returns:
             (Value[R]): A new `Value` containing the result of the function.
         """
-        return f(self._value)
+        return func(self._value)
 
     def done(self):
         """
@@ -59,13 +61,19 @@ class Value(Monad):
         """
         return self._value
 
-    def map(self, f):
+    def map(self, func, /):
         """
-        Map a function over the `Value` container.
-        """
-        return Value(f(self._value))
+        Map a function over the `Value` container. Implementation of [`Functor.map`][apfel.core.monad.Functor.map].
 
-    def pipe(self, func):
+        Args:
+            func (Callable[[T], U]): A function to transform the inner value.
+        
+        Returns:
+            (Value[U]): A new `Value` containing the transformed value.
+        """
+        return Value(func(self._value))
+
+    def pipe(self, func, /):
         """
         Run a function to process the inner value.
         If a result is produced, the result will be put back to the container.
@@ -89,19 +97,20 @@ class Value(Monad):
         return self
 
     @classmethod
-    def pure(cls, x):
+    def pure(cls, value, /):
         """
         Wrap a value into the `Value` container.
+        Implementation of [`Applicative.pure`][apfel.core.monad.Applicative.pure].
 
         Args:
-            x (T): The value to wrap.
+            value (T): The value to wrap.
 
         Returns:
             (Value[T]): A new instance of `Value` with the value wrapped.
         """
-        return cls(x)
+        return cls(value)
 
-    def run(self, func):
+    def run(self, func, /):
         """
         Run a function to process the inner value, and return the result.
 
@@ -113,7 +122,7 @@ class Value(Monad):
         """
         return func(self._value)
 
-    def tap(self, func):
+    def tap(self, func, /):
         """
         Call a function over the inner value, ignore the return value,
         and return the original container.

@@ -3,7 +3,7 @@ Common yet miscellaneous utilities functions.
 """
 
 from functools import reduce as _reduce
-from apfel.experimental.introspect import call_expr
+from apfel.experimental.introspect import call_expr as _call_expr
 
 
 def apply(value, func, /):
@@ -31,7 +31,7 @@ def apply(value, func, /):
     return func(value)
 
 
-def identity(x):
+def identity(value, /):
     """
     Returns the sole argument passed to it doing nothing.
 
@@ -39,12 +39,12 @@ def identity(x):
       and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
-        x (T): Any object.
+        value (T): Any object.
 
     Returns:
-        out (T): The same object passed to it.
+        value (T): The same object passed to it.
     """
-    return x
+    return value
 
 
 def imperative(*exprs):
@@ -64,7 +64,7 @@ def imperative(*exprs):
     return exprs[-1] if exprs else None
 
 
-def not_none(x):
+def not_none(value, /):
     """
     Type narrowing: assert the value isn't None.
 
@@ -81,8 +81,8 @@ def not_none(x):
         ValueError: if the input is actually `None`.
 
     """
-    if x is None:
-        args = call_expr()
+    if value is None:
+        args = _call_expr()
         if args:
             import ast
 
@@ -91,7 +91,7 @@ def not_none(x):
         else:
             raise ValueError("The value should not have been `None`")
 
-    return x
+    return value
 
 
 def pipe(
@@ -120,7 +120,7 @@ def pipe(
     return _reduce(apply, funcs, value)
 
 
-def todo(message=None):
+def todo(message=None, /):
     """
     Marks an unimplemented location that **might** be implemented in the future.
     See [`todo!`](https://doc.rust-lang.org/std/macro.todo.html){ .ref .rs } for usage.
@@ -137,7 +137,7 @@ def todo(message=None):
     raise NotImplementedError("Todo" + f": {message}" if message else "")
 
 
-def unimplemented(message=None):
+def unimplemented(message=None, /):
     """
     Marks an unimplemented location that **might not** be implemented in the future.
     See [`unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html){ .ref .rs } for usage.
@@ -154,4 +154,12 @@ def unimplemented(message=None):
     raise NotImplementedError("Not implemented" + f": {message}" if message else "")
 
 
-__all__ = ["apply", "identity", "imperative", "not_none", "pipe", "todo", "unimplemented"]
+__all__ = [
+    "apply",
+    "identity",
+    "imperative",
+    "not_none",
+    "pipe",
+    "todo",
+    "unimplemented",
+]

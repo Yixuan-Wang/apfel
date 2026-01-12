@@ -95,12 +95,12 @@ class FunctionObject:
 
     __slots__ = ("__call__", "__wrapped__", "__doc__", "__name__", "__qualname__")
 
-    def __init__(self, f):
-        self.__doc__ = f.__doc__
-        self.__name__ = getattr(f, "__name__", "<λ>")
-        self.__qualname__ = getattr(f, "__qualname__", "<λ>")
-        self.__call__ = f
-        self.__wrapped__ = f
+    def __init__(self, func):
+        self.__doc__ = func.__doc__
+        self.__name__ = getattr(func, "__name__", "<λ>")
+        self.__qualname__ = getattr(func, "__qualname__", "<λ>")
+        self.__call__ = func
+        self.__wrapped__ = func
 
     def __str__(self):
         return str(self.__wrapped__)
@@ -108,10 +108,10 @@ class FunctionObject:
     def __repr__(self):
         return repr(self.__wrapped__)
 
-    def __or__(self, rhs):
+    def __or__(self, value, /):
         """\
         ```python
-        def |[T, R](self, rhs: T) -> R
+        def |[T, R](self, value: T) -> R
         ```
 
         Function application operator `|` for `FunctionObject`s.
@@ -128,12 +128,12 @@ class FunctionObject:
             # 6
             ```
         """
-        return self.__call__(rhs)
+        return self.__call__(value)
 
-    def __rand__(self, lhs):
+    def __rand__(self, value):
         """\
         ```python
-        def &[T, R](self, lhs: T) -> R
+        def &[T, R](self, value: T) -> R
         ```
         Reverse function application operator `&` for `FunctionObject`s.
         **This operator overloading targets the right-hand side**.
@@ -154,9 +154,9 @@ class FunctionObject:
             # 6
             ```
         """
-        return self.__call__(lhs)
+        return self.__call__(value)
 
-    def __matmul__(self, rhs):
+    def __matmul__(self, value):
         """\
         ```python
         def @[T, R](self, rhs: T) -> R
@@ -176,12 +176,12 @@ class FunctionObject:
             # 4
             ```
         """
-        return self.__call__(rhs)
+        return self.__call__(value)
 
-    def __pow__(self, rhs):
+    def __pow__(self, value):
         """\
         ```python
-        def **[T, R](self, rhs: T) -> R
+        def **[T, R](self, value: T) -> R
         ```
         
         Function application operator `**` for `FunctionObject`s.
@@ -205,12 +205,12 @@ class FunctionObject:
             # 3
             ```
         """
-        return self.__call__(rhs)
+        return self.__call__(value)
 
-    def __mod__(self, rhs):
+    def __mod__(self, value):
         """\
         ```python
-        def %[R](self, rhs) -> R
+        def %[R](self, value) -> R
         ```
 
         Function application operator `%` for `FunctionObject`s of multi-argument functions.
@@ -235,23 +235,22 @@ class FunctionObject:
             This operator does not support the case where `...` (the `Ellipsis`, not `"..."`) is used as a keyword argument.
             However, this case is relatively rare, as `...` cannot be declared as argument name.
         """
-        if isinstance(rhs, _Sequence):
-            return self.__call__(*rhs)
-        elif isinstance(rhs, _Mapping):
-            if ... in rhs:
+        if isinstance(value, _Sequence):
+            return self.__call__(*value)
+        elif isinstance(value, _Mapping):
+            if ... in value:
                 return self.__call__(
-                    *rhs[...], **{k: v for k, v in rhs.items() if k is not ...}
+                    *value[...], **{k: v for k, v in value.items() if k is not ...}
                 )
-            return self.__call__(**rhs)
+            return self.__call__(**value)
         else:
-            return self.__call__(rhs)
+            return self.__call__(value)
 
-
-def fob(f, *fs):
+def fob(func, /, *funcs):
     """\
     ```python
-    def fob[F: Callable](f: F) -> F
-    def fob[*Fs](*fs: *Fs) -> tuple[*Fs]
+    def fob[F: Callable](func: F) -> F
+    def fob[*Fs](*funcs: *Fs) -> tuple[*Fs]
     ```
 
     Turn callables into `FunctionObject` yet keeps their original type hints.
@@ -274,10 +273,10 @@ def fob(f, *fs):
         If you want to retain the type hints, directly use `FunctionObject`'s
         constructor, or use `reveal_fob` on an object with runtime type `FunctionObject`.
     """
-    return tuple(map(FunctionObject, [f, *fs])) if fs else FunctionObject(f)
+    return tuple(map(FunctionObject, [func, *funcs])) if funcs else FunctionObject(func)
 
 
-def reveal_fob(f):
+def reveal_fob(func, /):
     """\
     ```python
     def reveal_fob(func: Any) -> FunctionObject raise TypeError
@@ -288,8 +287,8 @@ def reveal_fob(f):
     Failure: Exception
         This function performs runtime check and raises `TypeError` if the input is not a `FunctionObject`.
     """
-    if not isinstance(f, FunctionObject):
+    if not isinstance(func, FunctionObject):
         raise TypeError(
-            f"`reveal_fob` must be called on a FunctionObject, not {type(f)}"
+            f"`reveal_fob` must be called on a FunctionObject, not {type(func)}"
         )
-    return f
+    return func
