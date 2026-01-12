@@ -58,6 +58,12 @@ class Iterator[I](_dispatch.ABCDispatch):
     #
     @overload
     @staticmethod
+    def filter[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def filter(self, pred: Callable[[I], bool], /) -> Iterator[I]: ...
+    #
+    @overload
+    @staticmethod
     def find[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def find(self, pred: Callable[[I], bool], /) -> Maybe[I]: ...
@@ -74,6 +80,11 @@ class Iterator[I](_dispatch.ABCDispatch):
     @overload
     def for_each(self, func: Callable[[I], Any]) -> None: ...
     #
+    @overload
+    @staticmethod
+    def map[Item, U](self: VanillaIterator[Item], func: Callable[[Item], U]) -> Iterator[U]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def map[U](self, func: Callable[[I], U]) -> Iterator[U]: ...
     #
     @overload
     @staticmethod

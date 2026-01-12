@@ -93,6 +93,14 @@ def test_iterator_eq():
     lst = [1, 2, 3]
     assert iterator1 != lst
 
+def test_iterator_filter():
+    iterator = itrt([1, 2, 3, 4, 5])
+    filtered_iterator = iterator.filter(lambda x: x % 2 == 0)
+    assert filtered_iterator.next().unwrap() == 2
+    assert filtered_iterator.next().unwrap() == 4
+    assert filtered_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()  # original iterator is also exhausted
+
 def test_iterator_find():
     iterator = itrt([1, 2, 3, 4, 5])
     assert iterator.find(lambda x: x % 2 == 0).unwrap() == 2
@@ -122,6 +130,15 @@ def test_iterator_for_each(capsys):
     captured = capsys.readouterr()
     assert captured.out == "1\n2\n3\n4\n5\n"
     assert iterator.next().is_nothing()  # iterator is exhausted
+
+def test_iterator_map():
+    iterator = itrt([1, 2, 3])
+    mapped_iterator = iterator.map(lambda x: x * 2)
+    assert mapped_iterator.next().unwrap() == 2
+    assert mapped_iterator.next().unwrap() == 4
+    assert mapped_iterator.next().unwrap() == 6
+    assert mapped_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()  # original iterator is also exhausted
 
 def test_iterator_reduce():
     iterator = itrt([1, 2, 3, 4, 5])

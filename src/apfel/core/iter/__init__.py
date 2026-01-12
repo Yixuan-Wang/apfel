@@ -26,7 +26,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `enumerate`          | :material-close-circle: |
     | `eq`                 | [:material-check-circle:][apfel.core.iter.Iterator.eq] |
     | `eq_by`              | :material-close-circle: |
-    | `filter`             | :material-close-circle: |
+    | `filter`             | [:material-check-circle:][apfel.core.iter.Iterator.filter] |
     | `filter_map`         | :material-close-circle: |
     | `find`               | [:material-check-circle:][apfel.core.iter.Iterator.find] |
     | `find_map`           | :material-close-circle: |
@@ -47,7 +47,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `last`               | :material-close-circle: |
     | `le`                 | :material-close-circle: |
     | `lt`                 | :material-close-circle: |
-    | `map`                | :material-close-circle: |
+    | `map`                | [:material-check-circle:][apfel.core.iter.Iterator.map] |
     | `map_while`          | :material-close-circle: |
     | `map_windows`        | :material-close-circle: |
     | `max`                | :material-close-circle: |
@@ -259,6 +259,22 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         if not isinstance(other, _collections_abc.Iterator):
             return NotImplemented
         return self.eq(other)
+    
+    def filter(self, pred, /):
+        """
+        Creates a new iterator that yields only the elements of the original iterator
+        that satisfy the predicate `pred`.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        filtered_iterator = iterator.filter(lambda x: x % 2 == 0)
+        assert filtered_iterator.next().unwrap() == 2
+        assert filtered_iterator.next().unwrap() == 4
+        assert filtered_iterator.next().is_nothing()
+        assert iterator.next().is_nothing()  # original iterator is also exhausted
+        ```
+        """
+        return IteratorAdaptor(builtins.filter(pred, self))
 
     def find(self, pred, /):
         """
@@ -316,6 +332,22 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         for item in self:
             func(item)
+    
+    def map(self, func, /):
+        """
+        Creates a new iterator that applies the function `func` to each element of the original iterator.
+
+        ```python
+        iterator = itrt([1, 2, 3])
+        mapped_iterator = iterator.map(lambda x: x * 2)
+        assert mapped_iterator.next().unwrap() == 2
+        assert mapped_iterator.next().unwrap() == 4
+        assert mapped_iterator.next().unwrap() == 6
+        assert mapped_iterator.next().is_nothing()
+        assert iterator.next().is_nothing()  # original iterator is also exhausted
+        ```
+        """
+        return IteratorAdaptor(builtins.map(func, self))
     
     def reduce(self, func, /):
         """
