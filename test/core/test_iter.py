@@ -1,4 +1,5 @@
-from typing import no_type_check, reveal_type
+import pytest
+
 from apfel.core.iter import Iterator, itrt
 
 
@@ -98,3 +99,41 @@ def test_iterator_find():
     assert iterator.find(lambda x: x <= 3).unwrap() == 3  # 1, 2 have been consumed
     assert iterator.find(lambda x: x > 10).is_nothing()  # no such element exists
     assert iterator.next().is_nothing()  # iterator is exhausted
+
+def test_iterator_fold():
+    iterator = itrt([1, 2, 3, 4, 5])
+    result = iterator.fold(0, lambda acc, x: acc + x)
+    assert result == 15
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([])
+    result = iterator.fold(10, lambda acc, x: acc + x)
+    assert result == 10
+
+def test_iterator_for_each(capsys):
+    iterator = itrt([1, 2, 3])
+    result = []
+    iterator.for_each(lambda x: result.append(x * 2))
+    assert result == [2, 4, 6]
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([1, 2, 3, 4, 5])
+    iterator.for_each(print)
+    captured = capsys.readouterr()
+    assert captured.out == "1\n2\n3\n4\n5\n"
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+def test_iterator_reduce():
+    iterator = itrt([1, 2, 3, 4, 5])
+    result = iterator.reduce(lambda acc, x: acc + x)
+    assert result.unwrap() == 15
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([42])
+    result = iterator.reduce(lambda acc, x: acc + x)
+    assert result.unwrap() == 42
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([])
+    result = iterator.reduce(lambda acc, x: acc + x)
+    assert result.is_nothing()  # no elements to reduce
