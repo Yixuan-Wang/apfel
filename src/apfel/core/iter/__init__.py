@@ -14,7 +14,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `any`                | [:material-check-circle:][apfel.core.iter.Iterator.any] |
     | `array_chunks`       | :material-close-circle: |
     | `by_ref`             | :material-minus-circle: |
-    | `chain`              | :material-close-circle: |
+    | `chain`              | [:material-check-circle:][apfel.core.iter.Iterator.chain] |
     | `cloned`             | :material-close-circle: |
     | `cmp`                | :material-close-circle: |
     | `cmp_by`             | :material-close-circle: |
@@ -31,7 +31,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `find`               | [:material-check-circle:][apfel.core.iter.Iterator.find] |
     | `find_map`           | :material-close-circle: |
     | `flat_map`           | :material-close-circle: |
-    | `flatten`            | :material-close-circle: |
+    | `flatten`            | [:material-check-circle:][apfel.core.iter.Iterator.flatten] |
     | `fold`               | [:material-check-circle:][apfel.core.iter.Iterator.fold] |
     | `for_each`           | [:material-check-circle:][apfel.core.iter.Iterator.for_each] |
     | `fuse`               | :material-close-circle: |
@@ -91,6 +91,7 @@ from abc import abstractmethod
 import builtins
 import collections.abc as _collections_abc
 import functools as _functools
+import itertools as _itertools
 from typing import Generic, TypeVar
 
 import apfel.container.maybe as _maybe
@@ -215,6 +216,30 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         return builtins.any(map(pred, self))
     
+    def chain(self, *others):
+        """
+        Creates a new iterator that yields elements from this iterator until it is exhausted,
+        then yields elements from the `other` iterator.
+
+        ```python
+        iterator1 = itrt([1, 2])
+        iterator2 = itrt([3, 4])
+        iterator3 = itrt([5, 6])
+        chained_iterator = iterator1.chain(iterator2, iterator3)
+        
+        assert chained_iterator.next().unwrap() == 1
+        assert chained_iterator.next().unwrap() == 2
+        assert iterator1.next().is_nothing()  # original iterator1 is also exhausted
+        assert chained_iterator.next().unwrap() == 3
+        assert chained_iterator.next().unwrap() == 4
+        assert iterator2.next().is_nothing()  # original iterator2 is also exhausted
+        assert chained_iterator.next().unwrap() == 5
+        assert chained_iterator.next().unwrap() == 6
+        assert chained_iterator.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(_itertools.chain(self, *others))
+    
     def count(self):
         """
         Counts the number of elements in the iterator, until it is exhausted.
@@ -294,6 +319,25 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
             if pred(item):
                 return _maybe.Maybe.make_just(item)
         return _maybe.Maybe.make_nothing()
+    
+    def flatten(self: "_collections_abc.Iterable[Iterator[I]]") -> "Iterator[I]":
+        """
+        Flattens an iterable of iterators into a single iterator by yielding all elements
+        from each inner iterator in sequence.
+
+        ```python
+        iterator = itrt([itrt([1, 2]), itrt([3, 4]), itrt([5])])
+        flattened_iterator = iterator.flatten()
+        assert flattened_iterator.next().unwrap() == 1
+        assert flattened_iterator.next().unwrap() == 2
+        assert flattened_iterator.next().unwrap() == 3
+        assert flattened_iterator.next().unwrap() == 4
+        assert flattened_iterator.next().unwrap() == 5
+        assert flattened_iterator.next().is_nothing()
+        assert iterator.next().is_nothing()  # original iterator is also exhausted
+        ```
+        """
+        return IteratorAdaptor(_itertools.chain.from_iterable(self))
     
     def fold(self, init, func):
         """

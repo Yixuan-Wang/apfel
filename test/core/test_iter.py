@@ -1,5 +1,3 @@
-import pytest
-
 from apfel.core.iter import Iterator, itrt
 
 
@@ -46,6 +44,21 @@ def test_iterator_any():
     assert iterator.any(lambda x: x % 2 == 0)
     assert iterator.next().unwrap() == 3
 
+def test_iterator_chain():
+    iterator1 = itrt([1, 2])
+    iterator2 = itrt([3, 4])
+    iterator3 = itrt([5, 6])
+    chained_iterator = iterator1.chain(iterator2, iterator3)
+
+    assert chained_iterator.next().unwrap() == 1
+    assert chained_iterator.next().unwrap() == 2
+    assert iterator1.next().is_nothing()  # original iterator1 is also exhausted
+    assert chained_iterator.next().unwrap() == 3
+    assert chained_iterator.next().unwrap() == 4
+    assert iterator2.next().is_nothing()  # original iterator2 is also exhausted
+    assert chained_iterator.next().unwrap() == 5
+    assert chained_iterator.next().unwrap() == 6
+    assert chained_iterator.next().is_nothing()
 
 def test_iterator_count():
     iterator = itrt([10, 20, 30, 40])
@@ -107,6 +120,21 @@ def test_iterator_find():
     assert iterator.find(lambda x: x <= 3).unwrap() == 3  # 1, 2 have been consumed
     assert iterator.find(lambda x: x > 10).is_nothing()  # no such element exists
     assert iterator.next().is_nothing()  # iterator is exhausted
+
+def test_iterator_flatten():
+    iter1 = iter([1, 2])
+    iter2 = itrt([3, 4])
+    iter3 = iter([5, 6])
+    nested_iterator = itrt([iter1, iter2, iter3])
+    flattened_iterator = nested_iterator.flatten()
+
+    assert flattened_iterator.next().unwrap() == 1
+    assert flattened_iterator.next().unwrap() == 2
+    assert flattened_iterator.next().unwrap() == 3
+    assert flattened_iterator.next().unwrap() == 4
+    assert flattened_iterator.next().unwrap() == 5
+    assert flattened_iterator.next().unwrap() == 6
+    assert flattened_iterator.next().is_nothing()
 
 def test_iterator_fold():
     iterator = itrt([1, 2, 3, 4, 5])

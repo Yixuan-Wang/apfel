@@ -40,6 +40,12 @@ class Iterator[I](_dispatch.ABCDispatch):
     #
     @overload
     @staticmethod
+    def chain[Item](self: VanillaIterator[Item], *others: VanillaIterator[Item]) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def chain(self, *others: Iterator[I]) -> Iterator[I]: ...
+    #
+    @overload
+    @staticmethod
     def count[Item](self: VanillaIterator[Item]) -> int: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def count(self) -> int: ...
@@ -67,6 +73,18 @@ class Iterator[I](_dispatch.ABCDispatch):
     def find[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def find(self, pred: Callable[[I], bool], /) -> Maybe[I]: ...
+    #
+    @overload
+    @staticmethod
+    def flatten[Item]( # pyright: ignore[reportInconsistentOverload]
+        self: Iterator[VanillaIterator[Item]], # pyright: ignore[reportSelfClsParameterName]
+    ) -> Iterator[Item]: ... 
+    @overload
+    def flatten[Item](self: Iterator[VanillaIterator[Item]]) -> Iterator[Item]: ...
+    @overload
+    def flatten[Item](self: Iterator[Iterable[Item]]) -> Iterator[Item]: ...
+    @overload
+    def flatten[Item](self: Iterator[Iterator[Item]]) -> Iterator[Item]: ...
     #
     @overload
     @staticmethod
