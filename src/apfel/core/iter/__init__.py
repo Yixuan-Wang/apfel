@@ -23,7 +23,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `copied`             | :material-close-circle: |
     | `count`              | [:material-check-circle:][apfel.core.iter.Iterator.count] |
     | `cycle`              | :material-close-circle: |
-    | `enumerate`          | :material-close-circle: |
+    | `enumerate`          | [:material-dots-horizontal-circle:][apfel.core.iter.Iterator.enumerate] |
     | `eq`                 | [:material-check-circle:][apfel.core.iter.Iterator.eq] |
     | `eq_by`              | :material-close-circle: |
     | `filter`             | [:material-check-circle:][apfel.core.iter.Iterator.filter] |
@@ -72,12 +72,12 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `rposition`          | :material-close-circle: |
     | `scan`               | :material-close-circle: |
     | `size_hint`          | :material-close-circle: |
-    | `skip`               | :material-close-circle: |
-    | `skip_while`         | :material-close-circle: |
-    | `step_by`            | :material-close-circle: |
+    | `skip`               | [:material-check-circle:][apfel.core.iter.Iterator.skip] |
+    | `skip_while`         | [:material-check-circle:][apfel.core.iter.Iterator.skip_while] |
+    | `step_by`            | [:material-check-circle:][apfel.core.iter.Iterator.step_by] |
     | `sum`                | :material-close-circle: |
-    | `take`               | :material-close-circle: |
-    | `take_while`         | :material-close-circle: |
+    | `take`               | [:material-check-circle:][apfel.core.iter.Iterator.take] |
+    | `take_while`         | [:material-check-circle:][apfel.core.iter.Iterator.take_while] |
     | `try_collect`        | :material-close-circle: |
     | `try_find`           | :material-close-circle: |
     | `try_fold`           | :material-close-circle: |
@@ -87,11 +87,11 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `zip`                | :material-close-circle: |
 """
 
-from abc import abstractmethod
 import builtins
 import collections.abc as _collections_abc
 import functools as _functools
 import itertools as _itertools
+from abc import abstractmethod
 from typing import Generic, TypeVar
 
 import apfel.container.maybe as _maybe
@@ -99,6 +99,7 @@ import apfel.container.result as _result
 import apfel.core.dispatch as _dispatch
 
 I = TypeVar("I")
+
 
 class Iterator(_dispatch.ABCDispatch, Generic[I]):
     """
@@ -116,7 +117,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         Return the next item of the iterator.
         If the iterator is exhausted, raise `StopIteration`.
-        
+
         Any implementor of [`collections.abc.Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator){ .ref .py } should be directly compatible with this interface.
 
         ```python
@@ -124,7 +125,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert next(iterator) == 1
         assert next(iterator) == 2
         assert next(iterator) == 3
-        
+
         try:
             next(iterator)
         except StopIteration:
@@ -175,7 +176,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
                 return _result.Result.make_err(n - i)
 
         return _result.Result.make_ok(None)
-    
+
     def all(self, pred, /):
         """
         Returns `True` if all elements of the iterator satisfy the predicate `f`.
@@ -188,14 +189,14 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         iterator = itrt([2, 4, 6])
         assert iterator.all(lambda x: x % 2 == 0)
         assert iterator.next().is_nothing()
-        
+
         iterator = itrt([2, 3, 6])
         assert not iterator.all(lambda x: x % 2 == 0)
         assert iterator.next().unwrap() == 6
         ```
         """
         return builtins.all(map(pred, self))
-    
+
     def any(self, pred, /):
         """
         Returns `True` if any element of the iterator satisfies the predicate `f`.
@@ -208,14 +209,14 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         iterator = itrt([1, 3, 5])
         assert not iterator.any(lambda x: x % 2 == 0)
         assert iterator.next().is_nothing()
-        
+
         iterator = itrt([1, 2, 3])
         assert iterator.any(lambda x: x % 2 == 0)
         assert iterator.next().unwrap() == 3
         ```
         """
         return builtins.any(map(pred, self))
-    
+
     def chain(self, *others):
         """
         Creates a new iterator that yields elements from this iterator until it is exhausted,
@@ -226,7 +227,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         iterator2 = itrt([3, 4])
         iterator3 = itrt([5, 6])
         chained_iterator = iterator1.chain(iterator2, iterator3)
-        
+
         assert chained_iterator.next().unwrap() == 1
         assert chained_iterator.next().unwrap() == 2
         assert iterator1.next().is_nothing()  # original iterator1 is also exhausted
@@ -239,7 +240,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return IteratorAdaptor(_itertools.chain(self, *others))
-    
+
     def count(self):
         """
         Counts the number of elements in the iterator, until it is exhausted.
@@ -257,7 +258,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def eq(self, other, /):
         """
         Checks if two iterators are equal by comparing their elements pairwise.
-        
+
         ```python
         iterator1 = itrt([1, 2, 3])
         iterator2 = itrt([1, 2, 3])
@@ -277,14 +278,33 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
                 return False
         except ValueError:
             return False
-        
+
         return True
+
+    def enumerate(self, init: int = 0):
+        """
+        Creates a new iterator that yields tuples of (index, element) pairs,
+        where index starts from 0 or the specified `init` value.
+
+        Args:
+            init (int): The starting index for enumeration. Default is 0.
+
+        ```python
+        iterator = itrt(['a', 'b', 'c'])
+        enumerated_iterator = iterator.enumerate()
+        assert enumerated_iterator.next().unwrap() == (0, 'a')
+        assert enumerated_iterator.next().unwrap() == (1, 'b')
+        assert enumerated_iterator.next().unwrap() == (2, 'c')
+        assert enumerated_iterator.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(builtins.enumerate(self))
 
     def __eq__(self, other):
         if not isinstance(other, _collections_abc.Iterator):
             return NotImplemented
         return self.eq(other)
-    
+
     def filter(self, pred, /):
         """
         Creates a new iterator that yields only the elements of the original iterator
@@ -319,7 +339,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
             if pred(item):
                 return _maybe.Maybe.make_just(item)
         return _maybe.Maybe.make_nothing()
-    
+
     def flatten(self: "_collections_abc.Iterable[Iterator[I]]") -> "Iterator[I]":
         """
         Flattens an iterable of iterators into a single iterator by yielding all elements
@@ -338,7 +358,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return IteratorAdaptor(_itertools.chain.from_iterable(self))
-    
+
     def fold(self, init, func):
         """
         Fold (reduce) the elements of the iterator using the accumulation function `func`,
@@ -361,7 +381,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return _functools.reduce(func, self, init)
-    
+
     def for_each(self, func, /):
         """
         Applies the function `func` to each element of the iterator.
@@ -376,7 +396,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         for item in self:
             func(item)
-    
+
     def map(self, func, /):
         """
         Creates a new iterator that applies the function `func` to each element of the original iterator.
@@ -392,7 +412,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return IteratorAdaptor(builtins.map(func, self))
-    
+
     def reduce(self, func, /):
         """
         Reduce the elements of the iterator using the accumulation function `func` and returns a [`Maybe`](apfel.container.maybe.Maybe).
@@ -415,6 +435,108 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
             return _maybe.Maybe.make_just(_functools.reduce(func, self))
         except TypeError:
             return _maybe.Maybe.make_nothing()
+
+    def skip(self, n: int, /):
+        """
+        Creates a new iterator that skips the first `n` elements of the original iterator.
+        If the original iterator has fewer than `n` elements, all elements are skipped.
+
+        Args:
+            n (int): The number of elements to skip from the start of the iterator.
+
+        Raises:
+            ValueError: If `n` is negative.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        skipped_iterator = iterator.skip(2)
+        assert skipped_iterator.next().unwrap() == 3
+        assert skipped_iterator.next().unwrap() == 4
+        assert skipped_iterator.next().unwrap() == 5
+        assert skipped_iterator.next().is_nothing()
+        assert iterator.next().is_nothing()  # original iterator is also exhausted
+        ```
+        """
+        if n < 0:
+            raise ValueError("n must be non-negative")
+        return IteratorAdaptor(_itertools.islice(self, n, None))
+
+    def skip_while(self, pred, /):
+        """
+        Creates a new iterator that skips elements while the predicate `pred` returns `True`.
+        Once the predicate returns `False`, all remaining elements are yielded.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 1, 2])
+        skipped_iterator = iterator.skip_while(lambda x: x < 4)
+        assert skipped_iterator.next().unwrap() == 4
+        assert skipped_iterator.next().unwrap() == 1
+        assert skipped_iterator.next().unwrap() == 2
+        assert skipped_iterator.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(_itertools.dropwhile(pred, self))
+
+    def step_by(self, n: int, /):
+        """
+        Creates a new iterator that yields every `n`-th element of the original iterator.
+        The first element (index 0) is always yielded.
+        It does not guarantee the skipped elements are consumed before or after yielding the next element.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5, 6, 7, 8])
+        stepped_iterator = iterator.step_by(2)
+        assert stepped_iterator.next().unwrap() == 1
+        assert stepped_iterator.next().unwrap() == 3
+        assert stepped_iterator.next().unwrap() == 5
+        assert stepped_iterator.next().unwrap() == 7
+        assert stepped_iterator.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(_itertools.islice(self, 0, None, n))
+
+    def take(self, n: int, /):
+        """
+        Creates a new iterator that stops after the first `n` elements of the original iterator.
+        If the original iterator has fewer than `n` elements, all elements are yielded.
+
+        Args:
+            n (int): The number of elements to take from the start of the iterator.
+
+        Raises:
+            ValueError: If `n` is negative.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        taken_iterator = iterator.take(3)
+        assert taken_iterator.next().unwrap() == 1
+        assert taken_iterator.next().unwrap() == 2
+        assert taken_iterator.next().unwrap() == 3
+        assert taken_iterator.next().is_nothing()
+        assert iterator.next().unwrap() == 4  # original iterator continues from where take stopped
+        ```
+        """
+        if n < 0:
+            raise ValueError("n must be non-negative")
+        return IteratorAdaptor(_itertools.islice(self, n))
+
+    def take_while(self, pred, /):
+        """
+        Creates a new iterator that yields elements while the predicate `pred` returns `True`.
+        Once the predicate returns `False`, iteration stops.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 1, 2])
+        taken_iterator = iterator.take_while(lambda x: x < 4)
+        assert taken_iterator.next().unwrap() == 1
+        assert taken_iterator.next().unwrap() == 2
+        assert taken_iterator.next().unwrap() == 3
+        assert taken_iterator.next().is_nothing()
+        assert iterator.next().unwrap() == 1  # elements after the predicate failed
+        ```
+        """
+        return IteratorAdaptor(_itertools.takewhile(pred, self))
+
 
 class IteratorAdaptor(Iterator):
     __slots__ = ("_iterator",)

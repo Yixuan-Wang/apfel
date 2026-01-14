@@ -52,6 +52,12 @@ class Iterator[I](_dispatch.ABCDispatch):
     #
     @overload
     @staticmethod
+    def enumerate[Item](self: VanillaIterator[Item], init: int = 0) -> Iterator[tuple[int, Item]]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def enumerate(self, init: int = 0) -> Iterator[tuple[int, I]]: ...
+    #
+    @overload
+    @staticmethod
     def eq[Item](self: VanillaIterator[Item], other: VanillaIterator[Item], /) -> bool: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def eq(self, other: Iterator[I], /) -> bool: ...
@@ -109,6 +115,36 @@ class Iterator[I](_dispatch.ABCDispatch):
     def reduce[Item](self: VanillaIterator[Item], func: Callable[[Item, Item], Item]) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def reduce(self, func: Callable[[I, I], I]) -> Maybe[I]: ...
+    #
+    @overload
+    @staticmethod
+    def skip[Item](self: VanillaIterator[Item], n: int, /) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def skip(self, n: int, /) -> Iterator[I]: ...
+    #
+    @overload
+    @staticmethod
+    def skip_while[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def skip_while(self, pred: Callable[[I], bool], /) -> Iterator[I]: ...
+    #
+    @overload
+    @staticmethod
+    def step_by[Item](self: VanillaIterator[Item], step: int, /) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def step_by(self, step: int, /) -> Iterator[I]: ...
+    #
+    @overload
+    @staticmethod
+    def take[Item](self: VanillaIterator[Item], n: int, /) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def take(self, n: int, /) -> Iterator[I]: ...
+    #
+    @overload
+    @staticmethod
+    def take_while[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Iterator[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def take_while(self, pred: Callable[[I], bool], /) -> Iterator[I]: ...
 
 class IteratorAdaptor[I](Iterator[I], VanillaIterator[I]):
     def __init__(self, iterator: VanillaIterator[I]): ...

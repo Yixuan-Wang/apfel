@@ -1,3 +1,4 @@
+import pytest
 from apfel.core.iter import Iterator, itrt
 
 
@@ -106,6 +107,17 @@ def test_iterator_eq():
     lst = [1, 2, 3]
     assert iterator1 != lst
 
+def test_iterator_enumerate():
+    iterator = itrt(['a', 'b', 'c'])
+    enumerated_iterator = iterator.enumerate()
+    assert enumerated_iterator.next().unwrap() == (0, 'a')
+    assert enumerated_iterator.next().unwrap() == (1, 'b')
+    assert enumerated_iterator.next().unwrap() == (2, 'c')
+    assert enumerated_iterator.next().is_nothing()
+    
+    iterator = itrt(['a'])
+    assert iterator.enumerate(1).next().unwrap() == (0, 'a')
+
 def test_iterator_filter():
     iterator = itrt([1, 2, 3, 4, 5])
     filtered_iterator = iterator.filter(lambda x: x % 2 == 0)
@@ -182,3 +194,83 @@ def test_iterator_reduce():
     iterator = itrt([])
     result = iterator.reduce(lambda acc, x: acc + x)
     assert result.is_nothing()  # no elements to reduce
+
+def test_iterator_skip():
+    iterator = itrt([1, 2, 3, 4, 5])
+    skipped_iterator = iterator.skip(2)
+    assert skipped_iterator.next().unwrap() == 3
+    assert skipped_iterator.next().unwrap() == 4
+    assert skipped_iterator.next().unwrap() == 5
+    assert skipped_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()
+    
+    iterator = itrt([1, 2])
+    skipped_iterator = iterator.skip(5)
+    assert skipped_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()
+    
+    with pytest.raises(ValueError):
+        iterator = itrt([1, 2, 3])
+        skipped_iterator = iterator.skip(-1)
+
+def test_iterator_skip_while():
+    iterator = itrt([1, 2, 3, 4, 1, 2])
+    skipped_iterator = iterator.skip_while(lambda x: x < 4)
+    assert skipped_iterator.next().unwrap() == 4
+    assert skipped_iterator.next().unwrap() == 1
+    assert skipped_iterator.next().unwrap() == 2
+    assert skipped_iterator.next().is_nothing()
+
+def test_iterator_step_by():
+    iterator = itrt([1, 2, 3, 4, 5, 6, 7, 8])
+    stepped_iterator = iterator.step_by(2)
+    assert stepped_iterator.next().unwrap() == 1
+    assert stepped_iterator.next().unwrap() == 3
+    assert stepped_iterator.next().unwrap() == 5
+    assert stepped_iterator.next().unwrap() == 7
+    assert stepped_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()  # original iterator is also exhausted
+    
+    iterator = itrt([10, 20, 30])
+    stepped_iterator = iterator.step_by(3)
+    assert stepped_iterator.next().unwrap() == 10
+    assert stepped_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()  # original iterator is also exhausted
+
+    with pytest.raises(ValueError):
+        iterator = itrt([1, 2, 3])
+        stepped_iterator = iterator.step_by(0)
+
+def test_iterator_take():
+    iterator = itrt([1, 2, 3, 4, 5])
+    taken_iterator = iterator.take(3)
+    assert taken_iterator.next().unwrap() == 1
+    assert taken_iterator.next().unwrap() == 2
+    assert taken_iterator.next().unwrap() == 3
+    assert taken_iterator.next().is_nothing()
+    assert iterator.next().unwrap() == 4  # original iterator continues from where take stopped
+
+    iterator = itrt([1, 2])
+    taken_iterator = iterator.take(5)
+    assert taken_iterator.next().unwrap() == 1
+    assert taken_iterator.next().unwrap() == 2
+    assert taken_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()  # original iterator is also exhausted
+    
+    with pytest.raises(ValueError):
+        iterator = itrt([1, 2, 3])
+        taken_iterator = iterator.take(-1)
+
+def test_iterator_take_while():
+    iterator = itrt([2, 4, 6, 7, 8])
+    taken_iterator = iterator.take_while(lambda x: x % 2 == 0)
+    assert taken_iterator.next().unwrap() == 2
+    assert taken_iterator.next().unwrap() == 4
+    assert taken_iterator.next().unwrap() == 6
+    assert taken_iterator.next().is_nothing()
+    assert iterator.next().unwrap() == 8  # original iterator continues from where take_while stopped
+
+    iterator = itrt([1, 3, 5])
+    taken_iterator = iterator.take_while(lambda x: x % 2 == 0)
+    assert taken_iterator.next().is_nothing()
+    assert iterator.next().unwrap() == 3 # original iterator is shifted once
