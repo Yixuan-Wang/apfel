@@ -298,7 +298,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert enumerated_iterator.next().is_nothing()
         ```
         """
-        return IteratorAdaptor(builtins.enumerate(self))
+        return IteratorAdaptor(builtins.enumerate(self, init))
 
     def __eq__(self, other):
         if not isinstance(other, _collections_abc.Iterator):

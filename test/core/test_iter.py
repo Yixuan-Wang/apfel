@@ -116,7 +116,7 @@ def test_iterator_enumerate():
     assert enumerated_iterator.next().is_nothing()
     
     iterator = itrt(['a'])
-    assert iterator.enumerate(1).next().unwrap() == (0, 'a')
+    assert iterator.enumerate(1).next().unwrap() == (1, 'a')
 
 def test_iterator_filter():
     iterator = itrt([1, 2, 3, 4, 5])
