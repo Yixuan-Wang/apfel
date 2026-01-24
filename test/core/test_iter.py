@@ -171,6 +171,14 @@ def test_iterator_for_each(capsys):
     assert captured.out == "1\n2\n3\n4\n5\n"
     assert iterator.next().is_nothing()  # iterator is exhausted
 
+def test_iterator_last():
+    iterator = itrt([1, 2, 3, 4, 5])
+    assert iterator.last().unwrap() == 5
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([])
+    assert iterator.last().is_nothing()
+
 def test_iterator_map():
     iterator = itrt([1, 2, 3])
     mapped_iterator = iterator.map(lambda x: x * 2)
@@ -179,6 +187,27 @@ def test_iterator_map():
     assert mapped_iterator.next().unwrap() == 6
     assert mapped_iterator.next().is_nothing()
     assert iterator.next().is_nothing()  # original iterator is also exhausted
+
+def test_iterator_nth():
+    iterator = itrt([1, 2, 3, 4, 5])
+    assert iterator.nth(2).unwrap() == 3
+    assert iterator.next().unwrap() == 4
+    
+    iterator = itrt([1, 2])
+    assert iterator.nth(5).is_nothing()
+
+def test_iterator_pipe():
+    iterator = itrt([1, 2, 3, 4, 5])
+    result = iterator.pipe(sum, start=10)
+    assert result == 25  # 10 + 1 + 2 + 3 + 4 + 5
+
+    iterator = itrt([1, 2, 3])
+    result = iterator.pipe(max)
+    assert result == 3
+
+    iterator = itrt([1, 2, 3, 4])
+    result = iterator.map(str).pipe("-".join)
+    assert result == "1-2-3-4"
 
 def test_iterator_reduce():
     iterator = itrt([1, 2, 3, 4, 5])

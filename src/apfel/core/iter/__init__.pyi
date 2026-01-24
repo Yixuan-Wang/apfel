@@ -1,6 +1,6 @@
 from abc import abstractmethod
 from collections.abc import Callable, Iterable, Iterator as VanillaIterator
-from typing import TYPE_CHECKING, Any, Self, overload
+from typing import TYPE_CHECKING, Any, Self, overload, Concatenate
 
 from apfel.container.maybe import Maybe
 from apfel.container.result import Result
@@ -106,9 +106,39 @@ class Iterator[I](_dispatch.ABCDispatch):
     #
     @overload
     @staticmethod
+    def last[Item](self: VanillaIterator[Item]) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def last(self) -> Maybe[I]: ...
+    #
+    @overload
+    @staticmethod
     def map[Item, U](self: VanillaIterator[Item], func: Callable[[Item], U]) -> Iterator[U]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def map[U](self, func: Callable[[I], U]) -> Iterator[U]: ...
+    #
+    @overload
+    @staticmethod
+    def nth[Item](self: VanillaIterator[Item], n: int, /) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def nth(self, n: int, /) -> Maybe[I]: ...
+    #
+    @overload
+    @staticmethod
+    def pipe[Item, **P, T](  # pyright: ignore[reportInconsistentOverload]
+        self: VanillaIterator[Item],  # pyright: ignore[reportSelfClsParameterName]
+        func: Callable[Concatenate[Iterable[Item], P], T],
+        /,
+        *args: P.args,
+        **kwargs: P.kwargs,
+    ) -> T: ...
+    @overload
+    def pipe[**P, T](  # pyright: ignore[reportInconsistentOverload]
+        self,
+        func: Callable[Concatenate[Iterable[I], P], T],
+        /,
+        *args: P.args,
+        **kwargs: P.kwargs,
+    ) -> T: ...
     #
     @overload
     @staticmethod

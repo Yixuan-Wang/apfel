@@ -59,14 +59,14 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `ne`                 | :material-close-circle: |
     | `next`               | [:material-check-circle:][apfel.core.iter.Iterator.next] |
     | `next_chunk`         | :material-close-circle: |
-    | `nth`                | :material-close-circle: |
+    | `nth`                | [:material-check-circle:][apfel.core.iter.Iterator.nth] |
     | `partial_cmp`        | :material-close-circle: |
     | `partial_cmp_by`     | :material-close-circle: |
     | `partition`          | :material-close-circle: |
     | `partition_in_place` | :material-close-circle: |
     | `peekable`           | :material-close-circle: |
     | `position`           | :material-close-circle: |
-    | `product`            | :material-close-circle: |
+    | `product`            | [:material-sync-circle: `pipe(math.product)`][apfel.core.iter.Iterator.pipe] |
     | `reduce`             | [:material-check-circle:][apfel.core.iter.Iterator.reduce] |
     | `rev`                | :material-close-circle: |
     | `rposition`          | :material-close-circle: |
@@ -75,7 +75,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `skip`               | [:material-check-circle:][apfel.core.iter.Iterator.skip] |
     | `skip_while`         | [:material-check-circle:][apfel.core.iter.Iterator.skip_while] |
     | `step_by`            | [:material-check-circle:][apfel.core.iter.Iterator.step_by] |
-    | `sum`                | :material-close-circle: |
+    | `sum`                | [:material-sync-circle: `pipe(sum)`][apfel.core.iter.Iterator.pipe]|
     | `take`               | [:material-check-circle:][apfel.core.iter.Iterator.take] |
     | `take_while`         | [:material-check-circle:][apfel.core.iter.Iterator.take_while] |
     | `try_collect`        | :material-close-circle: |
@@ -99,6 +99,13 @@ import apfel.container.result as _result
 import apfel.core.dispatch as _dispatch
 
 I = TypeVar("I")
+
+
+def _func_iterator_last(acc: I, x: I) -> I:
+    return x
+
+
+_sentinal_iterator_last = object()
 
 
 class Iterator(_dispatch.ABCDispatch, Generic[I]):
@@ -169,11 +176,9 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert iterator.advance_by(6).unwrap_err() == 4
         ```
         """
-        for i in range(n):
-            try:
-                next(self)
-            except StopIteration:
-                return _result.Result.make_err(n - i)
+        consumed = sum(1 for _ in _itertools.islice(self, n))
+        if consumed < n:
+            return _result.Result.make_err(n - consumed)
 
         return _result.Result.make_ok(None)
 
@@ -397,6 +402,28 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         for item in self:
             func(item)
 
+    def last(self):
+        """
+        Returns the last element of the iterator, wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        If the iterator is empty, returns `Nothing`.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        assert iterator.last().unwrap() == 5
+        assert iterator.next().is_nothing()  # iterator is exhausted
+
+        iterator = itrt([])
+        assert iterator.last().is_nothing()
+        ```
+        """
+        global _sentinal_iterator_last, _func_iterator_last
+        last = _functools.reduce(_func_iterator_last, self, _sentinal_iterator_last)  # type: ignore
+        return (
+            _maybe.Maybe.make_just(last)
+            if last is not _sentinal_iterator_last
+            else _maybe.Maybe.make_nothing()
+        )
+
     def map(self, func, /):
         """
         Creates a new iterator that applies the function `func` to each element of the original iterator.
@@ -412,6 +439,49 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return IteratorAdaptor(builtins.map(func, self))
+
+    def nth(self, n: int, /):
+        """
+        Returns the `n`-th element of the iterator (0-indexed), wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        If the iterator has fewer than `n + 1` elements, returns `Nothing`.
+
+        Note:
+            This method consumes the first `n + 1` elements of the iterator.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        assert iterator.nth(2).unwrap() == 3  # gets index 2 (third element)
+        assert iterator.next().unwrap() == 4  # continues from after nth element
+
+        iterator = itrt([1, 2])
+        assert iterator.nth(5).is_nothing()  # not enough elements
+        ```
+        """
+        try:
+            return _maybe.Maybe.make_just(next(_itertools.islice(self, n, None)))
+        except StopIteration:
+            return _maybe.Maybe.make_nothing()
+
+    def pipe(self, func, *args, **kwargs):
+        """
+        Pipes the iterator into the function `func`, passing any additional positional and keyword arguments.
+        This allows for chaining operations in a functional style.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        result = iterator.pipe(sum, start=10)
+        assert result == 25  # 10 + 1 + 2 + 3 + 4 + 5
+
+        iterator = itrt([1, 2, 3])
+        result = iterator.pipe(max)
+        assert result == 3
+
+        iterator = itrt([1, 2, 3, 4])
+        result = iterator.map(str).pipe("-".join)
+        assert result == "1-2-3-4"
+        ```
+        """
+        return func(self, *args, **kwargs)
 
     def reduce(self, func, /):
         """
