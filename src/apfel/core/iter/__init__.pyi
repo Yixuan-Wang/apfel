@@ -142,6 +142,12 @@ class Iterator[I](_dispatch.ABCDispatch):
     #
     @overload
     @staticmethod
+    def position[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Maybe[int]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def position(self, pred: Callable[[I], bool], /) -> Maybe[int]: ...
+    #
+    @overload
+    @staticmethod
     def reduce[Item](self: VanillaIterator[Item], func: Callable[[Item, Item], Item]) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def reduce(self, func: Callable[[I, I], I]) -> Maybe[I]: ...

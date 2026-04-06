@@ -209,6 +209,21 @@ def test_iterator_pipe():
     result = iterator.map(str).pipe("-".join)
     assert result == "1-2-3-4"
 
+def test_iterator_position():
+    iterator = itrt([1, 2, 3, 4, 5])
+    assert iterator.position(lambda x: x % 2 == 0).unwrap() == 1
+    assert iterator.next().unwrap() == 3  # 1, 2 have been consumed
+
+    iterator = itrt([1, 2, 3])
+    assert iterator.position(lambda x: x > 10).is_nothing()
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([])
+    assert iterator.position(lambda x: True).is_nothing()
+
+    iterator = itrt([5, 3, 1])
+    assert iterator.position(lambda x: x == 5).unwrap() == 0  # first element matches
+
 def test_iterator_reduce():
     iterator = itrt([1, 2, 3, 4, 5])
     result = iterator.reduce(lambda acc, x: acc + x)

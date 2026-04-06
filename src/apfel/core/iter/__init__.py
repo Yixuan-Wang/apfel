@@ -44,7 +44,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `is_sorted`          | :material-close-circle: |
     | `is_sorted_by`       | :material-close-circle: |
     | `is_sorted_by_key`   | :material-close-circle: |
-    | `last`               | :material-close-circle: |
+    | `last`               | [:material-check-circle:][apfel.core.iter.Iterator.last] |
     | `le`                 | :material-close-circle: |
     | `lt`                 | :material-close-circle: |
     | `map`                | [:material-check-circle:][apfel.core.iter.Iterator.map] |
@@ -65,7 +65,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `partition`          | :material-close-circle: |
     | `partition_in_place` | :material-close-circle: |
     | `peekable`           | :material-close-circle: |
-    | `position`           | :material-close-circle: |
+    | `position`           | [:material-check-circle:][apfel.core.iter.Iterator.position] |
     | `product`            | [:material-sync-circle: `pipe(math.product)`][apfel.core.iter.Iterator.pipe] |
     | `reduce`             | [:material-check-circle:][apfel.core.iter.Iterator.reduce] |
     | `rev`                | :material-close-circle: |
@@ -484,6 +484,27 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return func(self, *args, **kwargs)
+
+    def position(self, pred, /):
+        """
+        Returns the index of the first element in the iterator that satisfies the predicate `pred`,
+        wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        If no such element is found, returns `Nothing`.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4, 5])
+        assert iterator.position(lambda x: x % 2 == 0).unwrap() == 1
+        assert iterator.next().unwrap() == 3  # 1, 2 have been consumed
+
+        iterator = itrt([1, 2, 3])
+        assert iterator.position(lambda x: x > 10).is_nothing()
+        assert iterator.next().is_nothing()  # iterator is exhausted
+        ```
+        """
+        for i, item in builtins.enumerate(self):
+            if pred(item):
+                return _maybe.Maybe.make_just(i)
+        return _maybe.Maybe.make_nothing()
 
     def reduce(self, func, /):
         """
