@@ -176,11 +176,13 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert iterator.advance_by(6).unwrap_err() == 4
         ```
         """
-        consumed = sum(1 for _ in _itertools.islice(self, n))
-        if consumed < n:
-            return _result.Result.make_err(n - consumed)
-
-        return _result.Result.make_ok(None)
+        i = 0
+        try:
+            for i in range(n):
+                next(self)
+            return _result.Result.make_ok(None)
+        except StopIteration:
+            return _result.Result.make_err(n - i)
 
     def all(self, pred, /):
         """
