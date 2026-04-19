@@ -45,6 +45,9 @@ extend-select = ["ISC", "COM818"]
 ignore = ["E741", "F821"]
 flake8-implicit-str-concat.allow-multiline = false
 
+[tool.ty.environment]
+python-version = "3.12"
+
 [tool.tox]
 requires = ["tox>=4"]
 env_list = ["3.14", "3.13", "3.12", "3.11"]

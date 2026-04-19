@@ -263,7 +263,7 @@ def test_iterator_nth():
 
 def test_iterator_pipe():
     iterator = itrt([1, 2, 3, 4, 5])
-    result = iterator.pipe(sum, start=10)
+    result = iterator.pipe(sum, 10) # ty: ignore[no-matching-overload]
     assert result == 25  # 10 + 1 + 2 + 3 + 4 + 5
 
     iterator = itrt([1, 2, 3])
