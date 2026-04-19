@@ -393,6 +393,25 @@ def test_iterator_take_while():
     assert taken_iterator.next().is_nothing()
     assert iterator.next().unwrap() == 3 # original iterator is shifted once
 
+def test_iterator_tap():
+    result = []
+    iterator = itrt([1, 2, 3])
+    tapped = iterator.tap(result.append)
+    assert tapped.next().unwrap() == 1
+    assert result == [1]
+    assert tapped.next().unwrap() == 2
+    assert result == [1, 2]
+    assert tapped.next().unwrap() == 3
+    assert result == [1, 2, 3]
+    assert tapped.next().is_nothing()
+
+    counts = []
+    tapped = itrt([10, 20, 30]).tap(counts.append).map(lambda x: x * 2)
+    assert list(tapped) == [20, 40, 60]
+    assert counts == [10, 20, 30]
+
+    assert itrt([]).tap(lambda x: None).next().is_nothing()
+
 def test_iterator_zip():
     iterator1 = itrt([1, 2, 3])
     iterator2 = itrt([4, 5, 6])

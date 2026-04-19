@@ -37,7 +37,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `fuse`               | :material-close-circle: |
     | `ge`                 | :material-close-circle: |
     | `gt`                 | :material-close-circle: |
-    | `inspect`            | :material-close-circle: |
+    | `inspect`            | [:material-arrow-right-circle: `tap`][apfel.core.iter.Iterator.tap] |
     | `intersperse`        | :material-close-circle: |
     | `intersperse_with`   | :material-close-circle: |
     | `is_partitioned`     | :material-close-circle: |
@@ -697,6 +697,30 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         if n < 0:
             raise ValueError("n must be non-negative")
         return IteratorAdaptor(_itertools.islice(self, n))
+
+    def tap(self, func, /):
+        """
+        Creates a new iterator that calls `func` on each element for side effects,
+        passing the element through unchanged.
+
+        ```python
+        result = []
+        iterator = itrt([1, 2, 3])
+        tapped = iterator.tap(result.append)
+        assert tapped.next().unwrap() == 1
+        assert result == [1]
+        assert tapped.next().unwrap() == 2
+        assert result == [1, 2]
+        assert tapped.next().unwrap() == 3
+        assert result == [1, 2, 3]
+        assert tapped.next().is_nothing()
+        ```
+        """
+        def _gen():
+            for item in self:
+                func(item)
+                yield item
+        return IteratorAdaptor(_gen())
 
     def take_while(self, pred, /):
         """
