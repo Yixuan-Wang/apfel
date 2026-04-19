@@ -76,9 +76,28 @@ class Iterator[I](_dispatch.ABCDispatch):
     #
     @overload
     @staticmethod
+    def filter_map[Item, U](self: VanillaIterator[Item], pred: Callable[[Item], Maybe[U]], /) -> Iterator[U]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def filter_map[U](self, pred: Callable[[I], Maybe[U]], /) -> Iterator[U]: ...
+    #
+    @overload
+    @staticmethod
     def find[Item](self: VanillaIterator[Item], pred: Callable[[Item], bool], /) -> Maybe[Item]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
     @overload
     def find(self, pred: Callable[[I], bool], /) -> Maybe[I]: ...
+    #
+    @overload
+    @staticmethod
+    def find_map[Item, U](self: VanillaIterator[Item], pred: Callable[[Item], Maybe[U]], /) -> Maybe[U]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def find_map[U](self, pred: Callable[[I], Maybe[U]], /) -> Maybe[U]: ...
+    #
+
+    @overload
+    @staticmethod
+    def flat_map[Item, U](self: VanillaIterator[Item], func: Callable[[Item], Iterable[U]], /) -> Iterator[U]: ... # pyright: ignore[reportInconsistentOverload, reportSelfClsParameterName]
+    @overload
+    def flat_map[U](self, func: Callable[[I], Iterable[U]], /) -> Iterator[U]: ...
     #
     @overload
     @staticmethod

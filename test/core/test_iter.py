@@ -1,4 +1,5 @@
 import pytest
+from apfel import identity
 from apfel.core.iter import Iterator, itrt
 
 
@@ -126,12 +127,76 @@ def test_iterator_filter():
     assert filtered_iterator.next().is_nothing()
     assert iterator.next().is_nothing()  # original iterator is also exhausted
 
+def test_iterator_filter_map():
+    from apfel.container.maybe import Maybe
+
+    def try_parse(s):
+        try:
+            return Maybe.make_just(int(s))
+        except ValueError:
+            return Maybe.make_nothing()
+
+    iterator = itrt(["1", "two", "3", "four"])
+    filtered = iterator.filter_map(try_parse)
+    assert filtered.next().unwrap() == 1
+    assert filtered.next().unwrap() == 3
+    assert filtered.next().is_nothing()
+
+    iterator = itrt(["a", "b"])
+    assert iterator.filter_map(try_parse).next().is_nothing()
+
+    iterator = itrt([])
+    assert iterator.filter_map(try_parse).next().is_nothing()
+
 def test_iterator_find():
     iterator = itrt([1, 2, 3, 4, 5])
     assert iterator.find(lambda x: x % 2 == 0).unwrap() == 2
     assert iterator.find(lambda x: x <= 3).unwrap() == 3  # 1, 2 have been consumed
     assert iterator.find(lambda x: x > 10).is_nothing()  # no such element exists
     assert iterator.next().is_nothing()  # iterator is exhausted
+
+def test_iterator_find_map():
+    from apfel.container.maybe import Maybe
+
+    def try_parse(s):
+        try:
+            return Maybe.make_just(int(s))
+        except ValueError:
+            return Maybe.make_nothing()
+
+    iterator = itrt(["lol", "NaN", "2", "5"])
+    assert iterator.find_map(try_parse).unwrap() == 2
+    assert iterator.next().unwrap() == "5"  # "2" consumed, "5" remains
+
+    iterator = itrt(["a", "b", "c"])
+    assert iterator.find_map(try_parse).is_nothing()
+    assert iterator.next().is_nothing()  # iterator is exhausted
+
+    iterator = itrt([])
+    assert iterator.find_map(try_parse).is_nothing()
+
+def test_iterator_flat_map():
+    iterator = itrt([1, 2, 3])
+    result = iterator.flat_map(lambda x: [x, x * 10])
+    assert result.next().unwrap() == 1
+    assert result.next().unwrap() == 10
+    assert result.next().unwrap() == 2
+    assert result.next().unwrap() == 20
+    assert result.next().unwrap() == 3
+    assert result.next().unwrap() == 30
+    assert result.next().is_nothing()
+
+    iterator = itrt([[1, 2], [3], [4, 5]])
+    result = iterator.flat_map(identity)
+    assert result.next().unwrap() == 1
+    assert result.next().unwrap() == 2
+    assert result.next().unwrap() == 3
+    assert result.next().unwrap() == 4
+    assert result.next().unwrap() == 5
+    assert result.next().is_nothing()
+
+    iterator = itrt([])
+    assert iterator.flat_map(lambda x: itrt([x])).next().is_nothing()
 
 def test_iterator_flatten():
     iter1 = iter([1, 2])

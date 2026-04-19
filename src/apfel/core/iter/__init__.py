@@ -27,10 +27,10 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `eq`                 | [:material-check-circle:][apfel.core.iter.Iterator.eq] |
     | `eq_by`              | :material-close-circle: |
     | `filter`             | [:material-check-circle:][apfel.core.iter.Iterator.filter] |
-    | `filter_map`         | :material-close-circle: |
+    | `filter_map`         | [:material-check-circle:][apfel.core.iter.Iterator.filter_map] |
     | `find`               | [:material-check-circle:][apfel.core.iter.Iterator.find] |
-    | `find_map`           | :material-close-circle: |
-    | `flat_map`           | :material-close-circle: |
+    | `find_map`           | [:material-check-circle:][apfel.core.iter.Iterator.find_map] |
+    | `flat_map`           | [:material-check-circle:][apfel.core.iter.Iterator.flat_map] |
     | `flatten`            | [:material-check-circle:][apfel.core.iter.Iterator.flatten] |
     | `fold`               | [:material-check-circle:][apfel.core.iter.Iterator.fold] |
     | `for_each`           | [:material-check-circle:][apfel.core.iter.Iterator.for_each] |
@@ -328,6 +328,34 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         return IteratorAdaptor(builtins.filter(pred, self))
 
+    def filter_map(self, pred, /):
+        """
+        Creates a new iterator that applies `pred` to each element and yields the unwrapped
+        value for each result that is a [`Just`](apfel.container.maybe.Maybe), skipping `Nothing`.
+
+        ```python
+        from apfel.container.maybe import Maybe
+
+        def try_parse(s):
+            try:
+                return Maybe.make_just(int(s))
+            except ValueError:
+                return Maybe.make_nothing()
+
+        iterator = itrt(["1", "two", "3", "four"])
+        filtered = iterator.filter_map(try_parse)
+        assert filtered.next().unwrap() == 1
+        assert filtered.next().unwrap() == 3
+        assert filtered.next().is_nothing()
+        ```
+        """
+        def _gen():
+            for item in self:
+                result = pred(item)
+                if result.is_just():
+                    yield result.unwrap()
+        return IteratorAdaptor(_gen())
+
     def find(self, pred, /):
         """
         Returns the first element in the iterator that satisfies the predicate `f`,
@@ -346,6 +374,50 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
             if pred(item):
                 return _maybe.Maybe.make_just(item)
         return _maybe.Maybe.make_nothing()
+
+    def find_map(self, pred, /):
+        """
+        Applies the function `pred` to each element of the iterator and returns the first
+        result that is a [`Just`](apfel.container.maybe.Maybe), unwrapped.
+        If no element produces a `Just`, returns `Nothing`.
+
+        ```python
+        from apfel import Maybe
+
+        iterator = itrt(["lol", "NaN", "2", "5"])
+        def try_parse(s):
+            try:
+                return Maybe.make_just(int(s))
+            except ValueError:
+                return Maybe.make_nothing()
+
+        assert iterator.find_map(try_parse).unwrap() == 2
+        ```
+        """
+        for item in self:
+            result = pred(item)
+            if result.is_just():
+                return result
+        return _maybe.Maybe.make_nothing()
+
+    def flat_map(self, func, /):
+        """
+        Creates a new iterator that applies `func` to each element and flattens the results.
+        Equivalent to `.map(func).flatten()`.
+
+        ```python
+        iterator = itrt([1, 2, 3])
+        result = iterator.flat_map(lambda x: itrt([x, x * 10]))
+        assert result.next().unwrap() == 1
+        assert result.next().unwrap() == 10
+        assert result.next().unwrap() == 2
+        assert result.next().unwrap() == 20
+        assert result.next().unwrap() == 3
+        assert result.next().unwrap() == 30
+        assert result.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(_itertools.chain.from_iterable(builtins.map(func, self)))
 
     def flatten(self: "_collections_abc.Iterable[Iterator[I]]") -> "Iterator[I]":
         """
