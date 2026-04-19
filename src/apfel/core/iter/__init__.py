@@ -84,7 +84,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `try_for_each`       | :material-close-circle: |
     | `try_reduce`         | :material-close-circle: |
     | `unzip`              | :material-close-circle: |
-    | `zip`                | :material-close-circle: |
+    | `zip`                | [:material-check-circle:][apfel.core.iter.Iterator.zip] |
 """
 
 import builtins
@@ -715,6 +715,43 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         return IteratorAdaptor(_itertools.takewhile(pred, self))
 
+    def zip(self, *others):
+        """
+        Zips up this iterator with one or more other iterables into a single iterator of tuples.
+        Iteration stops whenever an iterator or iterable is exhausted.
+
+        The iterators are guaranteed to be consumed in the order they are passed in.
+
+        Warning:
+            The original iterators should not be pulled after being zipped together, as some 
+            of their elements may have been consumed and discarded during the zipping process.
+
+        ```python
+        iterator1 = itrt([1, 2, 3])
+        iterator2 = itrt([4, 5, 6])
+        zipped = iterator1.zip(iterator2)
+        assert zipped.next().unwrap() == (1, 4)
+        assert zipped.next().unwrap() == (2, 5)
+        assert zipped.next().unwrap() == (3, 6)
+        assert zipped.next().is_nothing()
+
+        iterator1 = itrt([1, 2, 3])
+        iterator2 = itrt(['a', 'b'])
+        zipped = iterator1.zip(iterator2)
+        assert zipped.next().unwrap() == (1, 'a')
+        assert zipped.next().unwrap() == (2, 'b')
+        assert zipped.next().is_nothing()
+        assert iterator1.next().is_nothing() # 3 is consumed and discarded during zipping
+
+        iterator = itrt([1, 2, 3])
+        zipped = iterator.zip([4, 5, 6])
+        assert zipped.next().unwrap() == (1, 4)
+        assert zipped.next().unwrap() == (2, 5)
+        assert zipped.next().unwrap() == (3, 6)
+        assert zipped.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(builtins.zip(self, *others))
 
 class IteratorAdaptor(Iterator):
     __slots__ = ("_iterator",)

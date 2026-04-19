@@ -392,3 +392,47 @@ def test_iterator_take_while():
     taken_iterator = iterator.take_while(lambda x: x % 2 == 0)
     assert taken_iterator.next().is_nothing()
     assert iterator.next().unwrap() == 3 # original iterator is shifted once
+
+def test_iterator_zip():
+    iterator1 = itrt([1, 2, 3])
+    iterator2 = itrt([4, 5, 6])
+    zipped = iterator1.zip(iterator2)
+    assert zipped.next().unwrap() == (1, 4)
+    assert zipped.next().unwrap() == (2, 5)
+    assert zipped.next().unwrap() == (3, 6)
+    assert zipped.next().is_nothing()
+
+    iterator1 = itrt([1, 2, 3])
+    iterator2 = itrt([4, 5])
+    zipped = iterator1.zip(iterator2)
+    assert zipped.next().unwrap() == (1, 4)
+    assert zipped.next().unwrap() == (2, 5)
+    assert zipped.next().is_nothing()
+    assert iterator1.next().is_nothing()  # original iterator1 is also exhausted
+
+    iterator1 = itrt([1, 2, 3])
+    iterator2 = itrt([4, 5, 6, 7])
+    zipped = iterator1.zip(iterator2)
+    assert zipped.next().unwrap() == (1, 4)
+    assert zipped.next().unwrap() == (2, 5)
+    assert zipped.next().unwrap() == (3, 6)
+    assert zipped.next().is_nothing()
+    assert iterator1.next().is_nothing()  # original iterator1 is also exhausted
+    assert iterator2.next().unwrap() == 7  # original iterator2 continues from where zip stopped
+
+    iterator = itrt([1, 2, 3])
+    zipped = iterator.zip([4, 5, 6])
+    assert zipped.next().unwrap() == (1, 4)
+    assert zipped.next().unwrap() == (2, 5)
+    assert zipped.next().unwrap() == (3, 6)
+    assert zipped.next().is_nothing()
+
+    iterator = itrt([1, 2, 3])
+    zipped = iterator.zip([4, 5, 6], [7, 8, 9])
+    assert zipped.next().unwrap() == (1, 4, 7)
+    assert zipped.next().unwrap() == (2, 5, 8)
+    assert zipped.next().unwrap() == (3, 6, 9)
+    assert zipped.next().is_nothing()
+
+    iterator = itrt([])
+    assert iterator.zip([1, 2, 3]).next().is_nothing()
