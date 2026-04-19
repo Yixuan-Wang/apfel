@@ -1,11 +1,11 @@
 from abc import abstractmethod
 from collections.abc import Callable, Iterable, Iterator as VanillaIterator
 from typing import Any, Self, Concatenate, TypeVar, overload
+from typing_extensions import TypeForm
 
 from apfel.container.maybe import Maybe
 from apfel.container.result import Result
 import apfel.core.dispatch as _dispatch
-
 
 I = TypeVar("I", covariant=True)
 class Iterator(_dispatch.ABCDispatch, VanillaIterator[I]):
@@ -97,6 +97,8 @@ class Iterator(_dispatch.ABCDispatch, VanillaIterator[I]):
     def for_each(self, func: Callable[[I], Any]) -> None: ...
     @overload
     def for_each[Item](self: VanillaIterator[Item], func: Callable[[Item], Any]) -> None: ...
+    #
+    def hint[Item](self, hint: TypeForm[Item]) -> Iterator[Item]: ... # ty: ignore[invalid-type-form]
     #
     @overload
     def last(self) -> Maybe[I]: ...

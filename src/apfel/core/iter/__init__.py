@@ -93,6 +93,7 @@ import functools as _functools
 import itertools as _itertools
 from abc import abstractmethod
 from typing import Generic, TypeVar
+from typing_extensions import TypeForm
 
 import apfel.container.maybe as _maybe
 import apfel.container.result as _result
@@ -475,6 +476,18 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         for item in self:
             func(item)
+
+    def hint(self, hint, /):
+        """
+        Hints the type of items in the iterator for better type inference.
+        This method does not affect runtime behavior.
+
+        ```python
+        iterator = itrt([1, 2, 3]).hint(int)
+        assert iterator.next().unwrap() == 1
+        ```
+        """
+        return self
 
     def last(self):
         """

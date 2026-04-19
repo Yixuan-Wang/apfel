@@ -236,6 +236,15 @@ def test_iterator_for_each(capsys):
     assert captured.out == "1\n2\n3\n4\n5\n"
     assert iterator.next().is_nothing()  # iterator is exhausted
 
+def test_iterator_hint():
+    iterator = itrt([1, 2, 3])
+    hinted_iterator = iterator.hint(int)
+    assert hinted_iterator.next().unwrap() == 1
+    assert hinted_iterator.next().unwrap() == 2
+    assert hinted_iterator.next().unwrap() == 3
+    assert hinted_iterator.next().is_nothing()
+    assert iterator.next().is_nothing()  # original iterator is also exhausted
+
 def test_iterator_last():
     iterator = itrt([1, 2, 3, 4, 5])
     assert iterator.last().unwrap() == 5
