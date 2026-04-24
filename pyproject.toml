@@ -1,7 +1,7 @@
 [project]
 name = "apfel"
 version = "0.2.1"
-description = "A personal functional extension library."
+description = "A Python functional extras library providing a set of quality-of-life utilities."
 authors = [
     {name = "Yixuan-Wang", email = "tom-yx_wang@outlook.com"},
 ]
@@ -11,7 +11,17 @@ dependencies = [
 requires-python = ">=3.11"
 readme = "README.md"
 license = {text = "MIT"}
-classifiers = ["Private :: Do Not Upload"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 
 [build-system]
 requires = ["uv_build>=0.9.23,<0.10.0"]
@@ -37,7 +47,6 @@ dev = [
 ]
 
 [tool.uv.build-backend]
-source-include = ["uv.lock"] 
 
 [tool.ruff]
 [tool.ruff.lint]
