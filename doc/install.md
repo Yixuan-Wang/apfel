@@ -19,7 +19,17 @@ Development environment require at least Python 3.11.
 
 ## Installation
 
-This library is not published to PyPI.
+This library is published to PyPI with the name `apfel`.
+You can install it with `pip`, `uv` or any other modern Python package manager.
+
+```bash
+pip install apfel
+# or
+uv add apfel
+```
+
+## Installation from GitHub Source
+
 You should install it directly from the GitHub repository.
 Using `pyproject.toml` and locking to a Git reference (e.g. a tag) is recommended.
 

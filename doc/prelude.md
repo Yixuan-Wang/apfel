@@ -31,11 +31,14 @@ If you are using Pyright, you can follow the [builtins extension](https://github
 
 | Module | Function | Package? | Builtins? |
 | : --- | :--- | :--: | :--: |
+| `core.common` | [`apply`][apfel.core.common.apply] | :material-earth: | :material-airballoon: |
 | `core.common` | [`identity`][apfel.core.common.identity] | :material-earth: | :material-airballoon: |
 | `core.common` | [`imperative`][apfel.core.common.imperative] | :material-earth: | :material-airballoon: |
 | `core.common` | [`not_none`][apfel.core.common.not_none] | :material-earth: |  |
+| `core.common` | [`pipe`][apfel.core.common.pipe] | :material-earth: | :material-airballoon: |
 | `core.common` | [`todo`][apfel.core.common.todo] | :material-earth: | :material-airballoon: |
 | `core.common` | [`unimplemented`][apfel.core.common.unimplemented] | :material-earth: |:material-airballoon: |
+| `core.iter` | [`itrt`][apfel.core.iter.itrt] | :material-earth: |  |
 | `container.maybe` | [`just`][apfel.container.maybe.just] | :material-earth: |  |
 | `container.maybe` | [`nothing`][apfel.container.maybe.nothing] | :material-earth: |  |
 | `container.maybe` | [`some`][apfel.container.maybe.some] | :material-earth: |  |
@@ -47,6 +50,7 @@ If you are using Pyright, you can follow the [builtins extension](https://github
 
 | Module | Class | Package? | Builtins? |
 | : --- | :--- | :--: | :--: |
+| `core.iter` | [`Iterator`][apfel.core.iter.Iterator] | :material-earth: |  |
 | `container.maybe` | [`Maybe`][apfel.container.maybe.Maybe] | :material-earth: |  |
 | `container.result` | [`Result`][apfel.container.result.Result] | :material-earth: |  |
 | `container.once` | [`Once`][apfel.container.once.Once] | :material-earth: |  |

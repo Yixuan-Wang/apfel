@@ -1,7 +1,7 @@
 [project]
 name = "apfel"
-version = "0.2.0"
-description = "A personal functional extension library."
+version = "0.3.0"
+description = "A Python functional extras library providing a set of quality-of-life utilities."
 authors = [
     {name = "Yixuan-Wang", email = "tom-yx_wang@outlook.com"},
 ]
@@ -10,11 +10,22 @@ dependencies = [
 ]
 requires-python = ">=3.11"
 readme = "README.md"
-license = {text = "MIT"}
+license = "MIT"
+license-files = ["LICENSE"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["uv_build>=0.9.0"]
+build-backend = "uv_build"
 
 [dependency-groups]
 doc = [
@@ -29,20 +40,13 @@ test = [
     "pytest-cov>=7.0.0",
 ]
 dev = [
-    "tox-pdm>=0.7.2",
+    "tox-uv",
     "ipython>=9",
     "ipdb",
     "marimo",
 ]
 
-[tool.pdm]
-distribution = true
-
-[tool.pdm.scripts]
-doc = "mkdocs serve --livereload"
-
-[tool.hatch.build.targets.sdist]
-only-include = ["pdm.lock", "src", "test"]
+[tool.uv.build-backend]
 
 [tool.ruff]
 [tool.ruff.lint]
@@ -50,11 +54,15 @@ extend-select = ["ISC", "COM818"]
 ignore = ["E741", "F821"]
 flake8-implicit-str-concat.allow-multiline = false
 
+[tool.ty.environment]
+python-version = "3.12"
+
 [tool.tox]
 requires = ["tox>=4"]
 env_list = ["3.14", "3.13", "3.12", "3.11"]
 
 [tool.tox.env_run_base]
-groups = ["dev", "test"]
+dependency_groups = ["test"]
 description = "Run test under {base_python}"
 commands = [["pytest", "test/"]]
+runner = "uv-venv-lock-runner"

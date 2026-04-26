@@ -3,7 +3,7 @@ from typing_extensions import Never
 import functools
 
 
-def cover_up(func):
+def cover_up(func, /):
     @functools.wraps(func)
     def wrapper(*args, **kwargs):
         try:
@@ -15,7 +15,7 @@ def cover_up(func):
     return wrapper
 
 
-def throw(ex: BaseException) -> Never:
+def throw(exc: BaseException, /) -> Never:
     """
     Raise an exception.
 
@@ -23,7 +23,7 @@ def throw(ex: BaseException) -> Never:
     This function will pop the top stack frame, simulating the statement.
     """
     try:
-        raise ex
+        raise exc
     except BaseException as e:
         if (
             hasattr(e, "__traceback__")

@@ -154,14 +154,14 @@ class Maybe(Monad):
         return cls
 
     @classmethod
-    def make_just(cls, val, /):
+    def make_just(cls, value, /):
         """
         Construct a `Just` value.
 
         !!! warning
             Prefer using [`just`][apfel.container.maybe.just] instead, unless in performance-critical code.
         """
-        return cls(val)
+        return cls(value)
 
     @classmethod
     def make_nothing(cls):
@@ -175,7 +175,7 @@ class Maybe(Monad):
         return cls(has_value=False)
 
     @classmethod
-    def make_some(cls, val, /):
+    def make_some(cls, value, /):
         """
         Convert an `Optional[T]` value to a `Maybe` value.
 
@@ -190,14 +190,14 @@ class Maybe(Monad):
         assert none.is_nothing()
         ```
         """
-        return cls(val) if val is not None else cls(has_value=False)
+        return cls(value) if value is not None else cls(has_value=False)
 
     @classmethod
-    def duplicate(cls, m, /):
+    def duplicate(cls, value, /):
         """
         Create a shallow copy of a `Maybe` value.
         """
-        return cls(m._val, has_value=m._has_value)
+        return cls(value._val, has_value=value._has_value)
 
     def and_(self, other, /):
         """
@@ -224,7 +224,7 @@ class Maybe(Monad):
     Alias of [`and_`][apfel.container.maybe.Maybe.and_].
     """
 
-    def and_then(self, f, /):
+    def and_then(self, func, /):
         """
         If the value is `Just`, apply a function that maps the inner value to a `Maybe[U]` value. Otherwise, return `Nothing` of type `Maybe[U]`.
 
@@ -234,29 +234,29 @@ class Maybe(Monad):
         assert j.and_then(lambda x: some(x + 1805296)).unwrap() == 1919810
         ```
         """
-        return f(self._val) if self._has_value else Maybe(has_value=False)  # type: ignore
+        return func(self._val) if self._has_value else Maybe(has_value=False)  # type: ignore
 
-    def apply(self, f):  # type: ignore
+    def apply(self, func, /):  # type: ignore
         """
         Implementation of [Applicative.apply][apfel.core.monad.Applicative.apply].
         Applies the callable wrapped within a `Maybe` to the inner value, if both are `Just`.
         """
         return (
             (
-                Maybe(f._val(self._val))  # type: ignore
-                if f._has_value  # type: ignore
+                Maybe(func._val(self._val))  # type: ignore
+                if func._has_value  # type: ignore
                 else Maybe(has_value=False)
             )
             if self._has_value
             else Maybe(has_value=False)
         )
 
-    def bind(self, f):
+    def bind(self, func, /):
         """
         Implementation of [`Monad.bind`][apfel.core.monad.Monad.bind].
         Alias of [`and_then`][apfel.container.maybe.Maybe.and_then].
         """
-        return f(self._val) if self._has_value else Maybe(has_value=False)
+        return func(self._val) if self._has_value else Maybe(has_value=False)
 
     def __bool__(self):
         """
@@ -278,7 +278,7 @@ class Maybe(Monad):
             self._has_value and other._has_value and self._val == other._val
         ) or not (self._has_value or other._has_value)
 
-    def expect(self, message):
+    def expect(self, message, /):
         """
         Unwrap the inner value, if any. Otherwise, raise a `ValueError` with a custom message.
 
@@ -289,7 +289,7 @@ class Maybe(Monad):
             raise ValueError(message)
         return self._val
 
-    def filter(self, p, /):
+    def filter(self, pred, /):
         """
         If the value is `Just` and satisfies the predicate, return the value. Otherwise, return `Nothing`.
 
@@ -301,7 +301,7 @@ class Maybe(Monad):
         """
         return (
             Maybe(has_value=False)
-            if not self._has_value or not p(self._val)
+            if not self._has_value or not pred(self._val)
             else Maybe(self._val)
         )
 
@@ -322,7 +322,7 @@ class Maybe(Monad):
         """
         return self._val if self._has_value and isinstance(self._val, Maybe) else self
 
-    def get_or_insert(self, val, /):
+    def get_or_insert(self, default, /):
         """
         Get the inner value, if any. Otherwise, insert the new value and return the value.
 
@@ -335,11 +335,11 @@ class Maybe(Monad):
         ```
         """
         if not self._has_value:
-            self._val = val
+            self._val = default
             self._has_value = True
         return self._val
 
-    def get_or_insert_with(self, d, /):
+    def get_or_insert_with(self, func, /):
         """
         Get the inner value, if any. Otherwise, call a function to get a new value and return the value.
 
@@ -352,18 +352,18 @@ class Maybe(Monad):
         ```
         """
         if not self._has_value:
-            self._val = d()
+            self._val = func()
             self._has_value = True
         return self._val
 
     def __hash__(self):
         return hash((id(Maybe), self._has_value, self._val))
 
-    def insert(self, val, /):
+    def insert(self, value, /):
         """
         Insert a value and returns it.
         """
-        self._val = val
+        self._val = value
         self._has_value = True
         return self._val
 
@@ -373,11 +373,11 @@ class Maybe(Monad):
         """
         return self._has_value
 
-    def is_just_and(self, p, /):
+    def is_just_and(self, pred, /):
         """
         Check if the value is a `Just` and satisfies the predicate.
         """
-        return self._has_value and p(self._val)
+        return self._has_value and pred(self._val)
 
     def is_nothing(self):
         """
@@ -394,7 +394,7 @@ class Maybe(Monad):
         """
         return 1 if self._has_value else 0
 
-    def map(self, f):
+    def map(self, func, /):
         """
         Apply a function that maps the inner value to a new value, if any. Otherwise, return `Nothing`.
 
@@ -409,10 +409,10 @@ class Maybe(Monad):
         ```
         """
         return (
-            Maybe(f(self._val)) if self._has_value else Maybe(has_value=False)  # type: ignore
+            Maybe(func(self._val)) if self._has_value else Maybe(has_value=False)  # type: ignore
         )
 
-    def map_or(self, default, f, /):
+    def map_or(self, default, func):
         """
         Map the inner value using a function, or use the default value if absent.
 
@@ -427,9 +427,9 @@ class Maybe(Monad):
         assert n.map_or(0, lambda x: x + 1) == 0
         ```
         """
-        return f(self._val) if self._has_value else default
+        return func(self._val) if self._has_value else default
 
-    def map_or_else(self, d, f, /):
+    def map_or_else(self, default, func):
         """
         Map the inner value using a function, or use a lazy default value if absent.
 
@@ -441,9 +441,9 @@ class Maybe(Monad):
         assert n.map_or_else(lambda: 0, lambda x: x + 1) == 0
         ```
         """
-        return f(self._val) if self._has_value else d()
+        return func(self._val) if self._has_value else default()
 
-    def ok_or(self, err, /):
+    def ok_or(self, error, /):
         """
         Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a provided `Err` value.
         The `Err` value is eagerly evaluated.
@@ -460,10 +460,10 @@ class Maybe(Monad):
         return (
             _result.Result.make_ok(self._val)
             if self._has_value
-            else _result.Result.make_err(err)
+            else _result.Result.make_err(error)
         )
 
-    def ok_or_else(self, f, /):
+    def ok_or_else(self, func, /):
         """
         Convert the `Maybe` to a `Result`, converting `Just` to `Ok` and `Nothing` to a lazily evaluated `Err` value.
 
@@ -479,7 +479,7 @@ class Maybe(Monad):
         return (
             _result.Result.make_ok(self._val)
             if self._has_value
-            else _result.Result.make_err(f())
+            else _result.Result.make_err(func())
         )
 
     def or_(self, other, /):
@@ -510,21 +510,21 @@ class Maybe(Monad):
     Alias of [`or_`][apfel.container.maybe.Maybe.or_].
     """
 
-    def or_else(self, f, /):
+    def or_else(self, func, /):
         """
         Return a shallow copy of the `Maybe` if it contains a value, otherwise call a function to get a result.
         """
 
-        return Maybe(self._val) if self._has_value else f()
+        return Maybe(self._val) if self._has_value else func()
 
     @classmethod
-    def pure(cls, x):
+    def pure(cls, value, /):
         """
         Implementation of [Applicative.pure][apfel.core.monad.Applicative.pure], which is equivalent to [Maybe.make_just][apfel.container.maybe.Maybe.make_just].
         """
-        return cls(x)
+        return cls(value)
 
-    def replace(self, val, /):
+    def replace(self, value, /):
         """
         Replace the inner value with a new value, returning the old value.
         After replacement, `self` will always have a value.
@@ -543,10 +543,10 @@ class Maybe(Monad):
         """
         if self._has_value:
             swapped = Maybe(self._val)
-            self._val = val
+            self._val = value
             return swapped
         else:
-            self._val = val
+            self._val = value
             self._has_value = True
             return Maybe(has_value=False)
 
@@ -576,7 +576,7 @@ class Maybe(Monad):
         else:
             return Maybe(has_value=False)
 
-    def take_if(self, p, /):
+    def take_if(self, pred, /):
         """
         Take the inner value out if it satisfies the predicate, and leave no value in place.
         Otherwise, take out nothing.
@@ -594,7 +594,7 @@ class Maybe(Monad):
         ```
         """
 
-        if self._has_value and p(self._val):
+        if self._has_value and pred(self._val):
             self._has_value = False
             out = Maybe(self._val)
             self._val = ...
@@ -602,7 +602,7 @@ class Maybe(Monad):
         else:
             return Maybe(has_value=False)
 
-    def tap(self, f, /):
+    def tap(self, func, /):
         """
         Call a function with the inner value, if any, and return the `Maybe` itself.
         Unlike [`Option::inspect`](https://doc.rust-lang.org/std/option/enum.Option.html#method.inspect){ .ref .rs }, this method does not require the function to return `None`.
@@ -613,7 +613,7 @@ class Maybe(Monad):
         ```
         """
         if self._has_value:
-            f(self._val)
+            func(self._val)
         return self
 
     def unwrap(self):
@@ -651,11 +651,11 @@ class Maybe(Monad):
         """
         return self._val if self._has_value else default
 
-    def unwrap_or_else(self, f, /):
+    def unwrap_or_else(self, func, /):
         """
         Unwrap the inner value, or return a value computed by a function if absent.
         """
-        return self._val if self._has_value else f()
+        return self._val if self._has_value else func()
 
     def unwrap_unchecked(self):
         """
@@ -730,8 +730,8 @@ class just:
     def __class_getitem__(cls, item):
         return cls
 
-    def __new__(cls, val, /):
-        return Maybe(val)
+    def __new__(cls, value, /):
+        return Maybe(value)
 
     @classmethod
     def __instancecheck__(cls, instance):
@@ -788,8 +788,8 @@ class some:
     def __class_getitem__(cls, item):
         return cls
 
-    def __new__(cls, val, /):
-        return Maybe.make_some(val)
+    def __new__(cls, value, /):
+        return Maybe.make_some(value)
 
 
 __all__ = ["Maybe", "just", "nothing", "some"]

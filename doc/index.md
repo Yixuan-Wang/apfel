@@ -1,24 +1,23 @@
 # Apfel
 
-🍎 `apfel` stands for A Personal Functional Extension Library, which provides a set of basic utilities designed for academic experiments.
+🍎 `apfel` stands for A Python Functional Extras Library, which provides a set of quality-of-life utilities designed for agile experiments.
 
 !!! note "Trivia"
     [Apfel](https://en.wiktionary.org/wiki/Apfel#German) is the Deutsch word for apple.
 
 ## Motivation
 
-Originally, the word 'functional' comes from the functional programming paradigm.
-However, Python is not inherently a functional programming language,
-and it is functional incomplete in many aspects.
+Python is not inherently a functional programming language. However, functional style
+can often lead to clearer and more concise code.
 
 To fulfill my personal needs of writing elegant (and possibly efficient) code for 
-academic experiments evolving in an agile way,
+evolving in an agile way (i.e. research oriented, iterative, and exploratory),
 and to avoid pulling in less-maintained or less-documented third-party libraries,
-a personal toolkit is a better choice.
+a personal small toolkit is a better choice.
 
-It provides common helper functions, data types and sublanguages
+It provides common helper functions, data types and containers
 that aim to counter the missing features and design flaws of Python language itself.
-Heavy use of meta-programming, type hints and functional programming techniques
+Heavy use of meta-programming, type hints and of course, functional programming techniques,
 are expected.
 
 ## Design Goals

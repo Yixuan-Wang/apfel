@@ -7,85 +7,85 @@ from . import Functor, Applicative, Monad
 def do_impl_for_list():
     @impl(Functor)
     class _(list):
-        def map(self, f):
-            return [f(x) for x in self]
+        def map(self, func, /):
+            return [func(x) for x in self]
 
     @impl(Applicative)
     class _(list):
         @classmethod
-        def pure(cls, x):
-            return [x]
+        def pure(cls, value, /):
+            return [value]
 
-        def apply(self, f):
-            return [f1(x) for f1 in f for x in self]
+        def apply(self, func, /):
+            return [f(x) for f in func for x in self]
 
     @impl(Monad)
     class _(list):
-        def bind(self, f):
-            return [y for x in self for y in f(x)]
+        def bind(self, func, /):
+            return [output for item in self for output in func(item)]
 
 
 def do_impl_for_tuple():
     @impl(Functor)
     class _(tuple):
-        def map(self, f):
-            return tuple(f(x) for x in self)
+        def map(self, func, /):
+            return tuple(func(x) for x in self)
 
     @impl(Applicative)
     class _(tuple):
         @classmethod
-        def pure(cls, x):
-            return (x,)
+        def pure(cls, value, /):
+            return (value,)
 
-        def apply(self, f):
-            return tuple(f1(x) for f1 in f for x in self)
+        def apply(self, func, /):
+            return tuple(f(x) for f in func for x in self)
 
     @impl(Monad)
     class _(tuple):
-        def bind(self, f):
-            return tuple(y for x in self for y in f(x))
+        def bind(self, func, /):
+            return tuple(output for item in self for output in func(item))
 
 
 def do_impl_for_set():
     @impl(Functor)
     class _(set):
-        def map(self, f):
-            return {f(x) for x in self}
+        def map(self, func, /):
+            return {func(x) for x in self}
 
     @impl(Applicative)
     class _(set):
         @classmethod
-        def pure(cls, x):
-            return {x}
+        def pure(cls, value, /):
+            return {value}
 
-        def apply(self, f):
-            return {f1(x) for f1 in f for x in self}
+        def apply(self, func, /):
+            return {f(x) for f in func for x in self}
 
     @impl(Monad)
     class _(set):
-        def bind(self, f):
-            return {y for x in self for y in f(x)}
+        def bind(self, func, /):
+            return {output for item in self for output in func(item)}
 
 
 def do_impl_for_dict():
     @impl(Functor)
     class _(dict):
-        def map(self, f):
-            return {k: f(v) for k, v in self.items()}
+        def map(self, func, /):
+            return {k: func(v) for k, v in self.items()}
 
 
 def do_impl_for_function():
-    def map(self, f):
-        return lambda *args, **kwargs: f(self(*args, **kwargs))
+    def map(self, func, /):
+        return lambda *args, **kwargs: func(self(*args, **kwargs))
 
-    def pure(cls, x):
-        return lambda *_args, **_kwargs: x
+    def pure(cls, value, /):
+        return lambda *_args, **_kwargs: value
 
-    def apply(self, f):
-        return lambda *args, **kwargs: f(*args, **kwargs)(self(*args, **kwargs))
+    def apply(self, func, /):
+        return lambda *args, **kwargs: func(*args, **kwargs)(self(*args, **kwargs))
 
-    def bind(self, f):
-        return lambda *args, **kwargs: f(self(*args, **kwargs))(*args, **kwargs)
+    def bind(self, func, /):
+        return lambda *args, **kwargs: func(self(*args, **kwargs))(*args, **kwargs)
 
     add_impl(
         Functor,

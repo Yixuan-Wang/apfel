@@ -82,18 +82,18 @@ class Once:
             return _maybe.Maybe.make_just(self._value)
         return _maybe.Maybe.make_nothing()
 
-    def get_or_init(self, f, /):
+    def get_or_init(self, func, /):
         """
         Get the inner value of the `Once` container, or initialize it with the given function if no value has been set.
 
         Args:
-            f (Callable[[], T]): The function to initialize the `Once` container with if no value has been set.
+            func (Callable[[], T]): The function to initialize the `Once` container with if no value has been set.
 
         Returns:
             value (T): The inner value (maybe newly set) of the `Once` container.
         """
         if not self._has_value:
-            self._value = f()
+            self._value = func()
             self._has_value = True
 
         return self._value
@@ -180,19 +180,19 @@ class OnceLock:
                 return _maybe.Maybe.make_just(self._value)
             return _maybe.Maybe.make_nothing()
 
-    def get_or_init(self, f, /):
+    def get_or_init(self, func, /):
         """
         Get the inner value of the `OnceLock` container, or initialize it with the given function if no value has been set.
 
         Args:
-            f (Callable[[], T]): The function to initialize the `OnceLock` container with if no value has been set.
+            func (Callable[[], T]): The function to initialize the `OnceLock` container with if no value has been set.
 
         Returns:
             value (T): The inner value (maybe newly set) of the `OnceLock`
         """
         with self._lock:
             if not self._has_value:
-                self._value = f()
+                self._value = func()
                 self._has_value = True
 
             return self._value
@@ -247,30 +247,30 @@ class Lazy:
         from apfel.container.once import Lazy
 
         @Lazy
-        def f():
+        def func():
             print("called")
             return object()
 
-        obj = f.value()
+        obj = func.value()
         # print "called"
-        # here, the function `f` will be called and the result will be cached.
+        # here, the function `func` will be called and the result will be cached.
 
-        f.value() is obj # the function `f` will not be called again.
+        func.value() is obj # the function `func` will not be called again.
         ```
     """
 
     __slots__ = ("_value", "_has_value", "_init")
 
-    def __init__(self, f, /):
+    def __init__(self, func, /):
         """
         Create a lazily initialized `Lazy` container.
 
         Args:
-            f (Callable[[], T]): The function to be lazily initialized.
+            func (Callable[[], T]): The function to be lazily initialized.
         """
         self._value = ...
         self._has_value = False
-        self._init = f
+        self._init = func
 
     def __class_getitem__(cls, item):
         return cls
@@ -286,11 +286,11 @@ class Lazy:
         Example:
             ```python
             @Lazy
-            def f():
+            def func():
                 return object()
 
-            obj = f()
-            assert f() is obj
+            obj = func()
+            assert func() is obj
             ```
         """
         if self._has_value:
@@ -340,18 +340,18 @@ class LazyLock:
 
     __slots__ = ("_value", "_has_value", "_init", "_lock")
 
-    def __init__(self, f, /):
+    def __init__(self, func, /):
         """
         Create a thread-safe lazily initialized `LazyLock` container.
 
         Args:
-            f (Callable[[], T]): The function to be lazily initialized.
+            func (Callable[[], T]): The function to be lazily initialized.
         """
         import threading
 
         self._value = ...
         self._has_value = False
-        self._init = f
+        self._init = func
         self._lock = threading.Lock()
 
     def __class_getitem__(cls, item):
