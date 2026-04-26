@@ -19,7 +19,7 @@
       
       
       <link rel="icon" href="../../asset/red-apple.png">
-      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.0">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.1">
     
     
       
@@ -27,7 +27,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/main.618322db.min.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/main.484c7ddc.min.css">
       
         
         <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
@@ -467,6 +467,34 @@
     
   
     Function Object
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../core/iter/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Iterator
   
 
     
@@ -2085,19 +2113,19 @@ Use <code>Maybe.is_nothing()</code> to check if a <code>Maybe</code> object is <
 <tbody>
 <tr>
 <td><a class="autorefs autorefs-internal" href="../../core/monad/#apfel.core.monad.Functor"><code>Functor</code></a></td>
-<td><a class="autorefs autorefs-internal" title="map(f)" href="#apfel.container.maybe.Maybe.map"><code>map</code></a></td>
+<td><a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.maybe.Maybe.map"><code>map</code></a></td>
 </tr>
 <tr>
 <td><a class="autorefs autorefs-internal" href="../../core/monad/#apfel.core.monad.Applicative"><code>Applicative</code></a></td>
-<td><a class="autorefs autorefs-internal" title="pure(x)
+<td><a class="autorefs autorefs-internal" title="pure(value)
 
   
       classmethod
-  " href="#apfel.container.maybe.Maybe.pure"><code>pure</code></a>, <a class="autorefs autorefs-internal" title="apply(f)" href="#apfel.container.maybe.Maybe.apply"><code>apply</code></a></td>
+  " href="#apfel.container.maybe.Maybe.pure"><code>pure</code></a>, <a class="autorefs autorefs-internal" title="apply(func)" href="#apfel.container.maybe.Maybe.apply"><code>apply</code></a></td>
 </tr>
 <tr>
 <td><a class="autorefs autorefs-internal" href="../../core/monad/#apfel.core.monad.Monad"><code>Monad</code></a></td>
-<td><a class="autorefs autorefs-internal" title="bind(f)" href="#apfel.container.maybe.Maybe.bind"><code>bind</code></a>(<a class="autorefs autorefs-internal" title="and_then(f)" href="#apfel.container.maybe.Maybe.and_then"><code>and_then</code></a>)</td>
+<td><a class="autorefs autorefs-internal" title="bind(func)" href="#apfel.container.maybe.Maybe.bind"><code>bind</code></a>(<a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.maybe.Maybe.and_then"><code>and_then</code></a>)</td>
 </tr>
 </tbody>
 </table>
@@ -2121,7 +2149,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>and_then</code></td>
-<td><a class="autorefs autorefs-internal" title="and_then(f)" href="#apfel.container.maybe.Maybe.and_then"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.maybe.Maybe.and_then"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>as_deref</code></td>
@@ -2169,7 +2197,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>filter</code></td>
-<td><a class="autorefs autorefs-internal" title="filter(p)" href="#apfel.container.maybe.Maybe.filter"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="filter(pred)" href="#apfel.container.maybe.Maybe.filter"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>flatten</code></td>
@@ -2177,7 +2205,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>get_or_insert</code></td>
-<td><a class="autorefs autorefs-internal" title="get_or_insert(val)" href="#apfel.container.maybe.Maybe.get_or_insert"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="get_or_insert(default)" href="#apfel.container.maybe.Maybe.get_or_insert"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>get_or_insert_default</code></td>
@@ -2185,15 +2213,15 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>get_or_insert_with</code></td>
-<td><a class="autorefs autorefs-internal" title="get_or_insert_with(d)" href="#apfel.container.maybe.Maybe.get_or_insert_with"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="get_or_insert_with(func)" href="#apfel.container.maybe.Maybe.get_or_insert_with"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>insert</code></td>
-<td><a class="autorefs autorefs-internal" title="insert(val)" href="#apfel.container.maybe.Maybe.insert"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="insert(value)" href="#apfel.container.maybe.Maybe.insert"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>inspect</code></td>
-<td><a class="autorefs autorefs-internal" title="tap(f)" href="#apfel.container.maybe.Maybe.tap"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span> <code>tap</code></a></td>
+<td><a class="autorefs autorefs-internal" title="tap(func)" href="#apfel.container.maybe.Maybe.tap"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span> <code>tap</code></a></td>
 </tr>
 <tr>
 <td><code>is_none</code></td>
@@ -2205,7 +2233,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>is_some_and</code></td>
-<td><a class="autorefs autorefs-internal" title="is_just_and(p)" href="#apfel.container.maybe.Maybe.is_just_and"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>is_just_and</code></a></td>
+<td><a class="autorefs autorefs-internal" title="is_just_and(pred)" href="#apfel.container.maybe.Maybe.is_just_and"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>is_just_and</code></a></td>
 </tr>
 <tr>
 <td><code>iter</code></td>
@@ -2217,23 +2245,23 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>map</code></td>
-<td><a class="autorefs autorefs-internal" title="map(f)" href="#apfel.container.maybe.Maybe.map"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.maybe.Maybe.map"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>map_or</code></td>
-<td><a class="autorefs autorefs-internal" title="map_or(default, f)" href="#apfel.container.maybe.Maybe.map_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_or(default, func)" href="#apfel.container.maybe.Maybe.map_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>map_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="map_or_else(d, f)" href="#apfel.container.maybe.Maybe.map_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.maybe.Maybe.map_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>ok_or</code></td>
-<td><a class="autorefs autorefs-internal" title="ok_or(err)" href="#apfel.container.maybe.Maybe.ok_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="ok_or(error)" href="#apfel.container.maybe.Maybe.ok_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>ok_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="ok_or_else(f)" href="#apfel.container.maybe.Maybe.ok_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="ok_or_else(func)" href="#apfel.container.maybe.Maybe.ok_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>or</code></td>
@@ -2241,11 +2269,11 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="or_else(f)" href="#apfel.container.maybe.Maybe.or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="or_else(func)" href="#apfel.container.maybe.Maybe.or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>replace</code></td>
-<td><a class="autorefs autorefs-internal" title="replace(val)" href="#apfel.container.maybe.Maybe.replace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="replace(value)" href="#apfel.container.maybe.Maybe.replace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>take</code></td>
@@ -2253,7 +2281,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>take_if</code></td>
-<td><a class="autorefs autorefs-internal" title="take_if(p)" href="#apfel.container.maybe.Maybe.take_if"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="take_if(pred)" href="#apfel.container.maybe.Maybe.take_if"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>transpose</code></td>
@@ -2273,7 +2301,7 @@ and the comparison table is provided below.</p>
 </tr>
 <tr>
 <td><code>unwrap_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_or_else(f)" href="#apfel.container.maybe.Maybe.unwrap_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_or_else(func)" href="#apfel.container.maybe.Maybe.unwrap_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
 </tr>
 <tr>
 <td><code>unwrap_unchecked</code></td>
@@ -2619,7 +2647,7 @@ See <a href="./#maybe">module-level documentation</a> for more information.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.and_then" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">and_then</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">and_then</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.and_then" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -2646,14 +2674,14 @@ See <a href="./#maybe">module-level documentation</a> for more information.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.apply" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.apply" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Implementation of <a class="autorefs autorefs-internal" title="apply(f)
+        <p>Implementation of <a class="autorefs autorefs-internal" title="apply(func)
 
   
       abstractmethod
@@ -2674,19 +2702,19 @@ Applies the callable wrapped within a <code>Maybe</code> to the inner value, if 
 
 
 <h3 id="apfel.container.maybe.Maybe.bind" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">bind</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.bind" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Implementation of <a class="autorefs autorefs-internal" title="bind(f)
+        <p>Implementation of <a class="autorefs autorefs-internal" title="bind(func)
 
   
       abstractmethod
   " href="../../core/monad/#apfel.core.monad.Monad.bind"><code>Monad.bind</code></a>.
-Alias of <a class="autorefs autorefs-internal" title="and_then(f)" href="#apfel.container.maybe.Maybe.and_then"><code>and_then</code></a>.</p>
+Alias of <a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.maybe.Maybe.and_then"><code>and_then</code></a>.</p>
 
 
     </div>
@@ -2702,7 +2730,7 @@ Alias of <a class="autorefs autorefs-internal" title="and_then(f)" href="#apfel.
 
 
 <h3 id="apfel.container.maybe.Maybe.duplicate" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">duplicate</span><span class="p">(</span><span class="n">m</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">duplicate</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -2775,7 +2803,7 @@ Alias of <a class="autorefs autorefs-internal" title="and_then(f)" href="#apfel.
 
 
 <h3 id="apfel.container.maybe.Maybe.filter" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">filter</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="nb">filter</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.filter" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -2838,7 +2866,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.get_or_insert" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_or_insert</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_or_insert</span><span class="p">(</span><span class="n">default</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.get_or_insert" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -2867,7 +2895,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.get_or_insert_with" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">get_or_insert_with</span><span class="p">(</span><span class="n">d</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">get_or_insert_with</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.get_or_insert_with" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -2896,7 +2924,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.insert" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">insert</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.insert" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -2942,7 +2970,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.is_just_and" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">is_just_and</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">is_just_and</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.is_just_and" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -2992,7 +3020,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.make_just" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">make_just</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">make_just</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -3054,7 +3082,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.make_some" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">make_some</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">make_some</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -3091,7 +3119,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.map" class="doc doc-heading">
-            <code class="highlight language-python"><span class="nb">map</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="nb">map</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.map" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3121,7 +3149,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.map_or" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">map_or</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">map_or</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.map_or" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3131,7 +3159,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
         <p>Map the inner value using a function, or use the default value if absent.</p>
 <div class="admonition tip">
 <p class="admonition-title">Tip</p>
-<p>If the default value is an expensive expression, use <a class="autorefs autorefs-internal" title="map_or_else(d, f)" href="#apfel.container.maybe.Maybe.map_or_else"><code>map_or_else</code></a> instead.</p>
+<p>If the default value is an expensive expression, use <a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.maybe.Maybe.map_or_else"><code>map_or_else</code></a> instead.</p>
 </div>
 <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
 <a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
@@ -3154,7 +3182,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.map_or_else" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">map_or_else</span><span class="p">(</span><span class="n">d</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">map_or_else</span><span class="p">(</span><span class="n">default</span><span class="p">,</span> <span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.map_or_else" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3183,7 +3211,7 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.ok_or" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ok_or</span><span class="p">(</span><span class="n">err</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">ok_or</span><span class="p">(</span><span class="n">error</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.ok_or" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3213,7 +3241,7 @@ The <code>Err</code> value is eagerly evaluated.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.ok_or_else" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">ok_or_else</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">ok_or_else</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.ok_or_else" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3275,7 +3303,7 @@ And also this method does not short-circuit.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.or_else" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">or_else</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">or_else</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.or_else" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3298,7 +3326,7 @@ And also this method does not short-circuit.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.pure" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pure</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">pure</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
   <span class="doc doc-labels">
       <small class="doc doc-label doc-label-classmethod"><code>classmethod</code></small>
@@ -3309,12 +3337,12 @@ And also this method does not short-circuit.</p>
 
     <div class="doc doc-contents ">
 
-        <p>Implementation of <a class="autorefs autorefs-internal" title="pure(x)
+        <p>Implementation of <a class="autorefs autorefs-internal" title="pure(value)
 
   
       abstractmethod
       classmethod
-  " href="../../core/monad/#apfel.core.monad.Applicative.pure">Applicative.pure</a>, which is equivalent to <a class="autorefs autorefs-internal" title="make_just(val)
+  " href="../../core/monad/#apfel.core.monad.Applicative.pure">Applicative.pure</a>, which is equivalent to <a class="autorefs autorefs-internal" title="make_just(value)
 
   
       classmethod
@@ -3334,7 +3362,7 @@ And also this method does not short-circuit.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.replace" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">replace</span><span class="p">(</span><span class="n">val</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">replace</span><span class="p">(</span><span class="n">value</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.replace" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3396,7 +3424,7 @@ After replacement, <code>self</code> will always have a value.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.take_if" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">take_if</span><span class="p">(</span><span class="n">p</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">take_if</span><span class="p">(</span><span class="n">pred</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.take_if" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3430,7 +3458,7 @@ Otherwise, take out nothing.</p>
 
 
 <h3 id="apfel.container.maybe.Maybe.tap" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">tap</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">tap</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.tap" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3540,7 +3568,7 @@ Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.
 
 
 <h3 id="apfel.container.maybe.Maybe.unwrap_or_else" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">unwrap_or_else</span><span class="p">(</span><span class="n">f</span><span class="p">)</span></code>
+            <code class="highlight language-python"><span class="n">unwrap_or_else</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
 <a href="#apfel.container.maybe.Maybe.unwrap_or_else" class="headerlink" title="Permanent link">#</a></h3>
 
@@ -3718,10 +3746,10 @@ Calling this method with no arguments is equivalent to calling <code>map</code> 
     
       
       
-      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.expand", "navigation.path", "navigation.sections"], "search": "../../assets/javascripts/workers/search.7a47a382.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.expand", "navigation.path", "navigation.sections"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": {"provider": "mike"}}</script>
     
     
-      <script src="../../assets/javascripts/bundle.e71a0d61.min.js"></script>
+      <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
       
     
   </body>
