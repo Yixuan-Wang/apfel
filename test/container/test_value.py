@@ -41,16 +41,30 @@ def test_value_method_map():
     assert v is not v2
 
 
-def test_value_method_pipe():
+def test_value_method_update():
     v = Value(42)
-    v2 = v.pipe(lambda x: x + 1)
+    v2 = v.update(lambda x: x + 1)
 
     assert v2.done() == 43
     assert v is v2
 
+
+def test_value_method_update_can_set_none():
+    v: Value[int | None] = Value(42)
+    v2 = v.update(lambda x: None)
+
+    assert v2.done() is None
+    assert v is v2
+
+
+def test_value_method_mutate():
     v = Value([1, 2, 3])
-    v2 = v.pipe(lambda x: x.append(4))
+    inner = v.done()
+    v2 = v.mutate(lambda x: x.append(4))
+
     assert v2.done() == [1, 2, 3, 4]
+    assert v2.done() is inner
+    assert v is v2
 
 
 def test_value_method_run():

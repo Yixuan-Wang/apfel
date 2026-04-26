@@ -67,33 +67,28 @@ class Value(Monad):
 
         Args:
             func (Callable[[T], U]): A function to transform the inner value.
-        
+
         Returns:
             (Value[U]): A new `Value` containing the transformed value.
         """
         return Value(func(self._value))
 
-    def pipe(self, func, /):
+    def mutate(self, func, /):
         """
-        Run a function to process the inner value.
-        If a result is produced, the result will be put back to the container.
-        Otherwise, the original reference within the container will be kept.
+        Call a function to mutate the inner value in place.
 
-
-        Warning:
-            Compare to [`Value.map`][apfel.container.value.Value.map], this method
-            mutates the container in place. No new container is created.
-            Therefore, the function must return a result of the same type as the
-            previous inner type of the container, or return `None`.
+        The function's return value is ignored, and the container keeps the
+        original inner reference.
+        This is similar to [`Value.tap`][apfel.container.value.Value.tap],
+        just hinting the mutating intention of the function.
 
         Args:
-            func (Callable[[T], T] | Callable[[T], None]): A function to process the value.
+            func (Callable[[T], Any]): A function that mutates the inner value.
 
         Returns:
             (Value[T]): The mutated container itself.
         """
-        val = func(self._value)
-        self._value = val if val is not None else self._value
+        func(self._value)
         return self
 
     @classmethod
@@ -131,8 +126,27 @@ class Value(Monad):
 
         Warning:
             Pragmatically, the function shouldn't mutate the inner value.
-            Use the [`Value.pipe`][apfel.container.value.Value.pipe] method instead.
+            Use the [`Value.mutate`][apfel.container.value.Value.mutate] method instead.
         """
 
         func(self._value)
+        return self
+
+    def update(self, func, /):
+        """
+        Update the inner value with the result of a function.
+
+        Warning:
+            Compare to [`Value.map`][apfel.container.value.Value.map], this method
+            mutates the container in place. No new container is created.
+            Therefore, the function must return a result of the same type as the
+            previous inner type of the container.
+
+        Args:
+            func (Callable[[T], T]): A function to transform the inner value.
+
+        Returns:
+            (Value[T]): The mutated container itself.
+        """
+        self._value = func(self._value)
         return self

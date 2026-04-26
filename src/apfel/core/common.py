@@ -103,7 +103,7 @@ def pipe(
     Pipes a value through a sequence of functions.
     For single function application, see [`apply`][apfel.core.common.apply].
 
-    See also [`Value.pipe`][apfel.container.value.Value.pipe],
+    See also [`Value.update`][apfel.container.value.Value.update],
       [`FunctionObject.__rand__`][apfel.core.function_object.FunctionObject.__rand__].
     See also [`&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-){ .ref .hs }, [`|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping){ .ref .jl } or roughly [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html){ .ref .rl }.
 
