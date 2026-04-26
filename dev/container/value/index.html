@@ -776,10 +776,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apfel.container.value.Value.pipe" class="md-nav__link">
+  <a href="#apfel.container.value.Value.mutate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;pipe
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;mutate
       
     </span>
   </a>
@@ -813,6 +813,17 @@
     <span class="md-ellipsis">
       
         <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;tap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apfel.container.value.Value.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;update
       
     </span>
   </a>
@@ -1129,10 +1140,10 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#apfel.container.value.Value.pipe" class="md-nav__link">
+  <a href="#apfel.container.value.Value.mutate" class="md-nav__link">
     <span class="md-ellipsis">
       
-        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;pipe
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;mutate
       
     </span>
   </a>
@@ -1166,6 +1177,17 @@
     <span class="md-ellipsis">
       
         <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;tap
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#apfel.container.value.Value.update" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        <code class="doc-symbol doc-symbol-toc doc-symbol-method"></code>&nbsp;update
       
     </span>
   </a>
@@ -1582,30 +1604,20 @@ exceptions.</p>
 <div class="doc doc-object doc-function">
 
 
-<h3 id="apfel.container.value.Value.pipe" class="doc doc-heading">
-            <code class="highlight language-python"><span class="n">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
+<h3 id="apfel.container.value.Value.mutate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">mutate</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
 
-<a href="#apfel.container.value.Value.pipe" class="headerlink" title="Permanent link">#</a></h3>
-          <div class="doc-overloads">
-<div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span>
-</code></pre></div><div class="doc-signature highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nf">pipe</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="kc">None</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">Self</span>
-</code></pre></div>          </div>
+<a href="#apfel.container.value.Value.mutate" class="headerlink" title="Permanent link">#</a></h3>
 
 
     <div class="doc doc-contents ">
 
-        <p>Run a function to process the inner value.
-If a result is produced, the result will be put back to the container.
-Otherwise, the original reference within the container will be kept.</p>
+        <p>Call a function to mutate the inner value in place.</p>
+<p>The function's return value is ignored, and the container keeps the
+original inner reference.
+This is similar to <a class="autorefs autorefs-internal" title="tap(func)" href="#apfel.container.value.Value.tap"><code>Value.tap</code></a>,
+just hinting the mutating intention of the function.</p>
 
-
-<details class="warning" open>
-  <summary>Warning</summary>
-  <p>Compare to <a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.value.Value.map"><code>Value.map</code></a>, this method
-mutates the container in place. No new container is created.
-Therefore, the function must return a result of the same type as the
-previous inner type of the container, or return <code>None</code>.</p>
-</details>
 
 <p><span class="doc-section-title">Parameters:</span></p>
     <table>
@@ -1623,11 +1635,11 @@ previous inner type of the container, or return <code>None</code>.</p>
                 <code>func</code>
             </td>
             <td>
-                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], <span title="apfel.container.value.Value[T]">T</span>] | <span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], None]</code>
+                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], <span title="typing.Any">Any</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A function to process the value.</p>
+                <p>A function that mutates the inner value.</p>
               </div>
             </td>
             <td>
@@ -1857,8 +1869,93 @@ and return the original container.</p>
 <details class="warning" open>
   <summary>Warning</summary>
   <p>Pragmatically, the function shouldn't mutate the inner value.
-Use the <a class="autorefs autorefs-internal" title="pipe(func)" href="#apfel.container.value.Value.pipe"><code>Value.pipe</code></a> method instead.</p>
+Use the <a class="autorefs autorefs-internal" title="mutate(func)" href="#apfel.container.value.Value.mutate"><code>Value.mutate</code></a> method instead.</p>
 </details>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h3 id="apfel.container.value.Value.update" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">update</span><span class="p">(</span><span class="n">func</span><span class="p">)</span></code>
+
+<a href="#apfel.container.value.Value.update" class="headerlink" title="Permanent link">#</a></h3>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Update the inner value with the result of a function.</p>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Compare to <a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.value.Value.map"><code>Value.map</code></a>, this method
+mutates the container in place. No new container is created.
+Therefore, the function must return a result of the same type as the
+previous inner type of the container.</p>
+</details>
+
+<p><span class="doc-section-title">Parameters:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+          <th>Description</th>
+          <th>Default</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                <code>func</code>
+            </td>
+            <td>
+                  <code><span title="collections.abc.Callable">Callable</span>[[<span title="apfel.container.value.Value[T]">T</span>], <span title="apfel.container.value.Value[T]">T</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>A function to transform the inner value.</p>
+              </div>
+            </td>
+            <td>
+                <em>required</em>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
+
+    <p><span class="doc-section-title">Returns:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Value (apfel.container.value.Value)" href="#apfel.container.value.Value">Value</a>[<span title="apfel.container.value.Value[T]">T</span>]</code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>The mutated container itself.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
     </div>
 
