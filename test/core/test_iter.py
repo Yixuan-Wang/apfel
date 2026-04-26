@@ -245,6 +245,43 @@ def test_iterator_hint():
     assert hinted_iterator.next().is_nothing()
     assert iterator.next().is_nothing()  # original iterator is also exhausted
 
+def test_iterator_intersperse():
+    iterator = itrt([1, 2, 3])
+    result = iterator.intersperse(0)
+    assert result.next().unwrap() == 1
+    assert result.next().unwrap() == 0
+    assert result.next().unwrap() == 2
+    assert result.next().unwrap() == 0
+    assert result.next().unwrap() == 3
+    assert result.next().is_nothing()
+
+    assert itrt([]).intersperse(0).next().is_nothing()
+
+    result = itrt([42]).intersperse(0)
+    assert result.next().unwrap() == 42
+    assert result.next().is_nothing()
+
+    assert list(itrt(["a", "b", "c"]).intersperse("-")) == ["a", "-", "b", "-", "c"]
+
+def test_iterator_intersperse_with():
+    iterator = itrt([1, 2, 3])
+    result = iterator.intersperse_with(lambda: 0)
+    assert result.next().unwrap() == 1
+    assert result.next().unwrap() == 0
+    assert result.next().unwrap() == 2
+    assert result.next().unwrap() == 0
+    assert result.next().unwrap() == 3
+    assert result.next().is_nothing()
+
+    assert itrt([]).intersperse_with(lambda: 0).next().is_nothing()
+
+    n = 0
+    def counter():
+        nonlocal n
+        n += 1
+        return n
+    assert list(itrt(["a", "b", "c"]).intersperse_with(counter)) == ["a", 1, "b", 2, "c"]
+
 def test_iterator_last():
     iterator = itrt([1, 2, 3, 4, 5])
     assert iterator.last().unwrap() == 5

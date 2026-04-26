@@ -38,8 +38,8 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `ge`                 | :material-close-circle: |
     | `gt`                 | :material-close-circle: |
     | `inspect`            | [:material-arrow-right-circle: `tap`][apfel.core.iter.Iterator.tap] |
-    | `intersperse`        | :material-close-circle: |
-    | `intersperse_with`   | :material-close-circle: |
+    | `intersperse`        | [:material-check-circle:][apfel.core.iter.Iterator.intersperse] |
+    | `intersperse_with`   | [:material-check-circle:][apfel.core.iter.Iterator.intersperse_with] |
     | `is_partitioned`     | :material-close-circle: |
     | `is_sorted`          | :material-close-circle: |
     | `is_sorted_by`       | :material-close-circle: |
@@ -517,6 +517,66 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return self
+
+    def intersperse(self, separator, /):
+        """
+        Creates a new iterator that places `separator` between adjacent elements.
+
+        ```python
+        iterator = itrt([1, 2, 3])
+        result = iterator.intersperse(0)
+        assert result.next().unwrap() == 1
+        assert result.next().unwrap() == 0
+        assert result.next().unwrap() == 2
+        assert result.next().unwrap() == 0
+        assert result.next().unwrap() == 3
+        assert result.next().is_nothing()
+
+        assert itrt([]).intersperse(0).next().is_nothing()
+        assert itrt([1]).intersperse(0).next().unwrap() == 1
+        ```
+        """
+        def _gen():
+            first = True
+            for item in self:
+                if not first:
+                    yield separator
+                first = False
+                yield item
+        return IteratorAdaptor(_gen())
+
+    def intersperse_with(self, sep_fn, /):
+        """
+        Creates a new iterator that places the value returned by `sep_fn` between adjacent elements.
+        `sep_fn` is called once for each separator inserted.
+
+        ```python
+        iterator = itrt([1, 2, 3])
+        result = iterator.intersperse_with(lambda: 0)
+        assert result.next().unwrap() == 1
+        assert result.next().unwrap() == 0
+        assert result.next().unwrap() == 2
+        assert result.next().unwrap() == 0
+        assert result.next().unwrap() == 3
+        assert result.next().is_nothing()
+
+        n = 0
+        def counter():
+            nonlocal n
+            n += 1
+            return n
+        result = itrt(['a', 'b', 'c']).intersperse_with(counter)
+        assert list(result) == ['a', 1, 'b', 2, 'c']
+        ```
+        """
+        def _gen():
+            first = True
+            for item in self:
+                if not first:
+                    yield sep_fn()
+                first = False
+                yield item
+        return IteratorAdaptor(_gen())
 
     def last(self):
         """
