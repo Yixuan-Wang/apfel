@@ -70,7 +70,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `reduce`             | [:material-check-circle:][apfel.core.iter.Iterator.reduce] |
     | `rev`                | :material-close-circle: |
     | `rposition`          | :material-close-circle: |
-    | `scan`               | :material-close-circle: |
+    | `scan`               | [:material-check-circle:][apfel.core.iter.Iterator.scan] |
     | `size_hint`          | :material-close-circle: |
     | `skip`               | [:material-check-circle:][apfel.core.iter.Iterator.skip] |
     | `skip_while`         | [:material-check-circle:][apfel.core.iter.Iterator.skip_while] |
@@ -93,7 +93,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
 
     | Reference [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py } | Counterpart |
     | --- | --- |
-    | `accumulate`                       | :material-close-circle: |
+    | `accumulate`                       | [:material-arrow-right-circle: `accumulate`][apfel.core.iter.Iterator.accumulate] |
     | `batched`                          | :material-close-circle: |
     | `chain`                            | [:material-check-circle:][apfel.core.iter.Iterator.chain] |
     | `chain.from_iterable`              | [:material-arrow-right-circle: `flatten`][apfel.core.iter.Iterator.flatten] |
@@ -191,6 +191,32 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
 
     def __iter__(self):
         return self
+
+    def accumulate(self, state, func):
+        """
+        Creates a new iterator that yields the accumulated state after applying `func`
+        to each element, starting with `state`. Unlike [`fold`][apfel.core.iter.Iterator.fold],
+        this yields each intermediate state rather than consuming the iterator.
+
+        Compared to [`itertools.accumulate`](https://docs.python.org/3/library/itertools.html#itertools.accumulate){ .ref .py },
+        this method enforces an explicit initial state and binary function;
+        it also *does not* yield the initial state before consuming any element.
+        This is also consistent with the [`numpy.ufunc.accumulate`](https://numpy.org/doc/stable/reference/generated/numpy.ufunc.accumulate.html#numpy.ufunc.accumulate){ .ref .py } behavior.
+        Also check [`Iterator.scan`](apfel.core.iter.Iterator.scan) for a method that provides more generalized state control.
+
+        ```python
+        iterator = itrt([1, 2, 3, 4])
+        result = iterator.accumulate(0, lambda acc, x: acc + x)
+        assert result.next().unwrap() == 1
+        assert result.next().unwrap() == 3
+        assert result.next().unwrap() == 6
+        assert result.next().unwrap() == 10
+        assert result.next().is_nothing()
+        ```
+        """
+        return IteratorAdaptor(_itertools.islice(
+            _itertools.accumulate(self, func, initial=state), 1, None
+        ))
 
     def advance_by(self, n: int, /):
         """
@@ -732,6 +758,41 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
             return _maybe.Maybe.make_just(_functools.reduce(func, self))
         except TypeError:
             return _maybe.Maybe.make_nothing()
+
+    def scan(self, state, func):
+        """
+        Creates a new iterator that holds internal state, applying `func` to each element.
+        `func` receives `state` and an element, and returns a
+        [`Maybe`](apfel.container.maybe.Maybe). Yields the unwrapped value while `func`
+        returns `Just`; stops on `Nothing`.
+
+        `state` is passed directly to `func` each iteration — pass a mutable container
+        such as [`Value`](apfel.container.value.Value) if `func` needs to update it across iterations.
+
+        ```python
+        from apfel.container.maybe import just, nothing
+        from apfel.container.value import Value
+        from apfel.core.common import imperative
+
+        state = Value(1)
+        iterator = itrt([1, 2, 3, 4])
+        result = iterator.scan(state, lambda s, x: imperative(
+            s.update(lambda v: v * x),
+            nothing() if s.done() > 6 else just(-s.done()),
+        ))
+        assert result.next().unwrap() == -1
+        assert result.next().unwrap() == -2
+        assert result.next().unwrap() == -6
+        assert result.next().is_nothing()
+        ```
+        """
+        def _gen():
+            for item in self:
+                result = func(state, item)
+                if result.is_nothing():
+                    return
+                yield result.unwrap()
+        return IteratorAdaptor(_gen())
 
     def skip(self, n: int, /):
         """

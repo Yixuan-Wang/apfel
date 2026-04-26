@@ -20,6 +20,25 @@ def test_iterator_next():
     assert iterator.next().is_nothing()
 
 
+def test_iterator_accumulate():
+    iterator = itrt([1, 2, 3, 4])
+    result = iterator.accumulate(0, lambda acc, x: acc + x)
+    assert result.next().unwrap() == 1
+    assert result.next().unwrap() == 3
+    assert result.next().unwrap() == 6
+    assert result.next().unwrap() == 10
+    assert result.next().is_nothing()
+
+    result = itrt([1, 2, 3, 4]).accumulate(1, lambda acc, x: acc * x)
+    assert list(result) == [1, 2, 6, 24]
+
+    assert itrt([]).accumulate(0, lambda acc, x: acc + x).next().is_nothing()
+
+    result = itrt([42]).accumulate(0, lambda acc, x: acc + x)
+    assert result.next().unwrap() == 42
+    assert result.next().is_nothing()
+
+
 def test_iterator_advance_by():
     iterator = itrt([1, 2, 3, 4, 5])
     assert iterator.advance_by(2).is_ok()
@@ -378,6 +397,27 @@ def test_iterator_reduce():
     iterator = itrt([])
     result = iterator.reduce(lambda acc, x: acc + x)
     assert result.is_nothing()  # no elements to reduce
+
+def test_iterator_scan():
+    from apfel.container.maybe import just, nothing
+    from apfel.container.value import Value
+    from apfel.core.common import imperative
+
+    state = Value(1)
+    result = itrt([1, 2, 3, 4]).scan(state, lambda s, x: imperative(
+        s.update(lambda v: v * x),
+        nothing() if s.done() > 6 else just(-s.done()),
+    ))
+    assert result.next().unwrap() == -1
+    assert result.next().unwrap() == -2
+    assert result.next().unwrap() == -6
+    assert result.next().is_nothing()
+
+    result = itrt([]).scan(Value(0), lambda s, x: just(x))
+    assert result.next().is_nothing()
+
+    result = itrt([1, 2, 3]).scan(Value(0), lambda s, x: just(x))
+    assert list(result) == [1, 2, 3]
 
 def test_iterator_skip():
     iterator = itrt([1, 2, 3, 4, 5])
