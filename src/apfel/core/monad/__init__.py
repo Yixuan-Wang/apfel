@@ -171,7 +171,7 @@ class Applicative(Functor, ABCDispatch):
         # ? ```
 
         cls = type(self)
-        return Applicative.apply[cls](self, Applicative.pure[cls](f))  # type: ignore
+        return Applicative.apply[cls](self, Applicative.pure[cls](func))  # type: ignore
 
 
 class Monad(Applicative, ABCDispatch):
