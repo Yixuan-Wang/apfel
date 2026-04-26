@@ -262,6 +262,35 @@ def test_iterator_map():
     assert mapped_iterator.next().is_nothing()
     assert iterator.next().is_nothing()  # original iterator is also exhausted
 
+def test_iterator_map_while():
+    from apfel.container.maybe import Maybe
+
+    def checked_double(x):
+        if x < 4:
+            return Maybe.make_just(x * 2)
+        return Maybe.make_nothing()
+
+    iterator = itrt([1, 2, 3, 4, 5])
+    result = iterator.map_while(checked_double)
+    assert result.next().unwrap() == 2
+    assert result.next().unwrap() == 4
+    assert result.next().unwrap() == 6
+    assert result.next().is_nothing()
+
+    iterator = itrt([4, 5, 6])
+    result = iterator.map_while(checked_double)
+    assert result.next().is_nothing()
+
+    iterator = itrt([])
+    assert iterator.map_while(checked_double).next().is_nothing()
+
+    iterator = itrt([1, 2, 3])
+    result = iterator.map_while(Maybe.make_just)
+    assert result.next().unwrap() == 1
+    assert result.next().unwrap() == 2
+    assert result.next().unwrap() == 3
+    assert result.next().is_nothing()
+
 def test_iterator_nth():
     iterator = itrt([1, 2, 3, 4, 5])
     assert iterator.nth(2).unwrap() == 3

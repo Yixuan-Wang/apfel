@@ -48,7 +48,7 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `le`                 | :material-close-circle: |
     | `lt`                 | :material-close-circle: |
     | `map`                | [:material-check-circle:][apfel.core.iter.Iterator.map] |
-    | `map_while`          | :material-close-circle: |
+    | `map_while`          | [:material-check-circle:][apfel.core.iter.Iterator.map_while] |
     | `map_windows`        | :material-close-circle: |
     | `max`                | :material-close-circle: |
     | `max_by`             | :material-close-circle: |
@@ -85,6 +85,35 @@ Iterators have a large number of methods. Missing methods will be added graduall
     | `try_reduce`         | :material-close-circle: |
     | `unzip`              | :material-close-circle: |
     | `zip`                | [:material-check-circle:][apfel.core.iter.Iterator.zip] |
+
+??? info "[`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py }"
+
+    This table tracks named `Iterator` counterparts in [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py }.
+    Standalone `itertools` functions can still be used through [`pipe`][apfel.core.iter.Iterator.pipe] when their first argument is an iterable.
+
+    | Reference [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py } | Counterpart |
+    | --- | --- |
+    | `accumulate`                       | :material-close-circle: |
+    | `batched`                          | :material-close-circle: |
+    | `chain`                            | [:material-check-circle:][apfel.core.iter.Iterator.chain] |
+    | `chain.from_iterable`              | [:material-arrow-right-circle: `flatten`][apfel.core.iter.Iterator.flatten] |
+    | `compress`                         | :material-close-circle: |
+    | `count`                            | :material-close-circle: |
+    | `cycle`                            | :material-close-circle: |
+    | `dropwhile`                        | [:material-arrow-right-circle: `skip_while`][apfel.core.iter.Iterator.skip_while] |
+    | `filterfalse`                      | [:material-dots-horizontal-circle: `filter`][apfel.core.iter.Iterator.filter] |
+    | `groupby`                          | :material-close-circle: |
+    | `islice`                           | [:material-dots-horizontal-circle: `take`][apfel.core.iter.Iterator.take] / [`skip`][apfel.core.iter.Iterator.skip] / [`step_by`][apfel.core.iter.Iterator.step_by] |
+    | `pairwise`                         | :material-close-circle: |
+    | `repeat`                           | :material-close-circle: |
+    | `starmap`                          | [:material-dots-horizontal-circle: `map`][apfel.core.iter.Iterator.map] |
+    | `takewhile`                        | [:material-arrow-right-circle: `take_while`][apfel.core.iter.Iterator.take_while] |
+    | `tee`                              | :material-close-circle: |
+    | `zip_longest`                      | :material-close-circle: |
+    | `product`                          | :material-close-circle: |
+    | `permutations`                     | :material-close-circle: |
+    | `combinations`                     | :material-close-circle: |
+    | `combinations_with_replacement`    | :material-close-circle: |
 """
 
 import builtins
@@ -526,6 +555,36 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return IteratorAdaptor(builtins.map(func, self))
+
+    def map_while(self, pred, /):
+        """
+        Creates a new iterator that applies `pred` to each element and yields the unwrapped
+        value while the result is a [`Just`](apfel.container.maybe.Maybe).
+        Once `pred` returns `Nothing`, iteration stops immediately.
+
+        ```python
+        from apfel.container.maybe import just, nothing
+
+        def checked_double(x):
+            if x < 4:
+                return just(x * 2)
+            return nothing()
+
+        iterator = itrt([1, 2, 3, 4, 5])
+        result = iterator.map_while(checked_double)
+        assert result.next().unwrap() == 2
+        assert result.next().unwrap() == 4
+        assert result.next().unwrap() == 6
+        assert result.next().is_nothing()
+        ```
+        """
+        def _gen():
+            for item in self:
+                result = pred(item)
+                if result.is_nothing():
+                    return
+                yield result.unwrap()
+        return IteratorAdaptor(_gen())
 
     def nth(self, n: int, /):
         """
