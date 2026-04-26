@@ -1,5 +1,13 @@
 """
 The abstraction for an iterator, alternative to Python's vanilla built-in iterator ABC [`collections.abc.Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator){ .ref .py }.
+It provides a large number of methods that are commonly found in Rust [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html){ .ref .rs } and Python [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py }.
+
+To create or use this abstraction of iterator:
+
+- Use [`itrt`][apfel.core.iter.itrt] to wrap any iterable or Python vanilla iterator,
+- Use `Iterator` methods directly on any Python vanilla iterator.
+
+[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
 
 # Implementation
 
@@ -122,7 +130,6 @@ import functools as _functools
 import itertools as _itertools
 from abc import abstractmethod
 from typing import Generic, TypeVar
-from typing_extensions import TypeForm
 
 import apfel.container.maybe as _maybe
 import apfel.container.result as _result
@@ -174,7 +181,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
 
     def next(self) -> _maybe.Maybe:
         """
-        Return the next item of the iterator, wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        Return the next item of the iterator, wrapped in a [`Maybe`][apfel.container.maybe.Maybe].
 
         ```python
         iterator = itrt([1, 2, 3])
@@ -202,7 +209,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         this method enforces an explicit initial state and binary function;
         it also *does not* yield the initial state before consuming any element.
         This is also consistent with the [`numpy.ufunc.accumulate`](https://numpy.org/doc/stable/reference/generated/numpy.ufunc.accumulate.html#numpy.ufunc.accumulate){ .ref .py } behavior.
-        Also check [`Iterator.scan`](apfel.core.iter.Iterator.scan) for a method that provides more generalized state control.
+        Also check [`Iterator.scan`][apfel.core.iter.Iterator.scan] for a method that provides more generalized state control.
 
         ```python
         iterator = itrt([1, 2, 3, 4])
@@ -214,9 +221,9 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert result.next().is_nothing()
         ```
         """
-        return IteratorAdaptor(_itertools.islice(
-            _itertools.accumulate(self, func, initial=state), 1, None
-        ))
+        return IteratorAdaptor(
+            _itertools.islice(_itertools.accumulate(self, func, initial=state), 1, None)
+        )
 
     def advance_by(self, n: int, /):
         """
@@ -387,7 +394,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def filter_map(self, pred, /):
         """
         Creates a new iterator that applies `pred` to each element and yields the unwrapped
-        value for each result that is a [`Just`](apfel.container.maybe.Maybe), skipping `Nothing`.
+        value for each result that is a [`Just`][apfel.container.maybe.Maybe], skipping `Nothing`.
 
         ```python
         from apfel.container.maybe import Maybe
@@ -405,17 +412,19 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert filtered.next().is_nothing()
         ```
         """
+
         def _gen():
             for item in self:
                 result = pred(item)
                 if result.is_just():
                     yield result.unwrap()
+
         return IteratorAdaptor(_gen())
 
     def find(self, pred, /):
         """
         Returns the first element in the iterator that satisfies the predicate `f`,
-        wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        wrapped in a [`Maybe`][apfel.container.maybe.Maybe].
         If no such element is found, returns `Nothing`.
 
         ```python
@@ -434,7 +443,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def find_map(self, pred, /):
         """
         Applies the function `pred` to each element of the iterator and returns the first
-        result that is a [`Just`](apfel.container.maybe.Maybe), unwrapped.
+        result that is a [`Just`][apfel.container.maybe.Maybe], unwrapped.
         If no element produces a `Just`, returns `Nothing`.
 
         ```python
@@ -520,7 +529,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def for_each(self, func, /):
         """
         Applies the function `func` to each element of the iterator.
-        Compare to [`map`](apfel.core.iter.Iterator.map), the result of each function application is discarded,
+        Compare to [`map`][apfel.core.iter.Iterator.map], the result of each function application is discarded,
           and the iterator is consumed eagerly.
 
         ```python
@@ -562,6 +571,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert itrt([1]).intersperse(0).next().unwrap() == 1
         ```
         """
+
         def _gen():
             first = True
             for item in self:
@@ -569,6 +579,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
                     yield separator
                 first = False
                 yield item
+
         return IteratorAdaptor(_gen())
 
     def intersperse_with(self, sep_fn, /):
@@ -595,6 +606,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert list(result) == ['a', 1, 'b', 2, 'c']
         ```
         """
+
         def _gen():
             first = True
             for item in self:
@@ -602,11 +614,12 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
                     yield sep_fn()
                 first = False
                 yield item
+
         return IteratorAdaptor(_gen())
 
     def last(self):
         """
-        Returns the last element of the iterator, wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        Returns the last element of the iterator, wrapped in a [`Maybe`][apfel.container.maybe.Maybe].
         If the iterator is empty, returns `Nothing`.
 
         ```python
@@ -619,7 +632,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         global _sentinal_iterator_last, _func_iterator_last
-        last = _functools.reduce(_func_iterator_last, self, _sentinal_iterator_last)  # type: ignore
+        last = _functools.reduce(_func_iterator_last, self, _sentinal_iterator_last)
         return (
             _maybe.Maybe.make_just(last)
             if last is not _sentinal_iterator_last
@@ -645,7 +658,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def map_while(self, pred, /):
         """
         Creates a new iterator that applies `pred` to each element and yields the unwrapped
-        value while the result is a [`Just`](apfel.container.maybe.Maybe).
+        value while the result is a [`Just`][apfel.container.maybe.Maybe].
         Once `pred` returns `Nothing`, iteration stops immediately.
 
         ```python
@@ -664,17 +677,19 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert result.next().is_nothing()
         ```
         """
+
         def _gen():
             for item in self:
                 result = pred(item)
                 if result.is_nothing():
                     return
                 yield result.unwrap()
+
         return IteratorAdaptor(_gen())
 
     def nth(self, n: int, /):
         """
-        Returns the `n`-th element of the iterator (0-indexed), wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        Returns the `n`-th element of the iterator (0-indexed), wrapped in a [`Maybe`][apfel.container.maybe.Maybe].
         If the iterator has fewer than `n + 1` elements, returns `Nothing`.
 
         Note:
@@ -718,7 +733,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def position(self, pred, /):
         """
         Returns the index of the first element in the iterator that satisfies the predicate `pred`,
-        wrapped in a [`Maybe`](apfel.container.maybe.Maybe).
+        wrapped in a [`Maybe`][apfel.container.maybe.Maybe].
         If no such element is found, returns `Nothing`.
 
         ```python
@@ -738,11 +753,11 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
 
     def reduce(self, func, /):
         """
-        Reduce the elements of the iterator using the accumulation function `func` and returns a [`Maybe`](apfel.container.maybe.Maybe).
+        Reduce the elements of the iterator using the accumulation function `func` and returns a [`Maybe`][apfel.container.maybe.Maybe].
         The first element of the iterator is used as the initial accumulator value.
         If the iterator is empty, returns `Nothing`.
 
-        See also [`fold`](apfel.core.iter.Iterator.fold) if an explicit initial value is needed.
+        See also [`fold`][apfel.core.iter.Iterator.fold] if an explicit initial value is needed.
 
         ```python
         iterator = itrt([1, 2, 3, 4, 5])
@@ -763,11 +778,11 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         Creates a new iterator that holds internal state, applying `func` to each element.
         `func` receives `state` and an element, and returns a
-        [`Maybe`](apfel.container.maybe.Maybe). Yields the unwrapped value while `func`
+        [`Maybe`][apfel.container.maybe.Maybe]. Yields the unwrapped value while `func`
         returns `Just`; stops on `Nothing`.
 
         `state` is passed directly to `func` each iteration — pass a mutable container
-        such as [`Value`](apfel.container.value.Value) if `func` needs to update it across iterations.
+        such as [`Value`][apfel.container.value.Value] if `func` needs to update it across iterations.
 
         ```python
         from apfel.container.maybe import just, nothing
@@ -786,12 +801,14 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert result.next().is_nothing()
         ```
         """
+
         def _gen():
             for item in self:
                 result = func(state, item)
                 if result.is_nothing():
                     return
                 yield result.unwrap()
+
         return IteratorAdaptor(_gen())
 
     def skip(self, n: int, /):
@@ -896,10 +913,12 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert tapped.next().is_nothing()
         ```
         """
+
         def _gen():
             for item in self:
                 func(item)
                 yield item
+
         return IteratorAdaptor(_gen())
 
     def take_while(self, pred, /):
@@ -927,7 +946,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         The iterators are guaranteed to be consumed in the order they are passed in.
 
         Warning:
-            The original iterators should not be pulled after being zipped together, as some 
+            The original iterators should not be pulled after being zipped together, as some
             of their elements may have been consumed and discarded during the zipping process.
 
         ```python
@@ -956,6 +975,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         ```
         """
         return IteratorAdaptor(builtins.zip(self, *others))
+
 
 class IteratorAdaptor(Iterator):
     __slots__ = ("_iterator",)
