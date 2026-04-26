@@ -1,6 +1,6 @@
 [project]
 name = "apfel"
-version = "0.2.1"
+version = "0.3.0"
 description = "A Python functional extras library providing a set of quality-of-life utilities."
 authors = [
     {name = "Yixuan-Wang", email = "tom-yx_wang@outlook.com"},
