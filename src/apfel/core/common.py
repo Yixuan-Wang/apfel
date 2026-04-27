@@ -134,7 +134,11 @@ def todo(message=None, /):
     Raises:
         NotImplementedError: Always.
     """
-    raise NotImplementedError("Todo" + f": {message}" if message else "")
+    try:
+        raise NotImplementedError("Todo" + (f": {message}" if message else ""))
+    except NotImplementedError as e:
+        e.__traceback__ = e.__traceback__.tb_next # type: ignore
+        raise
 
 
 def unimplemented(message=None, /):
@@ -151,7 +155,11 @@ def unimplemented(message=None, /):
     Raises:
         NotImplementedError: Always.
     """
-    raise NotImplementedError("Not implemented" + f": {message}" if message else "")
+    try:
+        raise NotImplementedError("Not implemented" + (f": {message}" if message else ""))
+    except NotImplementedError as e:
+        e.__traceback__ = e.__traceback__.tb_next # type: ignore
+        raise
 
 
 __all__ = [
