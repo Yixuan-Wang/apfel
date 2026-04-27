@@ -160,7 +160,12 @@ def affirm(value, predicate=None):
                 predicate=predicate,
             )
             exc = AssertionError(fail_message)
-            raise exc
+
+            try:
+                raise exc
+            except AssertionError as e:
+                e.__traceback__ = e.__traceback__.tb_next  # type: ignore
+                raise
 
     # The assertion is satisfied
     return value

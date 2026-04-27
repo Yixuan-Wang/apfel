@@ -87,6 +87,8 @@ Warning:
 
 from collections.abc import Sequence as _Sequence, Mapping as _Mapping
 
+from apfel.experimental.expr import cover_through as _cover_through
+
 
 class FunctionObject:
     # ? This class cannot have docstring, as class level docstring will
@@ -108,6 +110,7 @@ class FunctionObject:
     def __repr__(self):
         return repr(self.__wrapped__)
 
+    @_cover_through
     def __or__(self, value, /):
         """\
         ```python
@@ -130,6 +133,7 @@ class FunctionObject:
         """
         return self.__call__(value)
 
+    @_cover_through
     def __rand__(self, value):
         """\
         ```python
@@ -156,6 +160,7 @@ class FunctionObject:
         """
         return self.__call__(value)
 
+    @_cover_through
     def __matmul__(self, value):
         """\
         ```python
@@ -178,6 +183,7 @@ class FunctionObject:
         """
         return self.__call__(value)
 
+    @_cover_through
     def __pow__(self, value):
         """\
         ```python
@@ -207,6 +213,7 @@ class FunctionObject:
         """
         return self.__call__(value)
 
+    @_cover_through
     def __mod__(self, value):
         """\
         ```python

@@ -15,6 +15,23 @@ def cover_up(func, /):
     return wrapper
 
 
+def cover_through(func, /):
+    @functools.wraps(func)
+    def wrapper(*args, **kwargs):
+        try:
+            return func(*args, **kwargs)
+        except Exception as e:
+            if (
+                hasattr(e, "__traceback__")
+                and e.__traceback__ is not None
+                and e.__traceback__.tb_next is not None
+            ):
+                e.__traceback__ = e.__traceback__.tb_next.tb_next or e.__traceback__.tb_next
+            raise
+
+    return wrapper
+
+
 def throw(exc: BaseException, /) -> Never:
     """
     Raise an exception.
@@ -28,7 +45,6 @@ def throw(exc: BaseException, /) -> Never:
         if (
             hasattr(e, "__traceback__")
             and e.__traceback__ is not None
-            and hasattr(e.__traceback__, "tb_next")
         ):
-            e.__traceback__ = e.__traceback__.tb_next  # pyright: ignore[reportOptionalMemberAccess]
+            e.__traceback__ = e.__traceback__.tb_next
         raise
