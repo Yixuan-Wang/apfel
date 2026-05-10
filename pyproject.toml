@@ -43,7 +43,6 @@ dev = [
     "tox-uv",
     "ipython>=9",
     "ipdb",
-    "marimo",
 ]
 
 [tool.uv.build-backend]
