@@ -1,4 +1,4 @@
-from apfel.core.dispatch import ABCDispatch, dispatch, impl
+from apfel.core.dispatch import ABCDispatch, dispatched, impl
 from abc import abstractmethod
 
 import pytest
@@ -236,7 +236,7 @@ class TestSingleDispatchFuncAPI:
     def test_dispatch_func_api(self):
         from typing import Any
 
-        @dispatch
+        @dispatched
         def f(x: Any) -> str:
             return str(x)
 
