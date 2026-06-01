@@ -4,6 +4,6 @@
     options:
         members:
           - ABCDispatch
-          - dispatch
+          - dispatched
           - impl
           - add_impl
