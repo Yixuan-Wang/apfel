@@ -82,18 +82,20 @@ Interface.method(c, f)  # Calls the implementation within the @impl
 If you have control to the source code, you can add `Interface` to the base classes of `Implementor`,
 so `Implementor.method(instance)` and `instance.method()` will work as expected, `Interface.method(instance, f)` shall also work.
 
-Implementor methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.
+Class methods and static methods shall select a concrete implementation explicitly, as the concrete class is not inferrable from the function's call arguments.
 
 ```python
-Interface.class_method[Implementor](f)
-Interface.static_method[Implementor](f)
+Interface.dispatch(Implementor).class_method(f)
+Interface.dispatch(Implementor).static_method(f)
 ```
 
-It's also possible to define a dispatchable function using the [`@dispatch`][apfel.core.dispatch.dispatch] decorator.
+The older generic syntax, e.g. `Interface.class_method[Implementor](f)`, is also supported.
+
+It's also possible to define a dispatchable function using the [`@dispatched`][apfel.core.dispatch.dispatched] decorator.
 Then an method `impl_for` will be on the function, which can be used to register implementations.
 
 ```python
-@dispatch
+@dispatched
 def f(x): ...
 
 @f.impl_for(int)
@@ -104,7 +106,7 @@ def _(x: int):
 Example:
   You can check the [`Functor`][apfel.core.monad.Functor]'s source code as an example of how to use this module.
 
-By default `ABCDispatch` and `@dispatch` defines a [single dispatch](https://en.wikipedia.org/wiki/Multiple_dispatch#Single_dispatch).
+By default `ABCDispatch` and `@dispatched` defines a [single dispatch](https://en.wikipedia.org/wiki/Multiple_dispatch#Single_dispatch).
 This means the runtime imlementation selection is based on **the concrete type** of **first argument** of the function, or of the **receiver** in the case of methods.
 
 """
@@ -113,10 +115,14 @@ from __future__ import annotations
 from abc import ABCMeta
 from collections.abc import Callable, Sequence
 from functools import update_wrapper, WRAPPER_ASSIGNMENTS
-from typing import Protocol, ClassVar
+from typing import Protocol, ClassVar, TYPE_CHECKING
 from types import FunctionType, MethodType
 
+from typing_extensions import deprecated
 from apfel import unimplemented
+
+if TYPE_CHECKING:
+    from ty_extensions import Intersection
 
 
 class ABCDispatchMeta(ABCMeta):
@@ -148,6 +154,66 @@ class ABCDispatchMeta(ABCMeta):
             d.__dispatch__.enclosing_class = self
 
         return self
+
+
+class ABCDispatchProxy:
+    """
+    A proxy for selecting implementations of an [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
+    """
+
+    interface: type
+    implementor: type
+
+    def __init__(self, interface, implementor, /):
+        self.interface = interface
+        self.implementor = (
+            implementor if isinstance(implementor, type) else type(implementor)
+        )
+
+    def __getattr__(self, name):
+        method = getattr(self.interface, name)
+        registry = getattr(method, "__dispatch__", None)
+        if registry is None:
+            raise AttributeError(name)
+
+        impl = self._get_impl(registry)
+        if isinstance(impl, MethodType):
+            return impl
+        if isinstance(registry, DispatchRegistryForStaticMethod):
+            return (
+                impl.__get__(None, self.implementor)
+                if hasattr(impl, "__get__")
+                else impl
+            )
+        if isinstance(registry, DispatchRegistryForClassMethod):
+            return (
+                impl.__get__(None, self.implementor)
+                if hasattr(impl, "__get__")
+                else impl
+            )
+        return impl
+
+    def _get_impl(self, registry):
+        ty = self.implementor
+        if (
+            registry.enclosing_class
+            and issubclass(ty, registry.enclosing_class)
+            and (impl := getattr(ty, registry.function.__name__, None)) is not None
+        ):
+            return impl
+
+        for cls in ty.__mro__:
+            if cls in registry.registry:
+                return registry.registry[cls]
+
+        raise NotImplementedError(
+            "No implementation {enclosing_class}found for {ty}".format(
+                enclosing_class=f"of {registry.enclosing_class.__name__} "
+                if registry.enclosing_class
+                else "",
+                ty=ty.__name__,
+            )
+        )
 
 
 class IABCDispatch(Protocol):
@@ -186,7 +252,9 @@ class ABCDispatch(metaclass=ABCDispatchMeta):
         ```
     """
 
-    ...
+    @classmethod
+    def dispatch(cls, implementor, /):
+        return ABCDispatchProxy(cls, implementor)
 
 
 class IDispatchRegistry(Protocol):
@@ -272,7 +340,7 @@ class DispatchRegistry(IDispatchRegistry):
     Default [dispatch registry][apfel.core.dispatch.IDispatchRegistry] using single dispatch.
     """
 
-    function: Callable
+    function: Intersection[Callable, FunctionType]
     """
     The fallback function or method.
     """
@@ -414,7 +482,9 @@ class DispatchRegistryForStaticMethod(DispatchRegistryForClassMethod):
     def make_dispatch_func(self, func):
         class dyn:
             def __class_getitem__(cls, key):
-                return self.decide_impl(key)
+                impl = self.decide_impl(key)
+                ty = key if isinstance(key, type) else type(key)
+                return impl.__get__(None, ty) if hasattr(impl, "__get__") else impl
 
             def __new__(cls, *args, **kwargs):
                 return self.function(*args, **kwargs)
@@ -426,10 +496,10 @@ class DispatchRegistryForStaticMethod(DispatchRegistryForClassMethod):
     def add_impl(self, func, *args, **kwargs):
         if not isinstance(func, staticmethod):
             func = staticmethod(func)
-        return super().add_impl(func, *args, **kwargs)
+        return DispatchRegistry.add_impl(self, func, *args, **kwargs)
 
 
-def dispatch(func, /):
+def dispatched(func, /):
     """
     A decorator for creating a single-dispatchable function.
     It will add an `impl_for` method to the function, which can be used to register implementations.
@@ -439,7 +509,7 @@ def dispatch(func, /):
 
     Example:
         ```python
-        @dispatch
+        @dispatched
         def show(x):
             ...
 
@@ -456,15 +526,15 @@ def dispatch(func, /):
         ```
     """
 
-    dispatch = DispatchRegistry(func)
-    func = dispatch.make_dispatch_func(func)
-    setattr(func, "__dispatch__", dispatch)
+    registry_dispatch = DispatchRegistry(func)
+    func = registry_dispatch.make_dispatch_func(func)
+    setattr(func, "__dispatch__", registry_dispatch)
 
     def impl_for(cls):
         # ? Here the wrapper function doesn't need to use `functools.wraps`
         # ?  because the original function is not being replaced.
         def wrapper(impl):
-            dispatch.add_impl(impl, cls)
+            registry_dispatch.add_impl(impl, cls)
             return impl
 
         return wrapper
@@ -472,6 +542,12 @@ def dispatch(func, /):
     setattr(func, "impl_for", impl_for)
 
     return func
+
+
+dispatch = deprecated("Use apfel.core.dispatch.dispatched instead")(dispatched)
+"""
+Deprecated alias for [`dispatched`][apfel.core.dispatch.dispatched].
+"""
 
 
 def impl(interface, /):

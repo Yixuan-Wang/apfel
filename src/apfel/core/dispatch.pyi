@@ -1,15 +1,25 @@
 from __future__ import annotations
 from abc import ABCMeta
 from collections.abc import Callable, Mapping, Sequence
-from typing import ClassVar, Protocol
+from typing import Any, ClassVar, Protocol, Self
 
 class ABCDispatchMeta(ABCMeta): ...
 
+class ABCDispatchProxy[T, I]:
+    #? Here type is used instead of TypeForm
+    #?   since it must be a concrete type, not an annotation.
+    interface: type[I]
+    implementor: type[T]
+    def __init__(self, interface: type[I], implementor: type[T], /) -> None: ...
+    def __getattr__(self, name: str) -> Any: ...
+
 class IABCDispatch(Protocol):
-    __dispatch_methods__: set[str]
+    __dispatch_methods__: ClassVar[set[str]]
 
 class ABCDispatch(IABCDispatch, metaclass=ABCDispatchMeta):
     __dispatch_methods__: ClassVar[set[str]]
+    @classmethod
+    def dispatch[T](cls, implementor: type[T], /) -> Self: ...
 
 class IDispatchRegistry[**P, **K, R](Protocol):
     def decide_impl(self, *args: P.args, **kwargs: P.kwargs) -> Callable[P, R]: ...
@@ -45,8 +55,12 @@ class DispatchFunction[**P, R]:
     @property
     def __dispatch__(self) -> DispatchRegistry[P, [type], R]: ...
 
+def dispatched[**P, R](func: Callable[P, R], /) -> DispatchFunction[P, R]: ...
 def dispatch[**P, R](func: Callable[P, R], /) -> DispatchFunction[P, R]: ...
 def impl[T](interface: IABCDispatch, /) -> Callable[[type[T]], type[T]]: ...
 def add_impl(
-    interface: IABCDispatch, implementation: Mapping[str, Callable], *impl_for_args, **impl_for_kwargs
+    interface: IABCDispatch,
+    implementation: Mapping[str, Callable],
+    *impl_for_args,
+    **impl_for_kwargs,
 ) -> None: ...

@@ -59,6 +59,7 @@ def test_monad_impl_list():
 
     assert Functor.map(lst, add(1)) == [2, 3, 4]
     assert Applicative.pure[list](42) == [42]
+    assert Applicative.dispatch(list).pure(42) == [42]
     assert Applicative.apply(lst, [add(1), add(2)]) == [2, 3, 4, 3, 4, 5]
     assert Monad.bind(lst, lambda x: [x, x + 1]) == [1, 2, 2, 3, 3, 4]
 

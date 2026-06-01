@@ -49,6 +49,8 @@ dev = [
 [tool.uv.build-backend]
 
 [tool.ruff]
+target-version = "py312"
+
 [tool.ruff.lint]
 extend-select = ["ISC", "COM818"]
 ignore = ["E741", "F821"]
