@@ -1277,13 +1277,14 @@ But you can call <code>Interface.method</code> on an instance of <code>Implement
 </code></pre></div>
 <p>If you have control to the source code, you can add <code>Interface</code> to the base classes of <code>Implementor</code>,
 so <code>Implementor.method(instance)</code> and <code>instance.method()</code> will work as expected, <code>Interface.method(instance, f)</code> shall also work.</p>
-<p>Implementor methods and static methods shall be called with the generic syntax, as the concrete class is not inferrable from the function's call arguments.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Interface</span><span class="o">.</span><span class="n">class_method</span><span class="p">[</span><span class="n">Implementor</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
-<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Interface</span><span class="o">.</span><span class="n">static_method</span><span class="p">[</span><span class="n">Implementor</span><span class="p">](</span><span class="n">f</span><span class="p">)</span>
+<p>Class methods and static methods shall select a concrete implementation explicitly, as the concrete class is not inferrable from the function's call arguments.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="n">Interface</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Implementor</span><span class="p">)</span><span class="o">.</span><span class="n">class_method</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="n">Interface</span><span class="o">.</span><span class="n">dispatch</span><span class="p">(</span><span class="n">Implementor</span><span class="p">)</span><span class="o">.</span><span class="n">static_method</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
 </code></pre></div>
-<p>It's also possible to define a dispatchable function using the <a class="autorefs autorefs-internal" title="dispatch(func)" href="#apfel.core.dispatch.dispatch"><code>@dispatch</code></a> decorator.
+<p>The older generic syntax, e.g. <code>Interface.class_method[Implementor](f)</code>, is also supported.</p>
+<p>It's also possible to define a dispatchable function using the [<code>@dispatched</code>][apfel.core.dispatch.dispatched] decorator.
 Then an method <code>impl_for</code> will be on the function, which can be used to register implementations.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@dispatch</span>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nd">@dispatched</span>
 <a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span> <span class="o">...</span>
 <a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
 <a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nd">@f</span><span class="o">.</span><span class="n">impl_for</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
@@ -1295,7 +1296,7 @@ Then an method <code>impl_for</code> will be on the function, which can be used 
 <details class="example" open>
   <summary>Example</summary>
   <p>You can check the <a class="autorefs autorefs-internal" href="../monad/#apfel.core.monad.Functor"><code>Functor</code></a>'s source code as an example of how to use this module.</p>
-</details>        <p>By default <code>ABCDispatch</code> and <code>@dispatch</code> defines a <a href="https://en.wikipedia.org/wiki/Multiple_dispatch#Single_dispatch">single dispatch</a>.
+</details>        <p>By default <code>ABCDispatch</code> and <code>@dispatched</code> defines a <a href="https://en.wikipedia.org/wiki/Multiple_dispatch#Single_dispatch">single dispatch</a>.
 This means the runtime imlementation selection is based on <strong>the concrete type</strong> of <strong>first argument</strong> of the function, or of the <strong>receiver</strong> in the case of methods.</p>
 
 
@@ -1393,30 +1394,6 @@ Stick to built-in <a class="ref py" href="https://docs.python.org/3/library/abc.
 
     <div class="doc doc-contents ">
 
-        <p>A decorator for creating a single-dispatchable function.
-It will add an <code>impl_for</code> method to the function, which can be used to register implementations.
-Calling the function will dispatch to the correct implementation based on the type of the first argument.</p>
-<p>This is similar to <a class="ref py" href="https://docs.python.org/3/library/functools.html#functools.singledispatch"><code>functools.singledispatch</code></a>, but does not use type hints for dispatching, and static type unions are not supported.</p>
-
-
-<details class="example" open>
-  <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@dispatch</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">show</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">...</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@show</span><span class="o">.</span><span class="n">impl_for</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;int: </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="nd">@show</span><span class="o">.</span><span class="n">impl_for</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">def</span><span class="w"> </span><span class="nf">_</span><span class="p">(</span><span class="n">x</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>    <span class="k">return</span> <span class="sa">f</span><span class="s2">&quot;str: </span><span class="si">{</span><span class="n">x</span><span class="si">}</span><span class="s2">&quot;</span>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
-<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="n">show</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>       <span class="c1"># &quot;int: 1&quot;</span>
-<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">show</span><span class="p">(</span><span class="s2">&quot;hello&quot;</span><span class="p">)</span> <span class="c1"># &quot;str: hello&quot;</span>
-</code></pre></div>
-</details>
 
     </div>
 
@@ -1562,7 +1539,7 @@ the <code>impl_for_args</code> param should be the type of the implementor class
                 <code>*impl_for_args</code>
             </td>
             <td>
-                  <code><span title="Any">Any</span></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1578,7 +1555,7 @@ the <code>impl_for_args</code> param should be the type of the implementor class
                 <code>**impl_for_kwargs</code>
             </td>
             <td>
-                  <code><span title="Any">Any</span></code>
+                  <code><span title="typing.Any">Any</span></code>
             </td>
             <td>
               <div class="doc-md-description">
