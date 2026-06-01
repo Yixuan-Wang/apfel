@@ -1,6 +1,6 @@
 [project]
 name = "apfel"
-version = "0.3.0"
+version = "0.3.1"
 description = "A Python functional extras library providing a set of quality-of-life utilities."
 authors = [
     {name = "Yixuan-Wang", email = "tom-yx_wang@outlook.com"},
@@ -49,6 +49,8 @@ dev = [
 [tool.uv.build-backend]
 
 [tool.ruff]
+target-version = "py312"
+
 [tool.ruff.lint]
 extend-select = ["ISC", "COM818"]
 ignore = ["E741", "F821"]

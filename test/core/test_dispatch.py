@@ -1,4 +1,4 @@
-from apfel.core.dispatch import ABCDispatch, dispatch, impl
+from apfel.core.dispatch import ABCDispatch, dispatched, impl
 from abc import abstractmethod
 
 import pytest
@@ -121,6 +121,12 @@ class TestSingleDispatch:
             "args": (1,),
             "kwargs": {"a": "a"},
         }
+        assert TestSingleDispatch.ITest.dispatch(A).normal_method(a, 1, a="a") == {
+            "type": "normal",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
 
     def test_dispatch_abc_inherit_class(self):
         A = self.A
@@ -145,6 +151,12 @@ class TestSingleDispatch:
             "kwargs": {"a": "a"},
         }
         assert TestSingleDispatch.ITest.class_method[A](1, a="a") == {  # type: ignore
+            "type": "class",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.dispatch(A).class_method(1, a="a") == {
             "type": "class",
             "implementation": "A",
             "args": (1,),
@@ -176,6 +188,12 @@ class TestSingleDispatch:
             "kwargs": {"a": "a"},
         }
         assert TestSingleDispatch.ITest.static_method[A](1, a="a") == {  # type: ignore
+            "type": "static",
+            "implementation": "A",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.dispatch(A).static_method(1, a="a") == {
             "type": "static",
             "implementation": "A",
             "args": (1,),
@@ -230,13 +248,37 @@ class TestSingleDispatch:
             "args": (1,),
             "kwargs": {"a": "a"},
         }
+        assert TestSingleDispatch.ITest.dispatch(int).normal_method(i, 1, a="a") == {
+            "type": "normal",
+            "implementation": "int",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.dispatch(int).class_method(1, a="a") == {
+            "type": "class",
+            "implementation": "int",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.static_method[int](1, a="a") == {  # type: ignore
+            "type": "static",
+            "implementation": "int",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
+        assert TestSingleDispatch.ITest.dispatch(int).static_method(1, a="a") == {
+            "type": "static",
+            "implementation": "int",
+            "args": (1,),
+            "kwargs": {"a": "a"},
+        }
 
 
 class TestSingleDispatchFuncAPI:
     def test_dispatch_func_api(self):
         from typing import Any
 
-        @dispatch
+        @dispatched
         def f(x: Any) -> str:
             return str(x)
 
