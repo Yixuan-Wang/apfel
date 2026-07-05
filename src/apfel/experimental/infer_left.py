@@ -2,72 +2,113 @@ import ast
 import inspect
 import sys
 import textwrap
-from dataclasses import dataclass, field
 from itertools import chain
 
 
-@dataclass(slots=True)
-class CallNodeVisitor(ast.NodeVisitor):
-    lineno: int
-    end_lineno: int
-    col_offset: int
-    end_col_offset: int
+def _span(node: ast.expr) -> tuple[tuple[int, int], tuple[int, int]]:
+    assert node.lineno is not None, "Node must have a starting line number"
+    assert node.end_lineno is not None, "Node must have an ending line number"
+    assert node.col_offset is not None, "Node must have a starting column offset"
+    assert node.end_col_offset is not None, "Node must have an ending column offset"
+    return (node.lineno, node.col_offset), (node.end_lineno, node.end_col_offset)
 
-    targets: list[dict] = field(default_factory=list)
 
-    def _is_this_assign(
-        self, node: ast.Assign | ast.AnnAssign | ast.AugAssign | ast.NamedExpr
-    ) -> bool:
-        value = node.value
-        return (
-            isinstance(value, ast.Call)
-            and value.lineno == self.lineno
-            and value.col_offset == self.col_offset
-            and value.end_col_offset == self.end_col_offset
-            and value.end_lineno == self.end_lineno
-        )
+def _has_span(node: ast.AST) -> bool:
+    return getattr(node, "lineno", None) is not None
 
-    def parse_target(self, target: ast.expr):
-        if isinstance(target, ast.Tuple):
-            return [
-                {"__class__": element.__class__, **vars(element)}
-                for element in target.elts
-            ]
-        else:
-            return ({"__class__": target.__class__, **vars(target)},)
 
-    def visit_Assign(self, node: ast.Assign):
-        if not self._is_this_assign(node):
-            return
+def _contains(
+    outer: tuple[tuple[int, int], tuple[int, int]],
+    inner: tuple[tuple[int, int], tuple[int, int]],
+) -> bool:
+    outer_start, outer_end = outer
+    inner_start, inner_end = inner
+    return outer_start <= inner_start and inner_end <= outer_end
 
-        self.targets.extend(chain.from_iterable(map(self.parse_target, node.targets)))
 
-    def visit_AnnAssign(self, node: ast.AnnAssign):
-        if not self._is_this_assign(node):
-            return
+def _relevant_children(node: ast.AST):
+    for field_name, value in ast.iter_fields(node):
+        if isinstance(value, ast.AST):
+            yield field_name, value
+        elif isinstance(value, list):
+            for item in value:
+                if isinstance(item, ast.AST):
+                    yield field_name, item
 
-        (target, ) = self.parse_target(node.target)
-        target["annotation"] = node.annotation
 
-        self.targets.append(target)
+def _parse_target(target: ast.expr):
+    if isinstance(target, ast.Tuple):
+        return [
+            {"__class__": element.__class__, **vars(element)}
+            for element in target.elts
+        ]
+    else:
+        return ({"__class__": target.__class__, **vars(target)},)
 
-    def visit_AugAssign(self, node: ast.AugAssign):
-        if not self._is_this_assign(node):
-            return
 
-        (target, ) = self.parse_target(node.target)
-        target["op"] = node.op
+def _extract_targets(
+    node: ast.Assign | ast.AnnAssign | ast.AugAssign | ast.NamedExpr,
+):
+    if isinstance(node, ast.Assign):
+        targets = list(chain.from_iterable(map(_parse_target, node.targets)))
+    else:
+        (target,) = _parse_target(node.target)
+        if isinstance(node, ast.AnnAssign):
+            target["annotation"] = node.annotation
+        elif isinstance(node, ast.AugAssign):
+            target["op"] = node.op
+        targets = [target]
 
-        self.targets.append(target)
+    match len(targets):
+        case 1:
+            return targets[0]
+        case _:
+            return targets
 
-    def visit_NamedExpr(self, node: ast.NamedExpr):
-        if not self._is_this_assign(node):
-            return
 
-        self.targets.extend(self.parse_target(node.target))
+_ASSIGN_LIKE = (ast.Assign, ast.AnnAssign, ast.AugAssign, ast.NamedExpr)
+
+
+def _find(
+    node: ast.AST,
+    target_span: tuple[tuple[int, int], tuple[int, int]],
+):
+    # `path` is a cons-list (node, rest) | None, innermost-first, so the
+    # nearest enclosing ancestor is found by a plain forward walk - no
+    # per-descent list copy and no final reversal, unlike a plain list.
+    stack: list[tuple[ast.AST, tuple | None]] = [(node, None)]
+
+    while stack:
+        current, path = stack.pop()
+
+        if isinstance(current, ast.Call) and _span(current) == target_span:
+            while path is not None:
+                ancestor, path = path
+                if isinstance(ancestor, _ASSIGN_LIKE):
+                    return _extract_targets(ancestor)
+            return None
+
+        if _has_span(current) and not _contains(_span(current), target_span):
+            continue
+
+        for field_name, child in _relevant_children(current):
+            new_path = (current, path) if field_name == "value" else path
+            stack.append((child, new_path))
+
+    return None
 
 
 def infer_left():
+    """Infer the left-hand side who the function call is assigned to.
+
+    ```python
+    def f():
+        return infer_left()["id"]
+
+    a = f()
+    assert a == "a"
+    ```
+    """
     caller_frame_raw = sys._getframe(2)
     caller_frame = inspect.getframeinfo(caller_frame_raw)
 
@@ -107,18 +148,9 @@ def infer_left():
     context_str = textwrap.dedent(context_str)
     ast_context = ast.parse(context_str, "<ast>", mode="single")
 
-    visitor = CallNodeVisitor(
-        lineno=line_start + 1,
-        end_lineno=line_end + 1,
-        col_offset=col_offset - dedent_amount,
-        end_col_offset=end_col_offset - dedent_amount,
+    target_span = (
+        (line_start + 1, col_offset - dedent_amount),
+        (line_end + 1, end_col_offset - dedent_amount),
     )
-    visitor.visit(ast_context)
 
-    match len(visitor.targets):
-        case 0:
-            return None
-        case 1:
-            return visitor.targets[0]
-        case _:
-            return visitor.targets
+    return _find(ast_context, target_span)
