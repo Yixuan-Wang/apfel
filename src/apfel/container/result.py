@@ -1,8 +1,8 @@
 """
 A container that holds either a success or a failure.
 
-See [`Result`](https://doc.rust-lang.org/std/result/enum.Result.html){ .ref .rs }
-  and [`Either`](https://hackage.haskell.org/package/base/docs/Data-Either.html){ .ref .hs }.
+See [:rust `Result`](https://doc.rust-lang.org/std/result/enum.Result.html)
+  and [:haskell `Either`](https://hackage.haskell.org/package/base/docs/Data-Either.html).
 
 A `Result` has two possible states, `Ok` or `Err`.
 `Ok` means a successful value is present,
@@ -11,60 +11,60 @@ A `Result` has two possible states, `Ok` or `Err`.
 This module also provides a [`caught`][apfel.container.result.caught] decorator, which wraps a partial function to a total function returning a `Result`.
 
 The [`Result`][apfel.container.result.Result] class, and the [`ok`][apfel.container.result.ok], [`err`][apfel.container.result.err], and [`caught`][apfel.container.result.caught] functions
-  are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+  are exposed in the [package namespace](../prelude#package-namespace).
 
 ## Rationale
 
-Python [`raise`](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement){ .ref .py }
+Python [:python `raise`](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement)
   is easily missed, since the gradual typing system does not support checked exceptions.
-An alternative is to return [nullable error flags](https://go.dev/blog/error-handling-and-go){ .ref .go },
+An alternative is to return [:golang nullable error flags](https://go.dev/blog/error-handling-and-go),
   which is cumbersome to work with.
 
 ## Implementation
 
-`Result`'s APIs are based on the Rust [`Result`](https://doc.rust-lang.org/std/result/enum.Result.html){ .ref .rs },
+`Result`'s APIs are based on the Rust [:rust `Result`](https://doc.rust-lang.org/std/result/enum.Result.html),
 and the comparison table is provided below.
 
-| Reference [`Result`](https://doc.rust-lang.org/std/result/enum.Result.html){ .ref .rs } | Counterpart |
+| Reference [:rust `Result`](https://doc.rust-lang.org/std/result/enum.Result.html) | Counterpart |
 | --- | --- |
-| `and` | [:material-arrow-right-circle: `and_`][apfel.container.result.Result.and_] |
-| `and_then` | [:material-check-circle:][apfel.container.result.Result.and_then] |
-| `as_deref` | :material-minus-circle: |
-| `as_deref_mut` | :material-minus-circle: |
-| `as_mut` | :material-minus-circle: |
-| `as_ref` | :material-minus-circle: |
-| `cloned` | :material-close-circle: |
-| `copied` | :material-minus-circle: |
-| `err` | [:material-check-circle:][apfel.container.result.Result.err] |
-| `expect` | [:material-check-circle:][apfel.container.result.Result.expect] |
-| `expect_err` | [:material-check-circle:][apfel.container.result.Result.expect_err] |
-| `flatten` | [:material-check-circle:][apfel.container.result.Result.flatten] |
-| `inspect` | [:material-dots-horizontal-circle: `tap`][apfel.container.result.Result.tap] |
-| `inspect_err` | [:material-dots-horizontal-circle: `tap_err`][apfel.container.result.Result.tap_err] |
-| `into_err` | :material-close-circle: |
-| `into_ok` | :material-close-circle: |
-| `is_err` | [:material-check-circle:][apfel.container.result.Result.is_err] |
-| `is_err_and` | [:material-check-circle:][apfel.container.result.Result.is_err_and] |
-| `is_ok` | [:material-check-circle:][apfel.container.result.Result.is_ok] |
-| `is_ok_and` | [:material-check-circle:][apfel.container.result.Result.is_ok_and] |
-| `iter` | :material-close-circle: |
-| `iter_mut` | :material-minus-circle: |
-| `map` | [:material-check-circle:][apfel.container.result.Result.map] |
-| `map_err` | [:material-check-circle:][apfel.container.result.Result.map_err] |
-| `map_or` | [:material-check-circle:][apfel.container.result.Result.map_or] |
-| `map_or_default` | :material-minus-circle: |
-| `map_or_else` | [:material-check-circle:][apfel.container.result.Result.map_or_else] |
-| `ok` | [:material-check-circle:][apfel.container.result.Result.ok] |
-| `or` | [:material-arrow-right-circle: `or_`][apfel.container.result.Result.or_] |
-| `or_else` | [:material-check-circle:][apfel.container.result.Result.or_else] |
-| `transpose` | [:material-dots-horizontal-circle:][apfel.container.result.Result.transpose] |
-| `unwrap` | [:material-check-circle:][apfel.container.result.Result.unwrap] |
-| `unwrap_err` | [:material-check-circle:][apfel.container.result.Result.unwrap_err] |
-| `unwrap_err_unchecked` | [:material-check-circle:][apfel.container.result.Result.unwrap_err_unchecked] |
-| `unwrap_or` | [:material-check-circle:][apfel.container.result.Result.unwrap_or] |
-| `unwrap_or_default` | :material-minus-circle: |
-| `unwrap_or_else` | [:material-check-circle:][apfel.container.result.Result.unwrap_or_else] |
-| `unwrap_unchecked` | [:material-check-circle:][apfel.container.result.Result.unwrap_unchecked] |
+| `and` | [`and_`][apfel.container.result.Result.and_] |
+| `and_then` | [`and_then`][apfel.container.result.Result.and_then] |
+| `as_deref` | / |
+| `as_deref_mut` | / |
+| `as_mut` | / |
+| `as_ref` | / |
+| `cloned` | - |
+| `copied` | / |
+| `err` | [`err`][apfel.container.result.Result.err] |
+| `expect` | [`expect`][apfel.container.result.Result.expect] |
+| `expect_err` | [`expect_err`][apfel.container.result.Result.expect_err] |
+| `flatten` | [`flatten`][apfel.container.result.Result.flatten] |
+| `inspect` | [~`tap`][apfel.container.result.Result.tap] |
+| `inspect_err` | [~`tap_err`][apfel.container.result.Result.tap_err] |
+| `into_err` | - |
+| `into_ok` | - |
+| `is_err` | [`is_err`][apfel.container.result.Result.is_err] |
+| `is_err_and` | [`is_err_and`][apfel.container.result.Result.is_err_and] |
+| `is_ok` | [`is_ok`][apfel.container.result.Result.is_ok] |
+| `is_ok_and` | [`is_ok_and`][apfel.container.result.Result.is_ok_and] |
+| `iter` | - |
+| `iter_mut` | / |
+| `map` | [`map`][apfel.container.result.Result.map] |
+| `map_err` | [`map_err`][apfel.container.result.Result.map_err] |
+| `map_or` | [`map_or`][apfel.container.result.Result.map_or] |
+| `map_or_default` | / |
+| `map_or_else` | [`map_or_else`][apfel.container.result.Result.map_or_else] |
+| `ok` | [`ok`][apfel.container.result.Result.ok] |
+| `or` | [`or_`][apfel.container.result.Result.or_] |
+| `or_else` | [`or_else`][apfel.container.result.Result.or_else] |
+| `transpose` | [~`transpose`][apfel.container.result.Result.transpose] |
+| `unwrap` | [`unwrap`][apfel.container.result.Result.unwrap] |
+| `unwrap_err` | [`unwrap_err`][apfel.container.result.Result.unwrap_err] |
+| `unwrap_err_unchecked` | [`unwrap_err_unchecked`][apfel.container.result.Result.unwrap_err_unchecked] |
+| `unwrap_or` | [`unwrap_or`][apfel.container.result.Result.unwrap_or] |
+| `unwrap_or_default` | / |
+| `unwrap_or_else` | [`unwrap_or_else`][apfel.container.result.Result.unwrap_or_else] |
+| `unwrap_unchecked` | [`unwrap_unchecked`][apfel.container.result.Result.unwrap_unchecked] |
 """
 
 import functools
@@ -83,9 +83,9 @@ if TYPE_CHECKING:
 
 class Result(Monad):
     """A container that holds either a success or a failure.
-    See [module-level documentation](result.md#result) for more details.
+    See [module-level documentation](result#result) for more details.
 
-    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This class is exposed in the [package namespace](../prelude#package-namespace).
     """
 
     __slots__ = ("_val", "_is_ok")
@@ -301,7 +301,7 @@ class Result(Monad):
         """
         Call a function with the contained `Ok` value if it exists.
 
-        Unlike [`Result::inspect`](https://doc.rust-lang.org/std/result/enum.Result.html#method.inspect){ .ref .rs },
+        Unlike [:rust `Result::inspect`](https://doc.rust-lang.org/std/result/enum.Result.html#method.inspect),
         this method does not require the function to return `None`.
 
         ```python
@@ -402,7 +402,7 @@ class ok:
     """
     Construct an `Ok` value.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     ```python
     some_ok = ok(42)
@@ -436,7 +436,7 @@ class err:
     """
     Construct an `Err` value.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     ```python
     some_err = err("Something went wrong")
@@ -476,7 +476,7 @@ class caught:
     - Use as a higher-order function with specific exception types as args (`caught(func, ExceptionA, ExceptionB)`) to catch only those exceptions.
     - Use generic syntax to provide type hints (`@caught[ExceptionA]`, `@caught[ExceptionA]()`, `caught[ExceptionA]()`), *without affecting runtime behavior*.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     Usage:
         ```python

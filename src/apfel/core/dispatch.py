@@ -2,21 +2,21 @@
 Dynamic dispatch facilities for Python.
 
 This addresses the lack of **runtime-available**, **inheritance-free** interfaces in Python.
-It partially resembles the [`extension`](https://kotlinlang.org/docs/extensions.html){ .ref .kt } and [`trait`](https://doc.rust-lang.org/book/ch10-02-traits.html){ .ref .rs }.
+It partially resembles the [:kotlin `extension`](https://kotlinlang.org/docs/extensions.html) and [:rust `trait`](https://doc.rust-lang.org/book/ch10-02-traits.html).
 
 # Rationale
 
-**Why not [`functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch){ .ref .py }?**
+**Why not [:python `functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch)?**
 
 - Runtime behavior based on type hints can be confusing.
-- It's method variant [`functools.singledispatchmethod`](https://docs.python.org/3/library/functools.html#functools.singledispatchmethod){ .ref .py } dispatches methods based on the first non-`self` argument, which is very different from the single dispatch found in other object-oriented programming languages.
+- It's method variant [:python `functools.singledispatchmethod`](https://docs.python.org/3/library/functools.html#functools.singledispatchmethod) dispatches methods based on the first non-`self` argument, which is very different from the single dispatch found in other object-oriented programming languages.
 
-**Why not [`abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC){ .ref .py }?**
+**Why not [:python `abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC)?**
 
-- It does not enable [`virtual`](https://cppreference.com/w/cpp/language/virtual){ .ref .cpp }-like or [`dyn`](https://doc.rust-lang.org/book/ch18-02-trait-objects.html){ .ref .rs }-like dispatch.
-An [`abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py } in an abstract class will not forward the call to the concrete implementation based on the real type.
+- It does not enable [:cpp `virtual`](https://cppreference.com/w/cpp/language/virtual)-like or [:rust `dyn`](https://doc.rust-lang.org/book/ch18-02-trait-objects.html)-like dispatch.
+An [:python `abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod) in an abstract class will not forward the call to the concrete implementation based on the real type.
 i.e., there is no facilities for implementation selection based on concrete types.
-- Although [`ABCMeta.register`](https://docs.python.org/3/library/abc.html#abc.ABCMeta.register){ .ref .py } can be used to register non-child classes, it cannot inject implementations to the registered classes.
+- Although [:python `ABCMeta.register`](https://docs.python.org/3/library/abc.html#abc.ABCMeta.register) can be used to register non-child classes, it cannot inject implementations to the registered classes.
 Some classes do not allow monkey-patching and the implementations must be stored elsewhere, registering them to the ABC is logical error, as the implementations are not part of the concrete class.
 
 Using [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] defined in this module,
@@ -28,8 +28,8 @@ Using [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] defined in this module,
 # Usage
 
 First, define a class that subclasses [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
-This class will be semantically similar to [Rust traits](https://doc.rust-lang.org/book/ch10-02-traits.html){ .ref .rs }.
-All interface functions defined in this method shall be decorated with [`@abc.abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py }.
+This class will be semantically similar to [:rust Rust traits](https://doc.rust-lang.org/book/ch10-02-traits.html).
+All interface functions defined in this method shall be decorated with [:python `@abc.abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod).
 Class methods and static methods can also be defined with the same decorator.
 
 Warning:
@@ -55,7 +55,7 @@ The implementation is written in the `class` syntax, with each interface method 
 The class name doesn't matter, but it should subclass the implementor class.
 This syntax provides you the ability to reference concrete attributes and methods defined on the implementor class.
 
-!!! Warning
+Warning:
     Note that some built-in classes are not allowed to be subclassed in Python.
     You may need to use the [`add_impl`][apfel.core.dispatch.add_impl] function to add implementations imperatively in such cases.
 
@@ -227,10 +227,10 @@ class IABCDispatch(Protocol):
 class ABCDispatch(metaclass=ABCDispatchMeta):
     """
     An `ABC` that enables single dispatch for its abstract methods.
-    This behaves similarly to [`abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC){ .ref .py } but with the added feature of dynamic concrete implementation selection under single dispatch.
-    Stick to built-in [`abc.abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod){ .ref .py } to define abstract methods.
+    This behaves similarly to [:python `abc.ABC`](https://docs.python.org/3/library/abc.html#abc.ABC) but with the added feature of dynamic concrete implementation selection under single dispatch.
+    Stick to built-in [:python `abc.abstractmethod`](https://docs.python.org/3/library/abc.html#abc.abstractmethod) to define abstract methods.
 
-    See the [usage section][apfel.core.dispatch--usage] for more information.
+    See the [usage section](#usage) for more information.
 
     Example:
         ```python
@@ -276,7 +276,7 @@ class IDispatchRegistry(Protocol):
         but return a reference to it.
 
         Returns:
-            (Callable): The implementation to be used.
+            Callable: The implementation to be used.
         """
         ...
 
@@ -327,7 +327,7 @@ class IDispatchRegistry(Protocol):
             ... (K): The implementor of the implementation.
 
         Returns:
-            (Callable[Self.P, Self.R]): The implementation.
+            Callable[Self.P, Self.R]: The implementation.
 
         Raises:
             KeyError: If no such implementation is found.
@@ -505,7 +505,7 @@ def dispatched(func, /):
     It will add an `impl_for` method to the function, which can be used to register implementations.
     Calling the function will dispatch to the correct implementation based on the type of the first argument.
 
-    This is similar to [`functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch){ .ref .py }, but does not use type hints for dispatching, and static type unions are not supported.
+    This is similar to [:python `functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch), but does not use type hints for dispatching, and static type unions are not supported.
 
     Example:
         ```python
@@ -554,7 +554,7 @@ def impl(interface, /):
     """
     Decorator for registering an implementation using the `class` syntax.
 
-    See the [usage section][apfel.core.dispatch--usage] for more information.
+    See the [usage section](#usage) for more information.
 
     Args:
         interface (IABCDispatch): The dispatchable interface.

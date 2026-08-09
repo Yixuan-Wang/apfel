@@ -1,25 +1,25 @@
 """
-Primitives for containers that can be written only once. Inspired by [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs}.
+Primitives for containers that can be written only once. Inspired by [:rust `OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html) and [:rust `LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html).
 
-The [`Once`][apfel.container.once.Once] and [`Lazy`][apfel.container.once.Lazy] classes, are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+The [`Once`][apfel.container.once.Once] and [`Lazy`][apfel.container.once.Lazy] classes, are exposed in the [package namespace](../prelude#package-namespace).
 
 # Implementation
 
-[`Once`][apfel.container.once.Once] takes reference from [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} and the current status is as follows:
+[`Once`][apfel.container.once.Once] takes reference from [:rust `OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html) and the current status is as follows:
 
-| Reference [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){ .ref .rs } | Counterpart |
+| Reference [:rust `OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html) | Counterpart |
 | --- | --- |
-| `get` | [:material-check-circle:][apfel.container.once.Once.get] |
-| `get_mut` | :material-minus-circle: |
-| `get_mut_or_init` | :material-minus-circle: |
-| `get_mut_or_try_init` | :material-minus-circle: |
-| `get_or_init` | [:material-check-circle:][apfel.container.once.Once.get_or_init] |
-| `get_or_try_init` | :material-close-circle: |
-| `into_inner` | :material-close-circle: |
-| `new` | :material-close-circle: |
-| `set` | [:material-check-circle:][apfel.container.once.Once.set] |
-| `take` | :material-close-circle: |
-| `try_insert` | :material-close-circle: |
+| `get` | [`get`][apfel.container.once.Once.get] |
+| `get_mut` | / |
+| `get_mut_or_init` | / |
+| `get_mut_or_try_init` | / |
+| `get_or_init` | [`get_or_init`][apfel.container.once.Once.get_or_init] |
+| `get_or_try_init` | - |
+| `into_inner` | - |
+| `new` | - |
+| `set` | [`set`][apfel.container.once.Once.set] |
+| `take` | - |
+| `try_insert` | - |
 """
 
 import apfel.container.maybe as _maybe
@@ -29,9 +29,9 @@ import apfel.container.result as _result
 class Once:
     """
     A container that can be written only once.
-    See [`OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html){.ref .rs} for more information.
+    See [:rust `OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html) for more information.
 
-    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This class is exposed in the [package namespace](../prelude#package-namespace).
     """
 
     __slots__ = ("_value", "_has_value")
@@ -41,7 +41,7 @@ class Once:
         Create an unpopulated `Once` container.
 
         Returns:
-            container (Once): An unpopulated `Once` container.
+            Once: An unpopulated `Once` container.
         """
         self._value = ...
         self._has_value = False
@@ -58,7 +58,7 @@ class Once:
             type (Type[T]): The type of the value to be stored in the `Once` container.
 
         Returns:
-            container (Once[T]): A `Once` container hinting the given type.
+            Once[T]: A `Once` container hinting the given type.
         """
         return cls()
 
@@ -67,7 +67,7 @@ class Once:
         Check if the `Once` container has been set.
 
         Returns:
-            is_set (bool): `True` if the `Once` container has been set, `False` otherwise.
+            bool: `True` if the `Once` container has been set, `False` otherwise.
         """
         return self._has_value
 
@@ -76,7 +76,7 @@ class Once:
         Get the inner value of the `Once` container if it has been set.
 
         Returns:
-            value (Maybe[T]): A `Just`-wrapped inner value of the `Once` container if it has been set, a `Nothing` otherwise.
+            Maybe[T]: A `Just`-wrapped inner value of the `Once` container if it has been set, a `Nothing` otherwise.
         """
         if self._has_value:
             return _maybe.Maybe.make_just(self._value)
@@ -90,7 +90,7 @@ class Once:
             func (Callable[[], T]): The function to initialize the `Once` container with if no value has been set.
 
         Returns:
-            value (T): The inner value (maybe newly set) of the `Once` container.
+            T: The inner value (maybe newly set) of the `Once` container.
         """
         if not self._has_value:
             self._value = func()
@@ -107,7 +107,7 @@ class Once:
             value (T): The value to set the `Once` container to.
 
         Returns:
-            result (Result[None, T]):
+            Result[None, T]:
                 `Ok(None)` if the value was set successfully.
                 `Err(value)` if the value has already been set, containing the existing value.
         """
@@ -123,7 +123,7 @@ class Once:
         If no value has been set, this method raises a `ValueError`.
 
         Returns:
-            value (T): The inner value of the `Once` container.
+            T: The inner value of the `Once` container.
 
         Raises:
             ValueError: If no value has been set.
@@ -137,7 +137,7 @@ class Once:
 class OnceLock:
     """
     A thread-safe version of [`Once`][apfel.container.once.Once].
-    See [`OnceLock`](https://doc.rust-lang.org/std/sync/struct.OnceLock.html){.ref .rs} for more information.
+    See [:rust `OnceLock`](https://doc.rust-lang.org/std/sync/struct.OnceLock.html) for more information.
     """
 
     __slots__ = ("_value", "_has_value", "_lock")
@@ -147,7 +147,7 @@ class OnceLock:
         Create an unpopulated `OnceLock` container.
 
         Returns:
-            container (OnceLock): An unpopulated `OnceLock` container.
+            OnceLock: An unpopulated `OnceLock` container.
         """
         import threading
 
@@ -163,7 +163,7 @@ class OnceLock:
         Check if the `OnceLock` container has been set.
 
         Returns:
-            is_set (bool): `True` if the `OnceLock` container has been set, `False` otherwise.
+            bool: `True` if the `OnceLock` container has been set, `False` otherwise.
         """
         with self._lock:
             return self._has_value
@@ -173,7 +173,7 @@ class OnceLock:
         Get the inner value of the `OnceLock` container if it has been set.
 
         Returns:
-            value (Maybe[T]): A `Just`-wrapped inner value of the `OnceLock` container if it has been set, a `Nothing` otherwise.
+            Maybe[T]: A `Just`-wrapped inner value of the `OnceLock` container if it has been set, a `Nothing` otherwise.
         """
         with self._lock:
             if self._has_value:
@@ -188,7 +188,7 @@ class OnceLock:
             func (Callable[[], T]): The function to initialize the `OnceLock` container with if no value has been set.
 
         Returns:
-            value (T): The inner value (maybe newly set) of the `OnceLock`
+            T: The inner value (maybe newly set) of the `OnceLock`
         """
         with self._lock:
             if not self._has_value:
@@ -206,7 +206,7 @@ class OnceLock:
             value (T): The value to set the `OnceLock` container to.
 
         Returns:
-            result (Result[None, T]):
+            Result[None, T]:
                 `Ok(None)` if the value was set successfully.
                 `Err(value)` if the value has already been set, containing the existing value.
         """
@@ -223,7 +223,7 @@ class OnceLock:
         If no value has been set, this method raises a `ValueError`.
 
         Returns:
-            value (T): The inner value of the `OnceLock` container.
+            T: The inner value of the `OnceLock` container.
 
         Raises:
             ValueError: If no value has been set.
@@ -238,9 +238,9 @@ class Lazy:
     """
     A container that can be lazily initialized only once.
     The stored function will be actually called only on the first retrieval, and the result will be cached for consequent calls.
-    See [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs} for more information.
+    See [:rust `LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html) for more information.
 
-    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This class is exposed in the [package namespace](../prelude#package-namespace).
 
     Example:
         ```python
@@ -306,7 +306,7 @@ class Lazy:
         If no value has been set, this method raises a `ValueError`.
 
         Returns:
-            value (T): The lazily initialized value of the `Lazy` container.
+            T: The lazily initialized value of the `Lazy` container.
 
         Raises:
             ValueError: If no value has been set.
@@ -322,7 +322,7 @@ class Lazy:
         If no value has been set, this method initializes the value with the stored function.
 
         Returns:
-            value (T): The lazily initialized value of the `Lazy` container.
+            T: The lazily initialized value of the `Lazy` container.
         """
         if self._has_value:
             return self._value
@@ -335,7 +335,7 @@ class Lazy:
 class LazyLock:
     """
     A thread-safe version of [`Lazy`][apfel.container.once.Lazy].
-    See [`LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html){.ref .rs} for more information.
+    See [:rust `LazyCell`](https://doc.rust-lang.org/std/cell/struct.LazyCell.html) for more information.
     """
 
     __slots__ = ("_value", "_has_value", "_init", "_lock")
@@ -389,7 +389,7 @@ class LazyLock:
         If no value has been set, this method raises a `ValueError`.
 
         Returns:
-            value (T): The inner value of the `LazyLock` container.
+            T: The inner value of the `LazyLock` container.
 
         Raises:
             ValueError: If no value has been set.
@@ -405,7 +405,7 @@ class LazyLock:
         If no value has been set, this method initializes the value with the stored function.
 
         Returns:
-            value (T): The lazily initialized value of the `LazyLock` container.
+            T: The lazily initialized value of the `LazyLock` container.
         """
         with self._lock:
             if self._has_value:

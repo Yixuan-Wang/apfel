@@ -2,7 +2,9 @@
 This module provides a low-level hook mechanism to transform the source code of a package or module during its import.
 It must be imported **before** any other packages and modules that you want to hook.
 
-!!! warning "Effectful"
+Warning:
+    **Effectful**
+
     This package has an effectful behavior: modifying the `sys.meta_path` finder list, which will affect **the import process**, and is **sensitive to the order of imports**.
 
 Normally you would use adapters defined in the `impt` package, instead of directly using the low level [`register_transform_hook`][apfel.impt.transform.register_transform_hook] function.
@@ -17,10 +19,12 @@ PYCACHE_SUFFIX = ".pyc"
 
 class TransformSourceFileLoader(_frozen_importlib_external.SourceFileLoader):
     """
-    A subclass of [`importlib.machinery.SourceFileLoader`](https://docs.python.org/3/library/importlib.html#importlib.machinery.SourceFileLoader){ .ref .py }
+    A subclass of [:python `importlib.machinery.SourceFileLoader`](https://docs.python.org/3/library/importlib.html#importlib.machinery.SourceFileLoader)
     that applies all registered hooks to the source code of a module or package during import.
 
-    !!! note "Implementation"
+    Note:
+        **Implementation**
+
         This loader will directly read the source code from the `.py` file, completely ignoring the `.pyc` file.
         The transformed source code will not have a bytecode cache (`.pyc`) generated.
         If your file system has high latency, this may slow down the import process.
@@ -46,7 +50,7 @@ class TransformSourceFileLoader(_frozen_importlib_external.SourceFileLoader):
 
 class TransformPathFinder(_frozen_importlib_external.PathFinder):
     """
-    A subclass of [`importlib.machinery.PathFinder`](https://docs.python.org/3/library/importlib.html#importlib.machinery.PathFinder){ .ref .py }
+    A subclass of [:python `importlib.machinery.PathFinder`](https://docs.python.org/3/library/importlib.html#importlib.machinery.PathFinder)
     that injects [`TransformSourceFileLoader`][apfel.impt.transform.TransformSourceFileLoader] to the import process.
     """
 

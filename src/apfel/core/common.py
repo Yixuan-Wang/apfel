@@ -11,22 +11,22 @@ def apply(value, func, /):
     Applies a single-argument function to a value.
     For chained calls, see [`pipe`][apfel.core.common.pipe].
 
-    See also [<code><del>apply</del></code>](https://docs.python.org/2.7/library/functions.html#apply){ .ref .py } from Python 2.7.
+    See also [:python <code><del>apply</del></code>](https://docs.python.org/2.7/library/functions.html#apply) from Python 2.7.
 
     This function is different from [`Value.apply`][apfel.container.value.Value.apply],
       which is an implementation of [`Applicative`][apfel.core.monad.Applicative]
       who requires the function to be wrapped in `Value`.
     In contrast, this function accepts arbitrary callables.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
-      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace)
+      and the [builtins namespace](../prelude#builtins-namespace).
 
     Args:
         value (T): The value to be passed to the function.
         func (Callable[[T], R]): The function to apply.
 
     Returns:
-        out (R): The result of applying the function to the value.
+        R: The result of applying the function to the value.
     """
     return func(value)
 
@@ -35,14 +35,14 @@ def identity(value, /):
     """
     Returns the sole argument passed to it doing nothing.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
-      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace)
+      and the [builtins namespace](../prelude#builtins-namespace).
 
     Args:
         value (T): Any object.
 
     Returns:
-        value (T): The same object passed to it.
+        T: The same object passed to it.
     """
     return value
 
@@ -52,14 +52,14 @@ def imperative(*exprs):
     Returns the last expression passed into the function.
     If no expression are passed, returns `None`, per Python's convention.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
-      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace)
+      and the [builtins namespace](../prelude#builtins-namespace).
 
     Args:
         *exprs (*tuple[*Ts, R]): Any number of expressions.
 
     Returns:
-        out (R): The last expression passed into the function.
+        R: The last expression passed into the function.
     """
     return exprs[-1] if exprs else None
 
@@ -68,14 +68,14 @@ def not_none(value, /):
     """
     Type narrowing: assert the value isn't None.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     Args:
         x (T): Any value that type-checked to be `None`,
             but guarantees to be non-`None`.
 
     Returns:
-        out (T): The same value passed to it.
+        T: The same value passed to it.
 
     Raises:
         ValueError: if the input is actually `None`.
@@ -105,17 +105,17 @@ def pipe(
 
     See also [`Value.update`][apfel.container.value.Value.update],
       [`FunctionObject.__rand__`][apfel.core.function_object.FunctionObject.__rand__].
-    See also [`&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-){ .ref .hs }, [`|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping){ .ref .jl } or roughly [`%>%`](https://magrittr.tidyverse.org/reference/pipe.html){ .ref .rl }.
+    See also [:haskell `&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-), [:julia `|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping) or roughly [:rlang `%>%`](https://magrittr.tidyverse.org/reference/pipe.html).
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
-        and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace)
+        and the [builtins namespace](../prelude#builtins-namespace).
 
     Args:
         value (T): The initial value to be piped.
         *funcs (Callable[[Any], Any]): A sequence of functions to apply to the value.
 
     Returns:
-        out (Any): The final result after applying all functions.
+        Any: The final result after applying all functions.
     """
     return _reduce(apply, funcs, value)
 
@@ -123,10 +123,10 @@ def pipe(
 def todo(message=None, /):
     """
     Marks an unimplemented location that **might** be implemented in the future.
-    See [`todo!`](https://doc.rust-lang.org/std/macro.todo.html){ .ref .rs } for usage.
+    See [:rust `todo!`](https://doc.rust-lang.org/std/macro.todo.html) for usage.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
-      and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace)
+      and the [builtins namespace](../prelude#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.
@@ -140,10 +140,10 @@ def todo(message=None, /):
 def unimplemented(message=None, /):
     """
     Marks an unimplemented location that **might not** be implemented in the future.
-    See [`unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html){ .ref .rs } for usage.
+    See [:rust `unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html) for usage.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace)
-        and the [:material-airballoon: builtins namespace](../prelude.md#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace)
+        and the [builtins namespace](../prelude#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.

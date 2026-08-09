@@ -1,127 +1,131 @@
 """
-The abstraction for an iterator, alternative to Python's vanilla built-in iterator ABC [`collections.abc.Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator){ .ref .py }.
-It provides a large number of methods that are commonly found in Rust [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html){ .ref .rs } and Python [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py }.
+The abstraction for an iterator, alternative to Python's vanilla built-in iterator ABC [:python `collections.abc.Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator).
+It provides a large number of methods that are commonly found in Rust [:rust `Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) and Python [:python `itertools`](https://docs.python.org/3/library/itertools.html).
 
 To create or use this abstraction of iterator:
 
 - Use [`itrt`][apfel.core.iter.itrt] to wrap any iterable or Python vanilla iterator,
 - Use `Iterator` methods directly on any Python vanilla iterator.
 
-[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [package namespace](../prelude#package-namespace).
 
 # Implementation
 
 Iterators have a large number of methods. Missing methods will be added gradually over time.
 
-??? info "[`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html){ .ref .rs }"
+Note:
+    **[:rust `Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html)**
 
-    | Reference [`Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html){ .ref .rs } | Counterpart |
+
+    | Reference [:rust `Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) | Counterpart |
     | --- | --- |
-    | `advance_by`         | [:material-check-circle:][apfel.core.iter.Iterator.advance_by] |
-    | `all`                | [:material-check-circle:][apfel.core.iter.Iterator.all] |
-    | `any`                | [:material-check-circle:][apfel.core.iter.Iterator.any] |
-    | `array_chunks`       | :material-close-circle: |
-    | `by_ref`             | :material-minus-circle: |
-    | `chain`              | [:material-check-circle:][apfel.core.iter.Iterator.chain] |
-    | `cloned`             | :material-close-circle: |
-    | `cmp`                | :material-close-circle: |
-    | `cmp_by`             | :material-close-circle: |
-    | `collect`            | :material-close-circle: |
-    | `collect_into`       | :material-close-circle: |
-    | `copied`             | :material-close-circle: |
-    | `count`              | [:material-check-circle:][apfel.core.iter.Iterator.count] |
-    | `cycle`              | :material-close-circle: |
-    | `enumerate`          | [:material-dots-horizontal-circle:][apfel.core.iter.Iterator.enumerate] |
-    | `eq`                 | [:material-check-circle:][apfel.core.iter.Iterator.eq] |
-    | `eq_by`              | :material-close-circle: |
-    | `filter`             | [:material-check-circle:][apfel.core.iter.Iterator.filter] |
-    | `filter_map`         | [:material-check-circle:][apfel.core.iter.Iterator.filter_map] |
-    | `find`               | [:material-check-circle:][apfel.core.iter.Iterator.find] |
-    | `find_map`           | [:material-check-circle:][apfel.core.iter.Iterator.find_map] |
-    | `flat_map`           | [:material-check-circle:][apfel.core.iter.Iterator.flat_map] |
-    | `flatten`            | [:material-check-circle:][apfel.core.iter.Iterator.flatten] |
-    | `fold`               | [:material-check-circle:][apfel.core.iter.Iterator.fold] |
-    | `for_each`           | [:material-check-circle:][apfel.core.iter.Iterator.for_each] |
-    | `fuse`               | :material-close-circle: |
-    | `ge`                 | :material-close-circle: |
-    | `gt`                 | :material-close-circle: |
-    | `inspect`            | [:material-arrow-right-circle: `tap`][apfel.core.iter.Iterator.tap] |
-    | `intersperse`        | [:material-check-circle:][apfel.core.iter.Iterator.intersperse] |
-    | `intersperse_with`   | [:material-check-circle:][apfel.core.iter.Iterator.intersperse_with] |
-    | `is_partitioned`     | :material-close-circle: |
-    | `is_sorted`          | :material-close-circle: |
-    | `is_sorted_by`       | :material-close-circle: |
-    | `is_sorted_by_key`   | :material-close-circle: |
-    | `last`               | [:material-check-circle:][apfel.core.iter.Iterator.last] |
-    | `le`                 | :material-close-circle: |
-    | `lt`                 | :material-close-circle: |
-    | `map`                | [:material-check-circle:][apfel.core.iter.Iterator.map] |
-    | `map_while`          | [:material-check-circle:][apfel.core.iter.Iterator.map_while] |
-    | `map_windows`        | :material-close-circle: |
-    | `max`                | :material-close-circle: |
-    | `max_by`             | :material-close-circle: |
-    | `max_by_key`         | :material-close-circle: |
-    | `min`                | :material-close-circle: |
-    | `min_by`             | :material-close-circle: |
-    | `min_by_key`         | :material-close-circle: |
-    | `ne`                 | :material-close-circle: |
-    | `next`               | [:material-check-circle:][apfel.core.iter.Iterator.next] |
-    | `next_chunk`         | :material-close-circle: |
-    | `nth`                | [:material-check-circle:][apfel.core.iter.Iterator.nth] |
-    | `partial_cmp`        | :material-close-circle: |
-    | `partial_cmp_by`     | :material-close-circle: |
-    | `partition`          | :material-close-circle: |
-    | `partition_in_place` | :material-close-circle: |
-    | `peekable`           | :material-close-circle: |
-    | `position`           | [:material-check-circle:][apfel.core.iter.Iterator.position] |
-    | `product`            | [:material-sync-circle: `pipe(math.product)`][apfel.core.iter.Iterator.pipe] |
-    | `reduce`             | [:material-check-circle:][apfel.core.iter.Iterator.reduce] |
-    | `rev`                | :material-close-circle: |
-    | `rposition`          | :material-close-circle: |
-    | `scan`               | [:material-check-circle:][apfel.core.iter.Iterator.scan] |
-    | `size_hint`          | :material-close-circle: |
-    | `skip`               | [:material-check-circle:][apfel.core.iter.Iterator.skip] |
-    | `skip_while`         | [:material-check-circle:][apfel.core.iter.Iterator.skip_while] |
-    | `step_by`            | [:material-check-circle:][apfel.core.iter.Iterator.step_by] |
-    | `sum`                | [:material-sync-circle: `pipe(sum)`][apfel.core.iter.Iterator.pipe]|
-    | `take`               | [:material-check-circle:][apfel.core.iter.Iterator.take] |
-    | `take_while`         | [:material-check-circle:][apfel.core.iter.Iterator.take_while] |
-    | `try_collect`        | :material-close-circle: |
-    | `try_find`           | :material-close-circle: |
-    | `try_fold`           | :material-close-circle: |
-    | `try_for_each`       | :material-close-circle: |
-    | `try_reduce`         | :material-close-circle: |
-    | `unzip`              | :material-close-circle: |
-    | `zip`                | [:material-check-circle:][apfel.core.iter.Iterator.zip] |
+    | `advance_by`         | [`advance_by`][apfel.core.iter.Iterator.advance_by] |
+    | `all`                | [`all`][apfel.core.iter.Iterator.all] |
+    | `any`                | [`any`][apfel.core.iter.Iterator.any] |
+    | `array_chunks`       | - |
+    | `by_ref`             | / |
+    | `chain`              | [`chain`][apfel.core.iter.Iterator.chain] |
+    | `cloned`             | - |
+    | `cmp`                | - |
+    | `cmp_by`             | - |
+    | `collect`            | - |
+    | `collect_into`       | - |
+    | `copied`             | - |
+    | `count`              | [`count`][apfel.core.iter.Iterator.count] |
+    | `cycle`              | - |
+    | `enumerate`          | [~`enumerate`][apfel.core.iter.Iterator.enumerate] |
+    | `eq`                 | [`eq`][apfel.core.iter.Iterator.eq] |
+    | `eq_by`              | - |
+    | `filter`             | [`filter`][apfel.core.iter.Iterator.filter] |
+    | `filter_map`         | [`filter_map`][apfel.core.iter.Iterator.filter_map] |
+    | `find`               | [`find`][apfel.core.iter.Iterator.find] |
+    | `find_map`           | [`find_map`][apfel.core.iter.Iterator.find_map] |
+    | `flat_map`           | [`flat_map`][apfel.core.iter.Iterator.flat_map] |
+    | `flatten`            | [`flatten`][apfel.core.iter.Iterator.flatten] |
+    | `fold`               | [`fold`][apfel.core.iter.Iterator.fold] |
+    | `for_each`           | [`for_each`][apfel.core.iter.Iterator.for_each] |
+    | `fuse`               | - |
+    | `ge`                 | - |
+    | `gt`                 | - |
+    | `inspect`            | [`tap`][apfel.core.iter.Iterator.tap] |
+    | `intersperse`        | [`intersperse`][apfel.core.iter.Iterator.intersperse] |
+    | `intersperse_with`   | [`intersperse_with`][apfel.core.iter.Iterator.intersperse_with] |
+    | `is_partitioned`     | - |
+    | `is_sorted`          | - |
+    | `is_sorted_by`       | - |
+    | `is_sorted_by_key`   | - |
+    | `last`               | [`last`][apfel.core.iter.Iterator.last] |
+    | `le`                 | - |
+    | `lt`                 | - |
+    | `map`                | [`map`][apfel.core.iter.Iterator.map] |
+    | `map_while`          | [`map_while`][apfel.core.iter.Iterator.map_while] |
+    | `map_windows`        | - |
+    | `max`                | - |
+    | `max_by`             | - |
+    | `max_by_key`         | - |
+    | `min`                | - |
+    | `min_by`             | - |
+    | `min_by_key`         | - |
+    | `ne`                 | - |
+    | `next`               | [`next`][apfel.core.iter.Iterator.next] |
+    | `next_chunk`         | - |
+    | `nth`                | [`nth`][apfel.core.iter.Iterator.nth] |
+    | `partial_cmp`        | - |
+    | `partial_cmp_by`     | - |
+    | `partition`          | - |
+    | `partition_in_place` | - |
+    | `peekable`           | - |
+    | `position`           | [`position`][apfel.core.iter.Iterator.position] |
+    | `product`            | [`pipe(math.product)`][apfel.core.iter.Iterator.pipe] |
+    | `reduce`             | [`reduce`][apfel.core.iter.Iterator.reduce] |
+    | `rev`                | - |
+    | `rposition`          | - |
+    | `scan`               | [`scan`][apfel.core.iter.Iterator.scan] |
+    | `size_hint`          | - |
+    | `skip`               | [`skip`][apfel.core.iter.Iterator.skip] |
+    | `skip_while`         | [`skip_while`][apfel.core.iter.Iterator.skip_while] |
+    | `step_by`            | [`step_by`][apfel.core.iter.Iterator.step_by] |
+    | `sum`                | [`pipe(sum)`][apfel.core.iter.Iterator.pipe]|
+    | `take`               | [`take`][apfel.core.iter.Iterator.take] |
+    | `take_while`         | [`take_while`][apfel.core.iter.Iterator.take_while] |
+    | `try_collect`        | - |
+    | `try_find`           | - |
+    | `try_fold`           | - |
+    | `try_for_each`       | - |
+    | `try_reduce`         | - |
+    | `unzip`              | - |
+    | `zip`                | [`zip`][apfel.core.iter.Iterator.zip] |
 
-??? info "[`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py }"
+Note:
+    **[:python `itertools`](https://docs.python.org/3/library/itertools.html)**
 
-    This table tracks named `Iterator` counterparts in [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py }.
+
+    This table tracks named `Iterator` counterparts in [:python `itertools`](https://docs.python.org/3/library/itertools.html).
     Standalone `itertools` functions can still be used through [`pipe`][apfel.core.iter.Iterator.pipe] when their first argument is an iterable.
 
-    | Reference [`itertools`](https://docs.python.org/3/library/itertools.html){ .ref .py } | Counterpart |
+    | Reference [:python `itertools`](https://docs.python.org/3/library/itertools.html) | Counterpart |
     | --- | --- |
-    | `accumulate`                       | [:material-arrow-right-circle: `accumulate`][apfel.core.iter.Iterator.accumulate] |
-    | `batched`                          | :material-close-circle: |
-    | `chain`                            | [:material-check-circle:][apfel.core.iter.Iterator.chain] |
-    | `chain.from_iterable`              | [:material-arrow-right-circle: `flatten`][apfel.core.iter.Iterator.flatten] |
-    | `compress`                         | :material-close-circle: |
-    | `count`                            | :material-close-circle: |
-    | `cycle`                            | :material-close-circle: |
-    | `dropwhile`                        | [:material-arrow-right-circle: `skip_while`][apfel.core.iter.Iterator.skip_while] |
-    | `filterfalse`                      | [:material-dots-horizontal-circle: `filter`][apfel.core.iter.Iterator.filter] |
-    | `groupby`                          | :material-close-circle: |
-    | `islice`                           | [:material-dots-horizontal-circle: `take`][apfel.core.iter.Iterator.take] / [`skip`][apfel.core.iter.Iterator.skip] / [`step_by`][apfel.core.iter.Iterator.step_by] |
-    | `pairwise`                         | :material-close-circle: |
-    | `repeat`                           | :material-close-circle: |
-    | `starmap`                          | [:material-dots-horizontal-circle: `map`][apfel.core.iter.Iterator.map] |
-    | `takewhile`                        | [:material-arrow-right-circle: `take_while`][apfel.core.iter.Iterator.take_while] |
-    | `tee`                              | :material-close-circle: |
-    | `zip_longest`                      | :material-close-circle: |
-    | `product`                          | :material-close-circle: |
-    | `permutations`                     | :material-close-circle: |
-    | `combinations`                     | :material-close-circle: |
-    | `combinations_with_replacement`    | :material-close-circle: |
+    | `accumulate`                       | [`accumulate`][apfel.core.iter.Iterator.accumulate] |
+    | `batched`                          | - |
+    | `chain`                            | [`chain`][apfel.core.iter.Iterator.chain] |
+    | `chain.from_iterable`              | [`flatten`][apfel.core.iter.Iterator.flatten] |
+    | `compress`                         | - |
+    | `count`                            | - |
+    | `cycle`                            | - |
+    | `dropwhile`                        | [`skip_while`][apfel.core.iter.Iterator.skip_while] |
+    | `filterfalse`                      | [~`filter`][apfel.core.iter.Iterator.filter] |
+    | `groupby`                          | - |
+    | `islice`                           | [~`take`][apfel.core.iter.Iterator.take] / [`skip`][apfel.core.iter.Iterator.skip] / [`step_by`][apfel.core.iter.Iterator.step_by] |
+    | `pairwise`                         | - |
+    | `repeat`                           | - |
+    | `starmap`                          | [~`map`][apfel.core.iter.Iterator.map] |
+    | `takewhile`                        | [`take_while`][apfel.core.iter.Iterator.take_while] |
+    | `tee`                              | - |
+    | `zip_longest`                      | - |
+    | `product`                          | - |
+    | `permutations`                     | - |
+    | `combinations`                     | - |
+    | `combinations_with_replacement`    | - |
 """
 
 import builtins
@@ -162,7 +166,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         Return the next item of the iterator.
         If the iterator is exhausted, raise `StopIteration`.
 
-        Any implementor of [`collections.abc.Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator){ .ref .py } should be directly compatible with this interface.
+        Any implementor of [:python `collections.abc.Iterator`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator) should be directly compatible with this interface.
 
         ```python
         iterator = itrt([1, 2, 3])
@@ -205,10 +209,10 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         to each element, starting with `state`. Unlike [`fold`][apfel.core.iter.Iterator.fold],
         this yields each intermediate state rather than consuming the iterator.
 
-        Compared to [`itertools.accumulate`](https://docs.python.org/3/library/itertools.html#itertools.accumulate){ .ref .py },
+        Compared to [:python `itertools.accumulate`](https://docs.python.org/3/library/itertools.html#itertools.accumulate),
         this method enforces an explicit initial state and binary function;
         it also *does not* yield the initial state before consuming any element.
-        This is also consistent with the [`numpy.ufunc.accumulate`](https://numpy.org/doc/stable/reference/generated/numpy.ufunc.accumulate.html#numpy.ufunc.accumulate){ .ref .py } behavior.
+        This is also consistent with the [:python `numpy.ufunc.accumulate`](https://numpy.org/doc/stable/reference/generated/numpy.ufunc.accumulate.html#numpy.ufunc.accumulate) behavior.
         Also check [`Iterator.scan`][apfel.core.iter.Iterator.scan] for a method that provides more generalized state control.
 
         ```python
@@ -511,7 +515,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         See also [`reduce`][apfel.core.iter.Iterator.reduce] if the first element of the iterator should be used as the initial accumulator value.
 
         Tip:
-            The default implementation of this method uses [`functools.reduce`](https://docs.python.org/3/library/functools.html#functools.reduce){ .ref .py }
+            The default implementation of this method uses [:python `functools.reduce`](https://docs.python.org/3/library/functools.html#functools.reduce)
             under the hood, but allows keyword arguments for both `init` and `func`.
 
         ```python

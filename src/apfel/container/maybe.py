@@ -1,20 +1,20 @@
 """
 A container that optionally holds a value.
 
-See [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs } and [`Maybe`](https://hackage.haskell.org/package/base/docs/Data-Maybe.html){ .ref .hs }.
+See [:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html) and [:haskell `Maybe`](https://hackage.haskell.org/package/base/docs/Data-Maybe.html).
 
 A `Maybe` has two possible states, `Just` or `Nothing`. `Just` means a value is present, and `Nothing` means the value is absent.
-The reason that we don't use `Some`-`None` or `Nil` nomencalture is to avoid [confusion with the built-in `None`][apfel.container.maybe--rationale].
+The reason that we don't use `Some`-`None` or `Nil` nomencalture is to avoid [confusion with the built-in `None`](#rationale).
 
 This module also provides a [`some`][apfel.container.maybe.some] constructor, which converts an `Optional[T]` value to a `Maybe[T]` value.
 
 The [`Maybe`][apfel.container.maybe.Maybe] class, and the [`just`][apfel.container.maybe.just], [`nothing`][apfel.container.maybe.nothing], and [`some`][apfel.container.maybe.some] functions
-  are exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+  are exposed in the [package namespace](../prelude#package-namespace).
 
 # Rationale
 
-Python has a built-in [`None`](https://docs.python.org/3/reference/datamodel.html#none){ .ref .py } object that represents the absence of a value,
-and a corresponding type hint [`Optional[T]`](https://docs.python.org/3/library/html#Optional){ .ref .py }.
+Python has a built-in [:python `None`](https://docs.python.org/3/reference/datamodel.html#none) object that represents the absence of a value,
+and a corresponding type hint [:python `Optional[T]`](https://docs.python.org/3/library/html#Optional).
 However, an `Optional[T]` is semantically different from a `Maybe[T]` object.
 An `Optional[T]` is a *union* of `T` and `None`, not a single object.
 To use a union, you must explicitly check its type before every use.
@@ -37,19 +37,16 @@ optional is not None and do_something(optional)
 On the other hand, a `Maybe[T]` object represents the absence of a value as a *state*.
 Operations defined on `Maybe[T]` objects behave differently depending on the state of the object, but they are always available regardless of the state.
 
-``` { .python .annotate }
+```python
 j: Maybe[int] = just(42)
-j.map(do_something) #(1)!
+j.map(do_something) # `do_something` is called because `j` is `Just`.
 
 n: Maybe[int] = nothing()
-n.map(do_something) #(2)!
+n.map(do_something) # `do_something` is not called because `n` is `Nothing`.
 ```
 
-1. `do_something` is called because `j` is `Just`.
-2. `do_something` is not called because `n` is `Nothing`.
 
-
-!!! warning
+Warning:
     Notice that `None` **is not equal** to `Nothing`.
     Use `Maybe.is_nothing()` to check if a `Maybe` object is `Nothing`.
 
@@ -78,56 +75,56 @@ If `_has_value` is `False`, reading from `_val` is an undefined behavior.
 
 `Maybe` and its methods **do not** support inherit-based subclassing.
 
-`Maybe`'s APIs are based on the Rust [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs },
+`Maybe`'s APIs are based on the Rust [:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html),
 and the comparison table is provided below.
 
-| Reference [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){ .ref .rs } | Counterpart |
+| Reference [:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html) | Counterpart |
 | --- | --- |
-| `and` | [:material-arrow-right-circle: `and_`][apfel.container.maybe.Maybe.and_] |
-| `and_then` | [:material-check-circle:][apfel.container.maybe.Maybe.and_then] |
-| `as_deref` | :material-minus-circle: |
-| `as_deref_mut` | :material-minus-circle: |
-| `as_mut` | :material-minus-circle: |
-| `as_mut_slice` | :material-minus-circle: |
-| `as_pin_mut` | :material-minus-circle: |
-| `as_pin_ref` | :material-minus-circle: |
-| `as_ref` | :material-minus-circle: |
-| `as_slice` | :material-minus-circle: |
-| `cloned` | :material-close-circle: |
-| `copied` | :material-minus-circle: |
-| `expect` | [:material-check-circle:][apfel.container.maybe.Maybe.expect] |
-| `filter` | [:material-check-circle:][apfel.container.maybe.Maybe.filter] |
-| `flatten` | [:material-dots-horizontal-circle:][apfel.container.maybe.Maybe.flatten] |
-| `get_or_insert` | [:material-check-circle:][apfel.container.maybe.Maybe.get_or_insert] |
-| `get_or_insert_default` | :material-minus-circle: |
-| `get_or_insert_with` | [:material-check-circle:][apfel.container.maybe.Maybe.get_or_insert_with] |
-| `insert` | [:material-check-circle:][apfel.container.maybe.Maybe.insert] |
-| `inspect` | [:material-dots-horizontal-circle: `tap`][apfel.container.maybe.Maybe.tap] |
-| `is_none` | [:material-arrow-right-circle: `is_nothing`][apfel.container.maybe.Maybe.is_nothing] |
-| `is_some` | [:material-arrow-right-circle: `is_just`][apfel.container.maybe.Maybe.is_just] |
-| `is_some_and` | [:material-arrow-right-circle: `is_just_and`][apfel.container.maybe.Maybe.is_just_and]|
-| `iter` | :material-close-circle: |
-| `iter_mut` | :material-minus-circle: |
-| `map` | [:material-check-circle:][apfel.container.maybe.Maybe.map] |
-| `map_or` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or] |
-| `map_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.map_or_else] |
-| `ok_or` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or] |
-| `ok_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.ok_or_else] |
-| `or` | [:material-arrow-right-circle: `or_`][apfel.container.maybe.Maybe.or_] |
-| `or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.or_else] |
-| `replace` | [:material-check-circle:][apfel.container.maybe.Maybe.replace] |
-| `take` | [:material-check-circle:][apfel.container.maybe.Maybe.take] |
-| `take_if` | [:material-check-circle:][apfel.container.maybe.Maybe.take_if] |
-| `transpose` | :material-close-circle: |
-| `unwrap` | [:material-check-circle:][apfel.container.maybe.Maybe.unwrap] |
-| `unwrap_or` | [:material-check-circle:][apfel.container.maybe.Maybe.unwrap_or] |
-| `unwrap_or_default` | :material-minus-circle: |
-| `unwrap_or_else` | [:material-check-circle:][apfel.container.maybe.Maybe.unwrap_or_else] |
-| `unwrap_unchecked` | [:material-check-circle:][apfel.container.maybe.Maybe.unwrap_unchecked] |
-| `unzip` | :material-minus-circle: |
-| `xor` | [:material-check-circle:][apfel.container.maybe.Maybe.xor] |
-| `zip` | [:material-dots-horizontal-circle:][apfel.container.maybe.Maybe.zip] |
-| `zip_with` | :material-minus-circle: |
+| `and` | [`and_`][apfel.container.maybe.Maybe.and_] |
+| `and_then` | [`and_then`][apfel.container.maybe.Maybe.and_then] |
+| `as_deref` | / |
+| `as_deref_mut` | / |
+| `as_mut` | / |
+| `as_mut_slice` | / |
+| `as_pin_mut` | / |
+| `as_pin_ref` | / |
+| `as_ref` | / |
+| `as_slice` | / |
+| `cloned` | - |
+| `copied` | / |
+| `expect` | [`expect`][apfel.container.maybe.Maybe.expect] |
+| `filter` | [`filter`][apfel.container.maybe.Maybe.filter] |
+| `flatten` | [~`flatten`][apfel.container.maybe.Maybe.flatten] |
+| `get_or_insert` | [`get_or_insert`][apfel.container.maybe.Maybe.get_or_insert] |
+| `get_or_insert_default` | / |
+| `get_or_insert_with` | [`get_or_insert_with`][apfel.container.maybe.Maybe.get_or_insert_with] |
+| `insert` | [`insert`][apfel.container.maybe.Maybe.insert] |
+| `inspect` | [~`tap`][apfel.container.maybe.Maybe.tap] |
+| `is_none` | [`is_nothing`][apfel.container.maybe.Maybe.is_nothing] |
+| `is_some` | [`is_just`][apfel.container.maybe.Maybe.is_just] |
+| `is_some_and` | [`is_just_and`][apfel.container.maybe.Maybe.is_just_and]|
+| `iter` | - |
+| `iter_mut` | / |
+| `map` | [`map`][apfel.container.maybe.Maybe.map] |
+| `map_or` | [`map_or`][apfel.container.maybe.Maybe.map_or] |
+| `map_or_else` | [`map_or_else`][apfel.container.maybe.Maybe.map_or_else] |
+| `ok_or` | [`ok_or`][apfel.container.maybe.Maybe.ok_or] |
+| `ok_or_else` | [`ok_or_else`][apfel.container.maybe.Maybe.ok_or_else] |
+| `or` | [`or_`][apfel.container.maybe.Maybe.or_] |
+| `or_else` | [`or_else`][apfel.container.maybe.Maybe.or_else] |
+| `replace` | [`replace`][apfel.container.maybe.Maybe.replace] |
+| `take` | [`take`][apfel.container.maybe.Maybe.take] |
+| `take_if` | [`take_if`][apfel.container.maybe.Maybe.take_if] |
+| `transpose` | - |
+| `unwrap` | [`unwrap`][apfel.container.maybe.Maybe.unwrap] |
+| `unwrap_or` | [`unwrap_or`][apfel.container.maybe.Maybe.unwrap_or] |
+| `unwrap_or_default` | / |
+| `unwrap_or_else` | [`unwrap_or_else`][apfel.container.maybe.Maybe.unwrap_or_else] |
+| `unwrap_unchecked` | [`unwrap_unchecked`][apfel.container.maybe.Maybe.unwrap_unchecked] |
+| `unzip` | / |
+| `xor` | [`xor`][apfel.container.maybe.Maybe.xor] |
+| `zip` | [~`zip`][apfel.container.maybe.Maybe.zip] |
+| `zip_with` | / |
 """
 
 from apfel.core.monad import Monad
@@ -139,9 +136,9 @@ from apfel.experimental.adt import variant
 class Maybe(Monad):
     """
     A container that optionally holds a value.
-    See [module-level documentation](maybe.md#maybe) for more information.
+    See [module-level documentation](maybe#maybe) for more information.
 
-    This class is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This class is exposed in the [package namespace](../prelude#package-namespace).
     """
 
     __slots__ = ("_val", "_has_value")
@@ -158,7 +155,7 @@ class Maybe(Monad):
         """
         Construct a `Just` value.
 
-        !!! warning
+        Warning:
             Prefer using [`just`][apfel.container.maybe.just] instead, unless in performance-critical code.
         """
         return cls(value)
@@ -168,7 +165,7 @@ class Maybe(Monad):
         """
         Construct a `Nothing` value.
 
-        !!! warning
+        Warning:
             Prefer using [`Nothing`][apfel.container.maybe.nothing] instead, unless in performance-critical code.
         """
 
@@ -179,7 +176,7 @@ class Maybe(Monad):
         """
         Convert an `Optional[T]` value to a `Maybe` value.
 
-        !!! warning
+        Warning:
             Prefer using [`some`][apfel.container.maybe.some] function instead, unless in performance-critical code.
 
         ```python
@@ -268,7 +265,7 @@ class Maybe(Monad):
         """
         If both values are `Just`, compare the inner values. Otherwise, return `True` if both are `Nothing`.
 
-        !!! warning
+        Warning:
             Notice that `None` is not equal to `Nothing`.
         """
         if not isinstance(other, Maybe):
@@ -308,7 +305,7 @@ class Maybe(Monad):
     def flatten(self):
         """
         Flatten a nested `Maybe` value for one level.
-        Unlike [`Option::flatten`](https://doc.rust-lang.org/std/option/enum.Option.html#method.flatten){ .ref .rs }, this method does not require the inner value to be a `Maybe`.
+        Unlike [:rust `Option::flatten`](https://doc.rust-lang.org/std/option/enum.Option.html#method.flatten), this method does not require the inner value to be a `Maybe`.
         If it's not a nested `Maybe`, this is a no-op.
 
         ```python
@@ -383,7 +380,7 @@ class Maybe(Monad):
         """
         Check if the value is a `Nothing`.
 
-        !!! note
+        Note:
             A `Just(Nothing)` value of type `Maybe[Maybe[T]]` or a `Just(None)` value of type `Maybe[Optional[T]]` are not `Nothing`s.
         """
         return not self._has_value
@@ -398,7 +395,7 @@ class Maybe(Monad):
         """
         Apply a function that maps the inner value to a new value, if any. Otherwise, return `Nothing`.
 
-        See [`Option::map`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map){ .ref .rs }.
+        See [:rust `Option::map`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map).
 
         ```python
         j = just[int](42)
@@ -416,7 +413,7 @@ class Maybe(Monad):
         """
         Map the inner value using a function, or use the default value if absent.
 
-        !!! tip
+        Tip:
             If the default value is an expensive expression, use [`map_or_else`][apfel.container.maybe.Maybe.map_or_else] instead.
 
         ```python
@@ -605,7 +602,7 @@ class Maybe(Monad):
     def tap(self, func, /):
         """
         Call a function with the inner value, if any, and return the `Maybe` itself.
-        Unlike [`Option::inspect`](https://doc.rust-lang.org/std/option/enum.Option.html#method.inspect){ .ref .rs }, this method does not require the function to return `None`.
+        Unlike [:rust `Option::inspect`](https://doc.rust-lang.org/std/option/enum.Option.html#method.inspect), this method does not require the function to return `None`.
 
         ```python
         j = just[int](42)
@@ -620,7 +617,7 @@ class Maybe(Monad):
         """
         Unwrap the inner value, if any. Otherwise, raise a `ValueError`.
 
-        ``` { .python .annotate }
+        ```python
         j = just[int](42)
         n = nothing[int]()
 
@@ -686,7 +683,9 @@ class Maybe(Monad):
         Otherwise, return a `Nothing`.
         Calling this method with no arguments is equivalent to calling `map` with a tuple constructor.
 
-        !!! warning "Typing"
+        Warning:
+            **Typing**
+
             The type checker only supports zipping up to 5-tuple.
 
         ```python
@@ -708,7 +707,7 @@ class just:
     """
     Constructs a `Just` value.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     ```python
     j: Maybe[int] = just(42)
@@ -718,7 +717,7 @@ class just:
     assert j.unwrap() == 42
     ```
 
-    !!! warning
+    Warning:
         Calling `just(None)` will return a `Just(None)` value, not a `Nothing` value.
         If you want to map `None` to `Nothing`, use [`some`][apfel.container.maybe.some] instead.
     """
@@ -744,7 +743,7 @@ class nothing:
     Constructs a `Nothing` value.
     Notice that this is not a literal.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     ```python
     n: Maybe[int] = nothing()
@@ -771,7 +770,7 @@ class some:
     """
     Converts an `Optional[T]` to a `Maybe[T]` value.
 
-    This function is exposed in the [:material-earth: package namespace](../prelude.md#package-namespace).
+    This function is exposed in the [package namespace](../prelude#package-namespace).
 
     ```python
     something: Maybe[int] = some(42)
