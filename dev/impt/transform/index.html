@@ -1139,11 +1139,13 @@
 
         <p>This module provides a low-level hook mechanism to transform the source code of a package or module during its import.
 It must be imported <strong>before</strong> any other packages and modules that you want to hook.</p>
-<div class="admonition warning">
-<p class="admonition-title">Effectful</p>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p><strong>Effectful</strong></p>
 <p>This package has an effectful behavior: modifying the <code>sys.meta_path</code> finder list, which will affect <strong>the import process</strong>, and is <strong>sensitive to the order of imports</strong>.</p>
-</div>
-<p>Normally you would use adapters defined in the <code>impt</code> package, instead of directly using the low level <a class="autorefs autorefs-internal" title="register_transform_hook(name, hook)" href="#apfel.impt.transform.register_transform_hook"><code>register_transform_hook</code></a> function.</p>
+</details>        <p>Normally you would use adapters defined in the <code>impt</code> package, instead of directly using the low level <a class="autorefs autorefs-internal" title="register_transform_hook(name, hook)" href="#apfel.impt.transform.register_transform_hook"><code>register_transform_hook</code></a> function.</p>
 
 
 
@@ -1177,7 +1179,7 @@ It must be imported <strong>before</strong> any other packages and modules that 
 
 
 
-        <p>A subclass of <a class="ref py" href="https://docs.python.org/3/library/importlib.html#importlib.machinery.PathFinder"><code>importlib.machinery.PathFinder</code></a>
+        <p>A subclass of <a href="https://docs.python.org/3/library/importlib.html#importlib.machinery.PathFinder">:python <code>importlib.machinery.PathFinder</code></a>
 that injects <a class="autorefs autorefs-internal" href="#apfel.impt.transform.TransformSourceFileLoader"><code>TransformSourceFileLoader</code></a> to the import process.</p>
 
 
@@ -1222,15 +1224,17 @@ that injects <a class="autorefs autorefs-internal" href="#apfel.impt.transform.T
 
 
 
-        <p>A subclass of <a class="ref py" href="https://docs.python.org/3/library/importlib.html#importlib.machinery.SourceFileLoader"><code>importlib.machinery.SourceFileLoader</code></a>
+        <p>A subclass of <a href="https://docs.python.org/3/library/importlib.html#importlib.machinery.SourceFileLoader">:python <code>importlib.machinery.SourceFileLoader</code></a>
 that applies all registered hooks to the source code of a module or package during import.</p>
-<div class="admonition note">
-<p class="admonition-title">Implementation</p>
+
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p><strong>Implementation</strong></p>
 <p>This loader will directly read the source code from the <code>.py</code> file, completely ignoring the <code>.pyc</code> file.
 The transformed source code will not have a bytecode cache (<code>.pyc</code>) generated.
 If your file system has high latency, this may slow down the import process.</p>
-</div>
-
+</details>
 
 
 
@@ -1388,6 +1392,8 @@ If your file system has high latency, this may slow down the import process.</p>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
       
     
   </body>

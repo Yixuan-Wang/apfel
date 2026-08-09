@@ -2054,54 +2054,51 @@
     <div class="doc doc-contents first">
 
         <p>A container that optionally holds a value.</p>
-<p>See <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a> and <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Maybe.html"><code>Maybe</code></a>.</p>
+<p>See <a href="https://doc.rust-lang.org/std/option/enum.Option.html">:rust <code>Option</code></a> and <a href="https://hackage.haskell.org/package/base/docs/Data-Maybe.html">:haskell <code>Maybe</code></a>.</p>
 <p>A <code>Maybe</code> has two possible states, <code>Just</code> or <code>Nothing</code>. <code>Just</code> means a value is present, and <code>Nothing</code> means the value is absent.
-The reason that we don't use <code>Some</code>-<code>None</code> or <code>Nil</code> nomencalture is to avoid <a class="autorefs autorefs-internal" title="Rationale" href="#apfel.container.maybe--rationale">confusion with the built-in <code>None</code></a>.</p>
+The reason that we don't use <code>Some</code>-<code>None</code> or <code>Nil</code> nomencalture is to avoid <a href="#apfel.container.maybe--rationale">confusion with the built-in <code>None</code></a>.</p>
 <p>This module also provides a <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> constructor, which converts an <code>Optional[T]</code> value to a <code>Maybe[T]</code> value.</p>
 <p>The <a class="autorefs autorefs-internal" href="#apfel.container.maybe.Maybe"><code>Maybe</code></a> class, and the <a class="autorefs autorefs-internal" href="#apfel.container.maybe.just"><code>just</code></a>, <a class="autorefs autorefs-internal" href="#apfel.container.maybe.nothing"><code>nothing</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> functions
-  are exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+  are exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 <h2 id="apfel.container.maybe--rationale">Rationale<a class="headerlink" href="#apfel.container.maybe--rationale" title="Permanent link">#</a></h2>
-<p>Python has a built-in <a class="ref py" href="https://docs.python.org/3/reference/datamodel.html#none"><code>None</code></a> object that represents the absence of a value,
-and a corresponding type hint <a class="ref py" href="https://docs.python.org/3/library/html#Optional"><code>Optional[T]</code></a>.
+<p>Python has a built-in <a href="https://docs.python.org/3/reference/datamodel.html#none">:python <code>None</code></a> object that represents the absence of a value,
+and a corresponding type hint <a href="https://docs.python.org/3/library/html#Optional">:python <code>Optional[T]</code></a>.
 However, an <code>Optional[T]</code> is semantically different from a <code>Maybe[T]</code> object.
 An <code>Optional[T]</code> is a <em>union</em> of <code>T</code> and <code>None</code>, not a single object.
 To use a union, you must explicitly check its type before every use.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1"># Usage 1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">if</span> <span class="n">optional</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="o">...</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">else</span><span class="p">:</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">do_something</span><span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="c1"># Usage 2</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">do_something</span><span class="p">(</span><span class="n">optional</span><span class="p">)</span> <span class="k">if</span> <span class="n">optional</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="o">...</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># Usage 3</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">optional</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">do_something</span><span class="p">(</span><span class="n">optional</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python"># Usage 1
+if optional is None:
+    ...
+else:
+    do_something(optional)
+
+# Usage 2
+do_something(optional) if optional is not None else ...
+
+# Usage 3
+optional is not None and do_something(optional)
+</code></pre>
 <p>On the other hand, a <code>Maybe[T]</code> object represents the absence of a value as a <em>state</em>.
 Operations defined on <code>Maybe[T]</code> objects behave differently depending on the state of the object, but they are always available regardless of the state.</p>
-<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="n">j</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">j</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">do_something</span><span class="p">)</span> <span class="c1">#(1)!</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">n</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">()</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a><span class="n">n</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">do_something</span><span class="p">)</span> <span class="c1">#(2)!</span>
-</code></pre></div>
-<ol>
-<li><code>do_something</code> is called because <code>j</code> is <code>Just</code>.</li>
-<li><code>do_something</code> is not called because <code>n</code> is <code>Nothing</code>.</li>
-</ol>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Notice that <code>None</code> <strong>is not equal</strong> to <code>Nothing</code>.
+<pre><code class="language-python">j: Maybe[int] = just(42)
+j.map(do_something) # `do_something` is called because `j` is `Just`.
+
+n: Maybe[int] = nothing()
+n.map(do_something) # `do_something` is not called because `n` is `Nothing`.
+</code></pre>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Notice that <code>None</code> <strong>is not equal</strong> to <code>Nothing</code>.
 Use <code>Maybe.is_nothing()</code> to check if a <code>Maybe</code> object is <code>Nothing</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="n">nothing</span> <span class="o">=</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span><span class="o">.</span><span class="n">Nothing</span><span class="p">()</span>
-<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a>
-<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="k">assert</span> <span class="n">nothing</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="k">assert</span> <span class="n">nothing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
-<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="k">assert</span> <span class="n">nothing</span> <span class="o">!=</span> <span class="kc">None</span>
-</code></pre></div>
-</div>
-<h2 id="apfel.container.maybe--implementation">Implementation<a class="headerlink" href="#apfel.container.maybe--implementation" title="Permanent link">#</a></h2>
+<pre><code class="language-python">nothing = Maybe[int].Nothing()
+
+assert nothing.is_nothing()
+assert nothing is not None
+assert nothing != None
+</code></pre>
+</details>        <h2 id="apfel.container.maybe--implementation">Implementation<a class="headerlink" href="#apfel.container.maybe--implementation" title="Permanent link">#</a></h2>
 <p><code>Maybe</code> implements the following interfaces:</p>
 <table>
 <thead>
@@ -2133,195 +2130,195 @@ Use <code>Maybe.is_nothing()</code> to check if a <code>Maybe</code> object is <
 A boolean flag <code>_has_value</code> is used to indicate whether the value is present or absent.
 If <code>_has_value</code> is <code>False</code>, reading from <code>_val</code> is an undefined behavior.</p>
 <p><code>Maybe</code> and its methods <strong>do not</strong> support inherit-based subclassing.</p>
-<p><code>Maybe</code>'s APIs are based on the Rust <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a>,
+<p><code>Maybe</code>'s APIs are based on the Rust <a href="https://doc.rust-lang.org/std/option/enum.Option.html">:rust <code>Option</code></a>,
 and the comparison table is provided below.</p>
 <table>
 <thead>
 <tr>
-<th>Reference <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a></th>
+<th>Reference <a href="https://doc.rust-lang.org/std/option/enum.Option.html">:rust <code>Option</code></a></th>
 <th>Counterpart</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>and</code></td>
-<td><a class="autorefs autorefs-internal" title="and_(other)" href="#apfel.container.maybe.Maybe.and_"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>and_</code></a></td>
+<td><a class="autorefs autorefs-internal" title="and_(other)" href="#apfel.container.maybe.Maybe.and_"><code>and_</code></a></td>
 </tr>
 <tr>
 <td><code>and_then</code></td>
-<td><a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.maybe.Maybe.and_then"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.maybe.Maybe.and_then"><code>and_then</code></a></td>
 </tr>
 <tr>
 <td><code>as_deref</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_deref_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_mut_slice</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_pin_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_pin_ref</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_ref</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_slice</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>cloned</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>copied</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>expect</code></td>
-<td><a class="autorefs autorefs-internal" title="expect(message)" href="#apfel.container.maybe.Maybe.expect"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="expect(message)" href="#apfel.container.maybe.Maybe.expect"><code>expect</code></a></td>
 </tr>
 <tr>
 <td><code>filter</code></td>
-<td><a class="autorefs autorefs-internal" title="filter(pred)" href="#apfel.container.maybe.Maybe.filter"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="filter(pred)" href="#apfel.container.maybe.Maybe.filter"><code>filter</code></a></td>
 </tr>
 <tr>
 <td><code>flatten</code></td>
-<td><a class="autorefs autorefs-internal" title="flatten()" href="#apfel.container.maybe.Maybe.flatten"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="flatten()" href="#apfel.container.maybe.Maybe.flatten">~<code>flatten</code></a></td>
 </tr>
 <tr>
 <td><code>get_or_insert</code></td>
-<td><a class="autorefs autorefs-internal" title="get_or_insert(default)" href="#apfel.container.maybe.Maybe.get_or_insert"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="get_or_insert(default)" href="#apfel.container.maybe.Maybe.get_or_insert"><code>get_or_insert</code></a></td>
 </tr>
 <tr>
 <td><code>get_or_insert_default</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>get_or_insert_with</code></td>
-<td><a class="autorefs autorefs-internal" title="get_or_insert_with(func)" href="#apfel.container.maybe.Maybe.get_or_insert_with"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="get_or_insert_with(func)" href="#apfel.container.maybe.Maybe.get_or_insert_with"><code>get_or_insert_with</code></a></td>
 </tr>
 <tr>
 <td><code>insert</code></td>
-<td><a class="autorefs autorefs-internal" title="insert(value)" href="#apfel.container.maybe.Maybe.insert"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="insert(value)" href="#apfel.container.maybe.Maybe.insert"><code>insert</code></a></td>
 </tr>
 <tr>
 <td><code>inspect</code></td>
-<td><a class="autorefs autorefs-internal" title="tap(func)" href="#apfel.container.maybe.Maybe.tap"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span> <code>tap</code></a></td>
+<td><a class="autorefs autorefs-internal" title="tap(func)" href="#apfel.container.maybe.Maybe.tap">~<code>tap</code></a></td>
 </tr>
 <tr>
 <td><code>is_none</code></td>
-<td><a class="autorefs autorefs-internal" title="is_nothing()" href="#apfel.container.maybe.Maybe.is_nothing"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>is_nothing</code></a></td>
+<td><a class="autorefs autorefs-internal" title="is_nothing()" href="#apfel.container.maybe.Maybe.is_nothing"><code>is_nothing</code></a></td>
 </tr>
 <tr>
 <td><code>is_some</code></td>
-<td><a class="autorefs autorefs-internal" title="is_just()" href="#apfel.container.maybe.Maybe.is_just"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>is_just</code></a></td>
+<td><a class="autorefs autorefs-internal" title="is_just()" href="#apfel.container.maybe.Maybe.is_just"><code>is_just</code></a></td>
 </tr>
 <tr>
 <td><code>is_some_and</code></td>
-<td><a class="autorefs autorefs-internal" title="is_just_and(pred)" href="#apfel.container.maybe.Maybe.is_just_and"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>is_just_and</code></a></td>
+<td><a class="autorefs autorefs-internal" title="is_just_and(pred)" href="#apfel.container.maybe.Maybe.is_just_and"><code>is_just_and</code></a></td>
 </tr>
 <tr>
 <td><code>iter</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>iter_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>map</code></td>
-<td><a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.maybe.Maybe.map"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.maybe.Maybe.map"><code>map</code></a></td>
 </tr>
 <tr>
 <td><code>map_or</code></td>
-<td><a class="autorefs autorefs-internal" title="map_or(default, func)" href="#apfel.container.maybe.Maybe.map_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_or(default, func)" href="#apfel.container.maybe.Maybe.map_or"><code>map_or</code></a></td>
 </tr>
 <tr>
 <td><code>map_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.maybe.Maybe.map_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.maybe.Maybe.map_or_else"><code>map_or_else</code></a></td>
 </tr>
 <tr>
 <td><code>ok_or</code></td>
-<td><a class="autorefs autorefs-internal" title="ok_or(error)" href="#apfel.container.maybe.Maybe.ok_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="ok_or(error)" href="#apfel.container.maybe.Maybe.ok_or"><code>ok_or</code></a></td>
 </tr>
 <tr>
 <td><code>ok_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="ok_or_else(func)" href="#apfel.container.maybe.Maybe.ok_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="ok_or_else(func)" href="#apfel.container.maybe.Maybe.ok_or_else"><code>ok_or_else</code></a></td>
 </tr>
 <tr>
 <td><code>or</code></td>
-<td><a class="autorefs autorefs-internal" title="or_(other)" href="#apfel.container.maybe.Maybe.or_"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>or_</code></a></td>
+<td><a class="autorefs autorefs-internal" title="or_(other)" href="#apfel.container.maybe.Maybe.or_"><code>or_</code></a></td>
 </tr>
 <tr>
 <td><code>or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="or_else(func)" href="#apfel.container.maybe.Maybe.or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="or_else(func)" href="#apfel.container.maybe.Maybe.or_else"><code>or_else</code></a></td>
 </tr>
 <tr>
 <td><code>replace</code></td>
-<td><a class="autorefs autorefs-internal" title="replace(value)" href="#apfel.container.maybe.Maybe.replace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="replace(value)" href="#apfel.container.maybe.Maybe.replace"><code>replace</code></a></td>
 </tr>
 <tr>
 <td><code>take</code></td>
-<td><a class="autorefs autorefs-internal" title="take()" href="#apfel.container.maybe.Maybe.take"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="take()" href="#apfel.container.maybe.Maybe.take"><code>take</code></a></td>
 </tr>
 <tr>
 <td><code>take_if</code></td>
-<td><a class="autorefs autorefs-internal" title="take_if(pred)" href="#apfel.container.maybe.Maybe.take_if"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="take_if(pred)" href="#apfel.container.maybe.Maybe.take_if"><code>take_if</code></a></td>
 </tr>
 <tr>
 <td><code>transpose</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>unwrap</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap()" href="#apfel.container.maybe.Maybe.unwrap"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap()" href="#apfel.container.maybe.Maybe.unwrap"><code>unwrap</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_or</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_or(default)" href="#apfel.container.maybe.Maybe.unwrap_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_or(default)" href="#apfel.container.maybe.Maybe.unwrap_or"><code>unwrap_or</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_or_default</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>unwrap_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_or_else(func)" href="#apfel.container.maybe.Maybe.unwrap_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_or_else(func)" href="#apfel.container.maybe.Maybe.unwrap_or_else"><code>unwrap_or_else</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_unchecked</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_unchecked()" href="#apfel.container.maybe.Maybe.unwrap_unchecked"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_unchecked()" href="#apfel.container.maybe.Maybe.unwrap_unchecked"><code>unwrap_unchecked</code></a></td>
 </tr>
 <tr>
 <td><code>unzip</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>xor</code></td>
-<td><a class="autorefs autorefs-internal" title="xor(other)" href="#apfel.container.maybe.Maybe.xor"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="xor(other)" href="#apfel.container.maybe.Maybe.xor"><code>xor</code></a></td>
 </tr>
 <tr>
 <td><code>zip</code></td>
-<td><a class="autorefs autorefs-internal" title="zip(*others)" href="#apfel.container.maybe.Maybe.zip"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="zip(*others)" href="#apfel.container.maybe.Maybe.zip">~<code>zip</code></a></td>
 </tr>
 <tr>
 <td><code>zip_with</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 </tbody>
 </table>
@@ -2359,19 +2356,20 @@ and the comparison table is provided below.</p>
 
 
         <p>Constructs a <code>Just</code> value.</p>
-<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">is_just</span><span class="p">()</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-</code></pre></div>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Calling <code>just(None)</code> will return a <code>Just(None)</code> value, not a <code>Nothing</code> value.
-If you want to map <code>None</code> to <code>Nothing</code>, use <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> instead.</p>
-</div>
+<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<pre><code class="language-python">j: Maybe[int] = just(42)
+j = just[int](42)
 
+assert j.is_just()
+assert j.unwrap() == 42
+</code></pre>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Calling <code>just(None)</code> will return a <code>Just(None)</code> value, not a <code>Nothing</code> value.
+If you want to map <code>None</code> to <code>Nothing</code>, use <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> instead.</p>
+</details>
 
 
 
@@ -2416,12 +2414,12 @@ If you want to map <code>None</code> to <code>Nothing</code>, use <a class="auto
 
         <p>Constructs a <code>Nothing</code> value.
 Notice that this is not a literal.</p>
-<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">n</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">()</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<pre><code class="language-python">n: Maybe[int] = nothing()
+n = nothing[int]()
+
+assert n.is_nothing()
+</code></pre>
 
 
 
@@ -2466,14 +2464,14 @@ Notice that this is not a literal.</p>
 
 
         <p>Converts an <code>Optional[T]</code> to a <code>Maybe[T]</code> value.</p>
-<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">something</span><span class="p">:</span> <span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="n">some</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">something</span><span class="o">.</span><span class="n">is_just</span><span class="p">()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">something</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">something</span> <span class="o">=</span> <span class="n">some</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="kc">None</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">something</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<pre><code class="language-python">something: Maybe[int] = some(42)
+assert something.is_just()
+assert something.unwrap() == 42
+
+something = some[int](None)
+assert something.is_nothing()
+</code></pre>
 
 
 
@@ -2518,8 +2516,8 @@ Notice that this is not a literal.</p>
 
 
         <p>A container that optionally holds a value.
-See <a href="./#maybe">module-level documentation</a> for more information.</p>
-<p>This class is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+See <a href="maybe#maybe">module-level documentation</a> for more information.</p>
+<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 
 
 
@@ -2574,11 +2572,12 @@ See <a href="./#maybe">module-level documentation</a> for more information.</p>
     <div class="doc doc-contents ">
 
         <p>If both values are <code>Just</code>, compare the inner values. Otherwise, return <code>True</code> if both are <code>Nothing</code>.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Notice that <code>None</code> is not equal to <code>Nothing</code>.</p>
-</div>
 
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Notice that <code>None</code> is not equal to <code>Nothing</code>.</p>
+</details>
 
     </div>
 
@@ -2624,14 +2623,14 @@ See <a href="./#maybe">module-level documentation</a> for more information.</p>
     <div class="doc doc-contents ">
 
         <p>If the value is <code>Just</code>, return a shallow copy of the other <code>Maybe</code>. Otherwise, return a new <code>Nothing</code> of type <code>Maybe[U]</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j1</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j2</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">bool</span><span class="p">](</span><span class="kc">True</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j1</span><span class="o">.</span><span class="n">and_</span><span class="p">(</span><span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="p">(</span><span class="n">j1</span> <span class="o">&amp;</span> <span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="kc">True</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="p">(</span><span class="n">j1</span> <span class="o">&amp;</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">bool</span><span class="p">]())</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="p">(</span><span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span> <span class="o">&amp;</span> <span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+<pre><code class="language-python">j1 = just[int](42)
+j2 = just[bool](True)
+
+assert j1.and_(j2).unwrap() == True
+assert (j1 &amp; j2).unwrap() == True
+assert (j1 &amp; nothing[bool]()).is_nothing()
+assert (nothing[int]() &amp; j2).is_nothing()
+</code></pre>
 
 
     </div>
@@ -2655,10 +2654,10 @@ See <a href="./#maybe">module-level documentation</a> for more information.</p>
     <div class="doc doc-contents ">
 
         <p>If the value is <code>Just</code>, apply a function that maps the inner value to a <code>Maybe[U]</code> value. Otherwise, return <code>Nothing</code> of type <code>Maybe[U]</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">and_then</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">some</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1805296</span><span class="p">))</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1919810</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](114514)
+
+assert j.and_then(lambda x: some(x + 1805296)).unwrap() == 1919810
+</code></pre>
 
 
     </div>
@@ -2811,10 +2810,10 @@ Alias of <a class="autorefs autorefs-internal" title="and_then(func)" href="#apf
     <div class="doc doc-contents ">
 
         <p>If the value is <code>Just</code> and satisfies the predicate, return the value. Otherwise, return <code>Nothing</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+assert j.filter(lambda x: x &gt; 0).unwrap() == 42
+assert j.filter(lambda x: x &lt; 0).is_nothing()
+</code></pre>
 
 
     </div>
@@ -2842,15 +2841,15 @@ Alias of <a class="autorefs autorefs-internal" title="and_then(func)" href="#apf
     <div class="doc doc-contents ">
 
         <p>Flatten a nested <code>Maybe</code> value for one level.
-Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html#method.flatten"><code>Option::flatten</code></a>, this method does not require the inner value to be a <code>Maybe</code>.
+Unlike <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.flatten">:rust <code>Option::flatten</code></a>, this method does not require the inner value to be a <code>Maybe</code>.
 If it's not a nested <code>Maybe</code>, this is a no-op.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]](</span><span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">j2</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="n">Maybe</span><span class="p">[</span><span class="n">Maybe</span><span class="p">[</span><span class="nb">int</span><span class="p">]]](</span><span class="n">just</span><span class="p">(</span><span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)))</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">j2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">))</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">j2</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[Maybe[int]](just(42))
+assert j.flatten() == just(42)
+
+j2 = just[Maybe[Maybe[int]]](just(just(42)))
+assert j2.flatten() == just(just(42))
+assert j2.flatten().flatten() == just(42)
+</code></pre>
 
 
     </div>
@@ -2874,12 +2873,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Get the inner value, if any. Otherwise, insert the new value and return the value.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">get_or_insert</span><span class="p">(</span><span class="mi">114514</span><span class="p">)</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">get_or_insert</span><span class="p">(</span><span class="mi">114514</span><span class="p">)</span> <span class="o">==</span> <span class="mi">114514</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+assert j.get_or_insert(114514) == 42
+
+n = nothing[int]()
+assert n.get_or_insert(114514) == 114514
+</code></pre>
 
 
     </div>
@@ -2903,12 +2902,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Get the inner value, if any. Otherwise, call a function to get a new value and return the value.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">get_or_insert_with</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">114514</span><span class="p">)</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">get_or_insert_with</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">114514</span><span class="p">)</span> <span class="o">==</span> <span class="mi">114514</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+assert j.get_or_insert_with(lambda: 114514) == 42
+
+n = nothing[int]()
+assert n.get_or_insert_with(lambda: 114514) == 114514
+</code></pre>
 
 
     </div>
@@ -3001,11 +3000,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Check if the value is a <code>Nothing</code>.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>A <code>Just(Nothing)</code> value of type <code>Maybe[Maybe[T]]</code> or a <code>Just(None)</code> value of type <code>Maybe[Optional[T]]</code> are not <code>Nothing</code>s.</p>
-</div>
 
+
+<details class="note" open>
+  <summary>Note</summary>
+  <p>A <code>Just(Nothing)</code> value of type <code>Maybe[Maybe[T]]</code> or a <code>Just(None)</code> value of type <code>Maybe[Optional[T]]</code> are not <code>Nothing</code>s.</p>
+</details>
 
     </div>
 
@@ -3032,11 +3032,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Construct a <code>Just</code> value.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Prefer using <a class="autorefs autorefs-internal" href="#apfel.container.maybe.just"><code>just</code></a> instead, unless in performance-critical code.</p>
-</div>
 
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Prefer using <a class="autorefs autorefs-internal" href="#apfel.container.maybe.just"><code>just</code></a> instead, unless in performance-critical code.</p>
+</details>
 
     </div>
 
@@ -3063,11 +3064,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Construct a <code>Nothing</code> value.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Prefer using <a class="autorefs autorefs-internal" title="nothing" href="#apfel.container.maybe.nothing"><code>Nothing</code></a> instead, unless in performance-critical code.</p>
-</div>
 
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Prefer using <a class="autorefs autorefs-internal" title="nothing" href="#apfel.container.maybe.nothing"><code>Nothing</code></a> instead, unless in performance-critical code.</p>
+</details>
 
     </div>
 
@@ -3094,16 +3096,17 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Convert an <code>Optional[T]</code> value to a <code>Maybe</code> value.</p>
-<div class="admonition warning">
-<p class="admonition-title">Warning</p>
-<p>Prefer using <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> function instead, unless in performance-critical code.</p>
-</div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some</span> <span class="o">=</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">make_some</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">some</span><span class="o">.</span><span class="n">is_just</span><span class="p">()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">none</span> <span class="o">=</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">make_some</span><span class="p">(</span><span class="kc">None</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">none</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p>Prefer using <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> function instead, unless in performance-critical code.</p>
+</details>        <pre><code class="language-python">some = Maybe.make_some(42)
+assert some.is_just()
+
+none = Maybe.make_some(None)
+assert none.is_nothing()
+</code></pre>
 
 
     </div>
@@ -3127,13 +3130,13 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Apply a function that maps the inner value to a new value, if any. Otherwise, return <code>Nothing</code>.</p>
-<p>See <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map"><code>Option::map</code></a>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="n">nothing</span><span class="p">()</span>
-</code></pre></div>
+<p>See <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map">:rust <code>Option::map</code></a>.</p>
+<pre><code class="language-python">j = just[int](42)
+assert j.map(lambda x: x + 1) == just(43)
+
+n = nothing[int]()
+assert n.map(lambda x: x + 1) == nothing()
+</code></pre>
 
 
     </div>
@@ -3157,16 +3160,17 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Map the inner value using a function, or use the default value if absent.</p>
-<div class="admonition tip">
-<p class="admonition-title">Tip</p>
-<p>If the default value is an expensive expression, use <a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.maybe.Maybe.map_or_else"><code>map_or_else</code></a> instead.</p>
-</div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">map_or</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">43</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">map_or</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-</code></pre></div>
+
+
+<details class="tip" open>
+  <summary>Tip</summary>
+  <p>If the default value is an expensive expression, use <a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.maybe.Maybe.map_or_else"><code>map_or_else</code></a> instead.</p>
+</details>        <pre><code class="language-python">j = just[int](42)
+n = nothing[int]()
+
+assert j.map_or(0, lambda x: x + 1) == 43
+assert n.map_or(0, lambda x: x + 1) == 0
+</code></pre>
 
 
     </div>
@@ -3190,12 +3194,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
     <div class="doc doc-contents ">
 
         <p>Map the inner value using a function, or use a lazy default value if absent.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">map_or_else</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">43</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">map_or_else</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+n = nothing[int]()
+
+assert j.map_or_else(lambda: 0, lambda x: x + 1) == 43
+assert n.map_or_else(lambda: 0, lambda x: x + 1) == 0
+</code></pre>
 
 
     </div>
@@ -3220,12 +3224,12 @@ If it's not a nested <code>Maybe</code>, this is a no-op.</p>
 
         <p>Convert the <code>Maybe</code> to a <code>Result</code>, converting <code>Just</code> to <code>Ok</code> and <code>Nothing</code> to a provided <code>Err</code> value.
 The <code>Err</code> value is eagerly evaluated.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">ok_or</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">ok_or</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap_err</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+n = nothing[int]()
+
+assert j.ok_or(&quot;error&quot;).unwrap() == 42
+assert n.ok_or(&quot;error&quot;).unwrap_err() == &quot;error&quot;
+</code></pre>
 
 
     </div>
@@ -3249,12 +3253,12 @@ The <code>Err</code> value is eagerly evaluated.</p>
     <div class="doc doc-contents ">
 
         <p>Convert the <code>Maybe</code> to a <code>Result</code>, converting <code>Just</code> to <code>Ok</code> and <code>Nothing</code> to a lazily evaluated <code>Err</code> value.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">ok_or_else</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">ok_or_else</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="s2">&quot;error&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap_err</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;error&quot;</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+n = nothing[int]()
+
+assert j.ok_or_else(lambda: 0).unwrap() == 42
+assert n.ok_or_else(lambda: &quot;error&quot;).unwrap_err() == &quot;error&quot;
+</code></pre>
 
 
     </div>
@@ -3281,13 +3285,13 @@ The <code>Err</code> value is eagerly evaluated.</p>
 <p>Notice that the right-hand side should be a <code>Maybe</code> object with the same inner type,
 although this is not enforced at runtime.
 And also this method does not short-circuit.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j1</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j2</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="p">(</span><span class="n">j1</span> <span class="o">|</span> <span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="p">(</span><span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span> <span class="o">|</span> <span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">114514</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="p">(</span><span class="n">j1</span> <span class="o">|</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]())</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-</code></pre></div>
+<pre><code class="language-python">j1 = just[int](42)
+j2 = just[int](114514)
+
+assert (j1 | j2).unwrap() == 42
+assert (nothing[int]() | j2).unwrap() == 114514
+assert (j1 | nothing[int]()).unwrap() == 42
+</code></pre>
 
 
     </div>
@@ -3371,16 +3375,16 @@ And also this method does not short-circuit.</p>
 
         <p>Replace the inner value with a new value, returning the old value.
 After replacement, <code>self</code> will always have a value.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">old</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">old</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">old</span> <span class="o">=</span> <span class="n">n</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="mi">1919810</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">n</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">1919810</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">assert</span> <span class="n">old</span> <span class="o">==</span> <span class="n">nothing</span><span class="p">()</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+old = j.replace(114514)
+assert j == just(114514)
+assert old == just(42)
+
+n = nothing[int]()
+old = n.replace(1919810)
+assert n == just(1919810)
+assert old == nothing()
+</code></pre>
 
 
     </div>
@@ -3404,11 +3408,11 @@ After replacement, <code>self</code> will always have a value.</p>
     <div class="doc doc-contents ">
 
         <p>Take the inner value out and leave no value in place.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">out</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">take</span><span class="p">()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">out</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+out = j.take()
+assert j.is_nothing()
+assert out == just(42)
+</code></pre>
 
 
     </div>
@@ -3433,16 +3437,16 @@ After replacement, <code>self</code> will always have a value.</p>
 
         <p>Take the inner value out if it satisfies the predicate, and leave no value in place.
 Otherwise, take out nothing.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">out</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">take_if</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">out</span> <span class="o">==</span> <span class="n">just</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">out</span> <span class="o">=</span> <span class="n">j</span><span class="o">.</span><span class="n">take_if</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">is_just</span><span class="p">()</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">assert</span> <span class="n">out</span> <span class="o">==</span> <span class="n">nothing</span><span class="p">()</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+out = j.take_if(lambda x: x &gt; 0)
+assert j.is_nothing()
+assert out == just(42)
+
+j = just[int](42)
+out = j.take_if(lambda x: x &lt; 0)
+assert j.is_just()
+assert out == nothing()
+</code></pre>
 
 
     </div>
@@ -3466,10 +3470,10 @@ Otherwise, take out nothing.</p>
     <div class="doc doc-contents ">
 
         <p>Call a function with the inner value, if any, and return the <code>Maybe</code> itself.
-Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html#method.inspect"><code>Option::inspect</code></a>, this method does not require the function to return <code>None</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j</span><span class="o">.</span><span class="n">tap</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>  <span class="c1"># prints 42</span>
-</code></pre></div>
+Unlike <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.inspect">:rust <code>Option::inspect</code></a>, this method does not require the function to return <code>None</code>.</p>
+<pre><code class="language-python">j = just[int](42)
+j.tap(print)  # prints 42
+</code></pre>
 
 
     </div>
@@ -3493,15 +3497,15 @@ Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.
     <div class="doc doc-contents ">
 
         <p>Unwrap the inner value, if any. Otherwise, raise a <code>ValueError</code>.</p>
-<div class="annotate highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">try</span><span class="p">:</span> <span class="n">n</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span> <span class="k">pass</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">else</span><span class="p">:</span> <span class="k">assert</span> <span class="kc">False</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+n = nothing[int]()
+
+assert j.unwrap() == 42
+
+try: n.unwrap()
+except ValueError: pass
+else: assert False
+</code></pre>
 
 
 <p><span class="doc-section-title">Raises:</span></p>
@@ -3548,11 +3552,11 @@ Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.
     <div class="doc doc-contents ">
 
         <p>Unwrap the inner value, or return a default value if absent.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j</span><span class="o">.</span><span class="n">unwrap_or</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">42</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">n</span><span class="o">.</span><span class="n">unwrap_or</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span>
-</code></pre></div>
+<pre><code class="language-python">j = just[int](42)
+n = nothing[int]()
+assert j.unwrap_or(0) == 42
+assert n.unwrap_or(0) == 0
+</code></pre>
 
 
     </div>
@@ -3622,10 +3626,10 @@ Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.
     <div class="doc doc-contents ">
 
         <p>If only one side has a value, return that side. Otherwise, return a <code>Nothing</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j1</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j2</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j1</span><span class="o">.</span><span class="n">xor</span><span class="p">(</span><span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+<pre><code class="language-python">j1 = just[int](42)
+j2 = just[int](114514)
+assert j1.xor(j2).is_nothing()
+</code></pre>
 
 
     </div>
@@ -3659,17 +3663,19 @@ Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.
 If all values are <code>Just</code>, return a <code>Just</code> value with a tuple of inner values.
 Otherwise, return a <code>Nothing</code>.
 Calling this method with no arguments is equivalent to calling <code>map</code> with a tuple constructor.</p>
-<div class="admonition warning">
-<p class="admonition-title">Typing</p>
+
+
+<details class="warning" open>
+  <summary>Warning</summary>
+  <p><strong>Typing</strong></p>
 <p>The type checker only supports zipping up to 5-tuple.</p>
-</div>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">j1</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">j2</span> <span class="o">=</span> <span class="n">just</span><span class="p">[</span><span class="nb">int</span><span class="p">](</span><span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">j1</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">j2</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">42</span><span class="p">,</span> <span class="mi">114514</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">n</span> <span class="o">=</span> <span class="n">nothing</span><span class="p">[</span><span class="nb">int</span><span class="p">]()</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">j1</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">n</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
-</code></pre></div>
+</details>        <pre><code class="language-python">j1 = just[int](42)
+j2 = just[int](114514)
+assert j1.zip(j2).unwrap() == (42, 114514)
+
+n = nothing[int]()
+assert j1.zip(n).is_nothing()
+</code></pre>
 
 
     </div>
@@ -3750,6 +3756,8 @@ Calling this method with no arguments is equivalent to calling <code>map</code> 
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
       
     
   </body>

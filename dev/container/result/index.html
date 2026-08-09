@@ -1922,181 +1922,181 @@
     <div class="doc doc-contents first">
 
         <p>A container that holds either a success or a failure.</p>
-<p>See <a class="ref rs" href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>
-  and <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Either.html"><code>Either</code></a>.</p>
+<p>See <a href="https://doc.rust-lang.org/std/result/enum.Result.html">:rust <code>Result</code></a>
+  and <a href="https://hackage.haskell.org/package/base/docs/Data-Either.html">:haskell <code>Either</code></a>.</p>
 <p>A <code>Result</code> has two possible states, <code>Ok</code> or <code>Err</code>.
 <code>Ok</code> means a successful value is present,
   and <code>Err</code> means a failure value is present.</p>
 <p>This module also provides a <a class="autorefs autorefs-internal" href="#apfel.container.result.caught"><code>caught</code></a> decorator, which wraps a partial function to a total function returning a <code>Result</code>.</p>
 <p>The <a class="autorefs autorefs-internal" href="#apfel.container.result.Result"><code>Result</code></a> class, and the <a class="autorefs autorefs-internal" href="#apfel.container.result.ok"><code>ok</code></a>, <a class="autorefs autorefs-internal" href="#apfel.container.result.err"><code>err</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.container.result.caught"><code>caught</code></a> functions
-  are exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+  are exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 <h3 id="apfel.container.result--rationale">Rationale<a class="headerlink" href="#apfel.container.result--rationale" title="Permanent link">#</a></h3>
-<p>Python <a class="ref py" href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement"><code>raise</code></a>
+<p>Python <a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement">:python <code>raise</code></a>
   is easily missed, since the gradual typing system does not support checked exceptions.
-An alternative is to return <a class="ref go" href="https://go.dev/blog/error-handling-and-go">nullable error flags</a>,
+An alternative is to return <a href="https://go.dev/blog/error-handling-and-go">:golang nullable error flags</a>,
   which is cumbersome to work with.</p>
 <h3 id="apfel.container.result--implementation">Implementation<a class="headerlink" href="#apfel.container.result--implementation" title="Permanent link">#</a></h3>
-<p><code>Result</code>'s APIs are based on the Rust <a class="ref rs" href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a>,
+<p><code>Result</code>'s APIs are based on the Rust <a href="https://doc.rust-lang.org/std/result/enum.Result.html">:rust <code>Result</code></a>,
 and the comparison table is provided below.</p>
 <table>
 <thead>
 <tr>
-<th>Reference <a class="ref rs" href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result</code></a></th>
+<th>Reference <a href="https://doc.rust-lang.org/std/result/enum.Result.html">:rust <code>Result</code></a></th>
 <th>Counterpart</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>and</code></td>
-<td><a class="autorefs autorefs-internal" title="and_(other)" href="#apfel.container.result.Result.and_"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>and_</code></a></td>
+<td><a class="autorefs autorefs-internal" title="and_(other)" href="#apfel.container.result.Result.and_"><code>and_</code></a></td>
 </tr>
 <tr>
 <td><code>and_then</code></td>
-<td><a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.result.Result.and_then"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="and_then(func)" href="#apfel.container.result.Result.and_then"><code>and_then</code></a></td>
 </tr>
 <tr>
 <td><code>as_deref</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_deref_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>as_ref</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>cloned</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>copied</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>err</code></td>
-<td><a class="autorefs autorefs-internal" title="err()" href="#apfel.container.result.Result.err"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="err()" href="#apfel.container.result.Result.err"><code>err</code></a></td>
 </tr>
 <tr>
 <td><code>expect</code></td>
-<td><a class="autorefs autorefs-internal" title="expect(message)" href="#apfel.container.result.Result.expect"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="expect(message)" href="#apfel.container.result.Result.expect"><code>expect</code></a></td>
 </tr>
 <tr>
 <td><code>expect_err</code></td>
-<td><a class="autorefs autorefs-internal" title="expect_err(message)" href="#apfel.container.result.Result.expect_err"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="expect_err(message)" href="#apfel.container.result.Result.expect_err"><code>expect_err</code></a></td>
 </tr>
 <tr>
 <td><code>flatten</code></td>
-<td><a class="autorefs autorefs-internal" title="flatten()" href="#apfel.container.result.Result.flatten"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="flatten()" href="#apfel.container.result.Result.flatten"><code>flatten</code></a></td>
 </tr>
 <tr>
 <td><code>inspect</code></td>
-<td><a class="autorefs autorefs-internal" title="tap(func)" href="#apfel.container.result.Result.tap"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span> <code>tap</code></a></td>
+<td><a class="autorefs autorefs-internal" title="tap(func)" href="#apfel.container.result.Result.tap">~<code>tap</code></a></td>
 </tr>
 <tr>
 <td><code>inspect_err</code></td>
-<td><a class="autorefs autorefs-internal" title="tap_err(func)" href="#apfel.container.result.Result.tap_err"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span> <code>tap_err</code></a></td>
+<td><a class="autorefs autorefs-internal" title="tap_err(func)" href="#apfel.container.result.Result.tap_err">~<code>tap_err</code></a></td>
 </tr>
 <tr>
 <td><code>into_err</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>into_ok</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>is_err</code></td>
-<td><a class="autorefs autorefs-internal" title="is_err()" href="#apfel.container.result.Result.is_err"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="is_err()" href="#apfel.container.result.Result.is_err"><code>is_err</code></a></td>
 </tr>
 <tr>
 <td><code>is_err_and</code></td>
-<td><a class="autorefs autorefs-internal" title="is_err_and(pred)" href="#apfel.container.result.Result.is_err_and"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="is_err_and(pred)" href="#apfel.container.result.Result.is_err_and"><code>is_err_and</code></a></td>
 </tr>
 <tr>
 <td><code>is_ok</code></td>
-<td><a class="autorefs autorefs-internal" title="is_ok()" href="#apfel.container.result.Result.is_ok"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="is_ok()" href="#apfel.container.result.Result.is_ok"><code>is_ok</code></a></td>
 </tr>
 <tr>
 <td><code>is_ok_and</code></td>
-<td><a class="autorefs autorefs-internal" title="is_ok_and(pred)" href="#apfel.container.result.Result.is_ok_and"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="is_ok_and(pred)" href="#apfel.container.result.Result.is_ok_and"><code>is_ok_and</code></a></td>
 </tr>
 <tr>
 <td><code>iter</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>iter_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>map</code></td>
-<td><a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.result.Result.map"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map(func)" href="#apfel.container.result.Result.map"><code>map</code></a></td>
 </tr>
 <tr>
 <td><code>map_err</code></td>
-<td><a class="autorefs autorefs-internal" title="map_err(func)" href="#apfel.container.result.Result.map_err"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_err(func)" href="#apfel.container.result.Result.map_err"><code>map_err</code></a></td>
 </tr>
 <tr>
 <td><code>map_or</code></td>
-<td><a class="autorefs autorefs-internal" title="map_or(default, func)" href="#apfel.container.result.Result.map_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_or(default, func)" href="#apfel.container.result.Result.map_or"><code>map_or</code></a></td>
 </tr>
 <tr>
 <td><code>map_or_default</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>map_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.result.Result.map_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="map_or_else(default, func)" href="#apfel.container.result.Result.map_or_else"><code>map_or_else</code></a></td>
 </tr>
 <tr>
 <td><code>ok</code></td>
-<td><a class="autorefs autorefs-internal" title="ok()" href="#apfel.container.result.Result.ok"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="ok()" href="#apfel.container.result.Result.ok"><code>ok</code></a></td>
 </tr>
 <tr>
 <td><code>or</code></td>
-<td><a class="autorefs autorefs-internal" title="or_(other)" href="#apfel.container.result.Result.or_"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M22 12a10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2a10 10 0 0 1 10 10M6 13h8l-3.5 3.5 1.42 1.42L17.84 12l-5.92-5.92L10.5 7.5 14 11H6z"/></svg></span> <code>or_</code></a></td>
+<td><a class="autorefs autorefs-internal" title="or_(other)" href="#apfel.container.result.Result.or_"><code>or_</code></a></td>
 </tr>
 <tr>
 <td><code>or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="or_else(func)" href="#apfel.container.result.Result.or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="or_else(func)" href="#apfel.container.result.Result.or_else"><code>or_else</code></a></td>
 </tr>
 <tr>
 <td><code>transpose</code></td>
-<td><a class="autorefs autorefs-internal" title="transpose()" href="#apfel.container.result.Result.transpose"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2a10 10 0 0 1 10 10 10 10 0 0 1-10 10A10 10 0 0 1 2 12 10 10 0 0 1 12 2m0 8.5a1.5 1.5 0 0 0-1.5 1.5 1.5 1.5 0 0 0 1.5 1.5 1.5 1.5 0 0 0 1.5-1.5 1.5 1.5 0 0 0-1.5-1.5m-5.5 0A1.5 1.5 0 0 0 5 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 8 12a1.5 1.5 0 0 0-1.5-1.5m11 0A1.5 1.5 0 0 0 16 12a1.5 1.5 0 0 0 1.5 1.5A1.5 1.5 0 0 0 19 12a1.5 1.5 0 0 0-1.5-1.5"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="transpose()" href="#apfel.container.result.Result.transpose">~<code>transpose</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap()" href="#apfel.container.result.Result.unwrap"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap()" href="#apfel.container.result.Result.unwrap"><code>unwrap</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_err</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_err()" href="#apfel.container.result.Result.unwrap_err"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_err()" href="#apfel.container.result.Result.unwrap_err"><code>unwrap_err</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_err_unchecked</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_err_unchecked()" href="#apfel.container.result.Result.unwrap_err_unchecked"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_err_unchecked()" href="#apfel.container.result.Result.unwrap_err_unchecked"><code>unwrap_err_unchecked</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_or</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_or(default)" href="#apfel.container.result.Result.unwrap_or"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_or(default)" href="#apfel.container.result.Result.unwrap_or"><code>unwrap_or</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_or_default</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>unwrap_or_else</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_or_else(func)" href="#apfel.container.result.Result.unwrap_or_else"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_or_else(func)" href="#apfel.container.result.Result.unwrap_or_else"><code>unwrap_or_else</code></a></td>
 </tr>
 <tr>
 <td><code>unwrap_unchecked</code></td>
-<td><a class="autorefs autorefs-internal" title="unwrap_unchecked()" href="#apfel.container.result.Result.unwrap_unchecked"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="unwrap_unchecked()" href="#apfel.container.result.Result.unwrap_unchecked"><code>unwrap_unchecked</code></a></td>
 </tr>
 </tbody>
 </table>
@@ -2134,8 +2134,8 @@ and the comparison table is provided below.</p>
 
 
         <p>A container that holds either a success or a failure.
-See <a href="./#result">module-level documentation</a> for more details.</p>
-<p>This class is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+See <a href="result#result">module-level documentation</a> for more details.</p>
+<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 
 
 
@@ -2704,13 +2704,13 @@ Alias of <a class="autorefs autorefs-internal" title="and_then(func)" href="#apf
     <div class="doc doc-contents ">
 
         <p>Call a function with the contained <code>Ok</code> value if it exists.</p>
-<p>Unlike <a class="ref rs" href="https://doc.rust-lang.org/std/result/enum.Result.html#method.inspect"><code>Result::inspect</code></a>,
+<p>Unlike <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.inspect">:rust <code>Result::inspect</code></a>,
 this method does not require the function to return <code>None</code>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_ok</span> <span class="o">=</span> <span class="n">ok</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">some_err</span> <span class="o">=</span> <span class="n">err</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">some_ok</span><span class="o">.</span><span class="n">tap</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>  <span class="c1"># prints: 5</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">some_err</span><span class="o">.</span><span class="n">tap</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>  <span class="c1"># prints nothing</span>
-</code></pre></div>
+<pre><code class="language-python">some_ok = ok(5)
+some_err = err(&quot;error&quot;)
+some_ok.tap(print)  # prints: 5
+some_err.tap(print)  # prints nothing
+</code></pre>
 
 
     </div>
@@ -2955,17 +2955,17 @@ this method does not require the function to return <code>None</code>.</p>
 
 
         <p>Construct an <code>Ok</code> value.</p>
-<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_ok</span> <span class="o">=</span> <span class="n">ok</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">match</span> <span class="n">some_ok</span><span class="p">:</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">case</span> <span class="n">ok</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Ok with value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">case</span> <span class="n">err</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Err with error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Output: Got an Ok with value: 42</span>
-</code></pre></div>
+<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<pre><code class="language-python">some_ok = ok(42)
+
+match some_ok:
+    case ok(value):
+        print(f&quot;Got an Ok with value: {value}&quot;)
+    case err(error):
+        print(f&quot;Got an Err with error: {error}&quot;)
+
+# Output: Got an Ok with value: 42
+</code></pre>
 
 
 
@@ -3010,16 +3010,16 @@ this method does not require the function to return <code>None</code>.</p>
 
 
         <p>Construct an <code>Err</code> value.</p>
-<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_err</span> <span class="o">=</span> <span class="n">err</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">match</span> <span class="n">some_err</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">case</span> <span class="n">ok</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Ok with value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">case</span> <span class="n">err</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Err with error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Output: Got an Err with error: Something went wrong</span>
-</code></pre></div>
+<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<pre><code class="language-python">some_err = err(&quot;Something went wrong&quot;)
+match some_err:
+    case ok(value):
+        print(f&quot;Got an Ok with value: {value}&quot;)
+    case err(error):
+        print(f&quot;Got an Err with error: {error}&quot;)
+
+# Output: Got an Err with error: Something went wrong
+</code></pre>
 
 
 
@@ -3072,18 +3072,18 @@ this method does not require the function to return <code>None</code>.</p>
 <li>Use as a higher-order function with specific exception types as args (<code>caught(func, ExceptionA, ExceptionB)</code>) to catch only those exceptions.</li>
 <li>Use generic syntax to provide type hints (<code>@caught[ExceptionA]</code>, <code>@caught[ExceptionA]()</code>, <code>caught[ExceptionA]()</code>), <em>without affecting runtime behavior</em>.</li>
 </ul>
-<p>This function is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 
 
 <details class="usage" open>
   <summary>Usage</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@caught</span><span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">divide</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Ok(2.0)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">divide</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Err(ZeroDivisionError)</span>
-</code></pre></div>
+  <pre><code class="language-python">@caught(ZeroDivisionError)
+def divide(a: float, b: float) -&gt; float:
+    return a / b
+
+divide(4, 2)  # Ok(2.0)
+divide(4, 0)  # Err(ZeroDivisionError)
+</code></pre>
 </details>
 
 
@@ -3172,6 +3172,8 @@ this method does not require the function to return <code>None</code>.</p>
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
       
     
   </body>

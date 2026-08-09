@@ -1328,40 +1328,40 @@ but these <code>@</code> usages can be purged easily with simple search and repl
 <li>have different precedence and associativity</li>
 </ol>
 <p>This is especially useful when you wrap some debugging or logging code around a function call.
-For example, with the following usage with <a class="ref py" href="https://pypi.org/project/icecream/"><code>icecream</code></a>,
+For example, with the following usage with <a href="https://pypi.org/project/icecream/">:python <code>icecream</code></a>,
 you can replace <code>ic @</code> with empty string to remove all debugging code,
 without worrying of breaking the <code>get_pic()</code> call:</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span> <span class="k">as</span> <span class="n">_ic</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">ic</span> <span class="o">=</span> <span class="n">fob</span><span class="p">(</span><span class="n">_ic</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">result</span> <span class="o">=</span> <span class="n">ic</span> <span class="o">@</span> <span class="p">(</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="n">get_pic</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>        <span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">from icecream import ic as _ic
+
+ic = fob(_ic)
+result = ic @ (
+    get_pic(iris)
+        .filter(...)
+        .sort_values(...)
+        .apply(...)
+        .head(10)
+)
+</code></pre>
 <p><a class="autorefs autorefs-internal" title="__or__(value)" href="#apfel.core.function_object.FunctionObject.__or__"><code>|</code></a> and <a class="autorefs autorefs-internal" title="__matmul__(value)" href="#apfel.core.function_object.FunctionObject.__matmul__"><code>@</code></a> have different operator precedence,
 the <code>|</code> has almost the lowest precedence of all Python operators, while the <code>@</code> has almost the highest precedence.
 This allows you combine expressions more flexibly without worrying about parentheses.</p>
 <p><a class="autorefs autorefs-internal" title="__rand__(value)" href="#apfel.core.function_object.FunctionObject.__rand__"><code>&amp;</code></a> operator can be used to apply the function to its left-hand side,
 if the left-hand side does not overload the <code>&amp;</code> operator.
-This is similar to <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-"><code>&amp;</code></a>, <a class="ref jl" href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping"><code>|&gt;</code></a> or roughly <a class="ref rl" href="https://magrittr.tidyverse.org/reference/pipe.html"><code>%&gt;%</code></a>.
+This is similar to <a href="https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-">:haskell <code>&amp;</code></a>, <a href="https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping">:julia <code>|&gt;</code></a> or roughly <a href="https://magrittr.tidyverse.org/reference/pipe.html">:rlang <code>%&gt;%</code></a>.
 With <code>&amp;</code> you can write your code naturally from left to right.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">icecream</span><span class="w"> </span><span class="kn">import</span> <span class="n">ic</span> <span class="k">as</span> <span class="n">_ic</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="n">ic</span> <span class="o">=</span> <span class="n">fob</span><span class="p">(</span><span class="n">_ic</span><span class="p">)</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>
-<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a><span class="n">result</span> <span class="o">=</span> <span class="p">(</span>
-<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>    <span class="n">get_pic</span><span class="p">(</span><span class="n">iris</span><span class="p">)</span>
-<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>        <span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
-<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>        <span class="c1"># ...</span>
-<a id="__codelineno-1-8" name="__codelineno-1-8" href="#__codelineno-1-8"></a><span class="p">)</span> <span class="o">&amp;</span> <span class="n">ic</span>
-</code></pre></div>
+<pre><code class="language-python">from icecream import ic as _ic
+ic = fob(_ic)
+
+result = (
+    get_pic(iris)
+        .filter(...)
+        # ...
+) &amp; ic
+</code></pre>
 <p><a class="autorefs autorefs-internal" title="__pow__(value)" href="#apfel.core.function_object.FunctionObject.__pow__"><code>**</code></a> operator has the highest precedence of all, and it has a unique
 associtivity from right to left.
 It can be used in wrapping multiple calls together without parentheses, like <code>f(g(x))</code> can be written as <code>f ** g ** x</code>.
-It roughly simulates <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-"><code>$</code></a>.</p>
+It roughly simulates <a href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-">:haskell <code>$</code></a>.</p>
 <p><a class="autorefs autorefs-internal" title="__mod__(value)" href="#apfel.core.function_object.FunctionObject.__mod__"><code>%</code></a> operator is used for calling multi-argument functions.
 Check its documentation for more details.</p>
 
@@ -1445,21 +1445,21 @@ and methods of the original callable.</p>
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">@</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">rhs</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
-</code></pre></div>
+        <pre><code class="language-python">def @[T, R](self, rhs: T) -&gt; R
+</code></pre>
 <p>Function application operator <code>@</code> for <code>FunctionObject</code>s.</p>
 <p><code>f @ x</code> is equivalent to <code>f(x)</code>. This operator behaves the same as <a href="#apfel.core.function_object.FunctionObject.__matmul__--operator-or"><code>|</code></a>, but with a different precedence.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">@</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 4</span>
-</code></pre></div>
+  <pre><code class="language-python">@fob
+def f(x):
+    return x * 2
+
+f @ 1 + 2
+# 4
+</code></pre>
 </details>
 
     </div>
@@ -1482,12 +1482,12 @@ and methods of the original callable.</p>
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">%</span><span class="p">[</span><span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
-</code></pre></div>
+        <pre><code class="language-python">def %[R](self, value) -&gt; R
+</code></pre>
 <p>Function application operator <code>%</code> for <code>FunctionObject</code>s of multi-argument functions.</p>
 <ul>
-<li>If the right hand side is a <a class="ref py" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence">Sequence</a>, spreads the sequence as positional arguments. For example, <code>x % (a, b, c)</code> is equivalent to <code>x(a, b, c)</code>.</li>
-<li>If the right hand side is a <a class="ref py" href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping">Mapping</a>, spreads the mapping as keyword arguments. For example, <code>x % { "a": 1, "b": 2, "c": 3 }</code> is equivalent to <code>x(a=1, b=2, c=3)</code>.</li>
+<li>If the right hand side is a <a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence">:python Sequence</a>, spreads the sequence as positional arguments. For example, <code>x % (a, b, c)</code> is equivalent to <code>x(a, b, c)</code>.</li>
+<li>If the right hand side is a <a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping">:python Mapping</a>, spreads the mapping as keyword arguments. For example, <code>x % { "a": 1, "b": 2, "c": 3 }</code> is equivalent to <code>x(a=1, b=2, c=3)</code>.</li>
 <li>Specifically, you can use <code>...</code> as the map key to pass keyword arguments with keyword arguments at the same time, <code>x % { ...: (1, 2), "c": 3 }</code> is equivalent to <code>x(1, 2, c=3)</code>.</li>
 <li>Otherwise, it calls on the right-hand side. This catches the case where you forget the trailing comma in the right-hand side tuple.</li>
 </ul>
@@ -1495,14 +1495,14 @@ and methods of the original callable.</p>
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">+</span> <span class="n">c</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">%</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>                  <span class="c1"># 6</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">f</span> <span class="o">%</span> <span class="p">{</span> <span class="s2">&quot;a&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">&quot;b&quot;</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">3</span> <span class="p">}</span> <span class="c1"># 6</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">f</span> <span class="o">%</span> <span class="p">{</span> <span class="o">...</span><span class="p">:</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span> <span class="s2">&quot;c&quot;</span><span class="p">:</span> <span class="mi">3</span> <span class="p">}</span>    <span class="c1"># 6</span>
-</code></pre></div>
+  <pre><code class="language-python">@fob
+def f(a, b, c):
+    return a + b + c
+
+f % (1, 2, 3)                  # 6
+f % { &quot;a&quot;: 1, &quot;b&quot;: 2, &quot;c&quot;: 3 } # 6
+f % { ...: (1, 2), &quot;c&quot;: 3 }    # 6
+</code></pre>
 </details>
 
 <details class="warning" open>
@@ -1531,21 +1531,21 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">|</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
-</code></pre></div>
+        <pre><code class="language-python">def |[T, R](self, value: T) -&gt; R
+</code></pre>
 <p>Function application operator <code>|</code> for <code>FunctionObject</code>s.</p>
 <p><code>f | x</code> is equivalent to <code>f(x)</code>. This operator behaves the same as <a href="#apfel.core.function_object.FunctionObject.__or__--operator-at"><code>@</code></a>, but with a different precedence.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">|</span> <span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 6</span>
-</code></pre></div>
+  <pre><code class="language-python">@fob
+def f(x):
+    return x * 2
+
+f | 1 + 2
+# 6
+</code></pre>
 </details>
 
     </div>
@@ -1568,28 +1568,28 @@ However, this case is relatively rare, as <code>...</code> cannot be declared as
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">**</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
-</code></pre></div>
+        <pre><code class="language-python">def **[T, R](self, value: T) -&gt; R
+</code></pre>
 <p>Function application operator <code>**</code> for <code>FunctionObject</code>s.</p>
 <p><code>f ** g ** x</code> is equivalent to <code>f(g(x))</code>.
 This operator has the highest precedence of all overloadable operators,
 and it binds from right to left.
-It intends to simulate <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-"><code>$</code></a> operator, except the precedence.</p>
+It intends to simulate <a href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-">:haskell <code>$</code></a> operator, except the precedence.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">def</span><span class="w"> </span><span class="nf">g</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">f</span> <span class="o">**</span> <span class="n">g</span> <span class="o">**</span> <span class="mi">1</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># 3</span>
-</code></pre></div>
+  <pre><code class="language-python">@fob
+def f(x):
+    return x + 1
+
+@fob
+def g(x):
+    return x * 2
+
+f ** g ** 1
+# 3
+</code></pre>
 </details>
 
     </div>
@@ -1612,9 +1612,9 @@ It intends to simulate <a class="ref hs" href="https://hackage.haskell.org/packa
 
     <div class="doc doc-contents ">
 
-        <p><div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="o">&amp;</span><span class="p">[</span><span class="n">T</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">R</span>
-</code></pre></div>
-Reverse function application operator <code>&amp;</code> for <code>FunctionObject</code>s.
+        <pre><code class="language-python">def &amp;[T, R](self, value: T) -&gt; R
+</code></pre>
+<p>Reverse function application operator <code>&amp;</code> for <code>FunctionObject</code>s.
 <strong>This operator overloading targets the right-hand side</strong>.</p>
 <p><code>x &amp; f</code> is equivalent to <code>f(x)</code>, if <code>&amp;</code> operator (left, <code>__and__</code>) is not overloaded by <code>x</code>'s type.</p>
 
@@ -1626,13 +1626,13 @@ Reverse function application operator <code>&amp;</code> for <code>FunctionObjec
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="mi">1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">&amp;</span> <span class="n">f</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 6</span>
-</code></pre></div>
+  <pre><code class="language-python">@fob
+def f(x):
+    return x + 1
+
+1 + 2 &amp; f
+# 6
+</code></pre>
 </details>
 
     </div>
@@ -1668,23 +1668,23 @@ Reverse function application operator <code>&amp;</code> for <code>FunctionObjec
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">](</span><span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">F</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">fob</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">](</span><span class="o">*</span><span class="n">funcs</span><span class="p">:</span> <span class="o">*</span><span class="n">Fs</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="o">*</span><span class="n">Fs</span><span class="p">]</span>
-</code></pre></div>
+        <pre><code class="language-python">def fob[F: Callable](func: F) -&gt; F
+def fob[*Fs](*funcs: *Fs) -&gt; tuple[*Fs]
+</code></pre>
 <p>Turn callables into <code>FunctionObject</code> yet keeps their original type hints.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@fob</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">f</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">f</span> <span class="o">+</span> <span class="mi">1</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">f</span> <span class="o">|</span> <span class="mi">1</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1"># 2</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="nb">print</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="nb">str</span> <span class="o">=</span> <span class="n">fob</span><span class="p">(</span><span class="nb">print</span><span class="p">,</span> <span class="n">display</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span>
-</code></pre></div>
+  <pre><code class="language-python">@fob
+def f(a: int) -&gt; int:
+    return f + 1
+
+f | 1
+# 2
+
+print, display, str = fob(print, display, str)
+</code></pre>
 </details>
 
 <details class="note" open>
@@ -1722,15 +1722,33 @@ constructor, or use <code>reveal_fob</code> on an object with runtime type <code
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">reveal_fob</span><span class="p">(</span><span class="n">func</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">FunctionObject</span> <span class="k">raise</span> <span class="ne">TypeError</span>
-</code></pre></div>
+        <pre><code class="language-python">def reveal_fob(func: Any) -&gt; FunctionObject raise TypeError
+</code></pre>
 <p>Cast a <code>FunctionObject</code> to <code>FunctionObject</code> type.</p>
 
 
-<details class="failure" open>
-  <summary>Exception</summary>
-  <p>This function performs runtime check and raises <code>TypeError</code> if the input is not a <code>FunctionObject</code>.</p>
-</details>
+<p><span class="doc-section-title">Raises:</span></p>
+    <table>
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+          <tr class="doc-section-item">
+            <td>
+                  <code><span title="TypeError">TypeError</span></code>
+            </td>
+            <td>
+              <div class="doc-md-description">
+                <p>This function performs runtime check and raises <code>TypeError</code> if the input is not a <code>FunctionObject</code>.</p>
+              </div>
+            </td>
+          </tr>
+      </tbody>
+    </table>
+
 
     </div>
 
@@ -1801,6 +1819,8 @@ constructor, or use <code>reveal_fob</code> on an object with runtime type <code
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
       
     
   </body>

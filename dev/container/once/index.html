@@ -1405,61 +1405,61 @@
 
     <div class="doc doc-contents first">
 
-        <p>Primitives for containers that can be written only once. Inspired by <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html"><code>OnceCell</code></a> and <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.LazyCell.html"><code>LazyCell</code></a>.</p>
-<p>The <a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> and <a class="autorefs autorefs-internal" href="#apfel.container.once.Lazy"><code>Lazy</code></a> classes, are exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+        <p>Primitives for containers that can be written only once. Inspired by <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a> and <a href="https://doc.rust-lang.org/std/cell/struct.LazyCell.html">:rust <code>LazyCell</code></a>.</p>
+<p>The <a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> and <a class="autorefs autorefs-internal" href="#apfel.container.once.Lazy"><code>Lazy</code></a> classes, are exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 <h2 id="apfel.container.once--implementation">Implementation<a class="headerlink" href="#apfel.container.once--implementation" title="Permanent link">#</a></h2>
-<p><a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> takes reference from <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html"><code>OnceCell</code></a> and the current status is as follows:</p>
+<p><a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> takes reference from <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a> and the current status is as follows:</p>
 <table>
 <thead>
 <tr>
-<th>Reference <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html"><code>OnceCell</code></a></th>
+<th>Reference <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a></th>
 <th>Counterpart</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td><code>get</code></td>
-<td><a class="autorefs autorefs-internal" title="get()" href="#apfel.container.once.Once.get"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="get()" href="#apfel.container.once.Once.get"><code>get</code></a></td>
 </tr>
 <tr>
 <td><code>get_mut</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>get_mut_or_init</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>get_mut_or_try_init</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17 13H7v-2h10m-5-9A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span></td>
+<td>/</td>
 </tr>
 <tr>
 <td><code>get_or_init</code></td>
-<td><a class="autorefs autorefs-internal" title="get_or_init(func)" href="#apfel.container.once.Once.get_or_init"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="get_or_init(func)" href="#apfel.container.once.Once.get_or_init"><code>get_or_init</code></a></td>
 </tr>
 <tr>
 <td><code>get_or_try_init</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>into_inner</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>new</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>set</code></td>
-<td><a class="autorefs autorefs-internal" title="set(value)" href="#apfel.container.once.Once.set"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-2 15-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8z"/></svg></span></a></td>
+<td><a class="autorefs autorefs-internal" title="set(value)" href="#apfel.container.once.Once.set"><code>set</code></a></td>
 </tr>
 <tr>
 <td><code>take</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 <tr>
 <td><code>try_insert</code></td>
-<td><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2c5.53 0 10 4.47 10 10s-4.47 10-10 10S2 17.53 2 12 6.47 2 12 2m3.59 5L12 10.59 8.41 7 7 8.41 10.59 12 7 15.59 8.41 17 12 13.41 15.59 17 17 15.59 13.41 12 17 8.41z"/></svg></span></td>
+<td>-</td>
 </tr>
 </tbody>
 </table>
@@ -1497,8 +1497,8 @@
 
 
         <p>A container that can be written only once.
-See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html"><code>OnceCell</code></a> for more information.</p>
-<p>This class is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+See <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a> for more information.</p>
+<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 
 
 
@@ -1542,7 +1542,7 @@ See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.h
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>is_set</code></td>            <td>
+<td><code>bool</code></td>            <td>
                   <code><span title="bool">bool</span></code>
             </td>
             <td>
@@ -1588,8 +1588,7 @@ See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.h
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>container</code></td>            <td>
-                  <code><a class="autorefs autorefs-internal" title="Once (apfel.container.once.Once)" href="#apfel.container.once.Once">Once</a></code>
+<td><code>Once</code></td>            <td>
             </td>
             <td>
               <div class="doc-md-description">
@@ -1628,18 +1627,18 @@ See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.h
     <table>
       <thead>
         <tr>
-<th>Name</th>          <th>Type</th>
+          <th>Type</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>value</code></td>            <td>
+            <td>
                   <code><a class="autorefs autorefs-internal" title="Maybe (apfel.container.maybe.Maybe)" href="../maybe/#apfel.container.maybe.Maybe">Maybe</a>[<span title="apfel.container.once.Once[T]">T</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A <code>Just</code>-wrapped inner value of the <code>Once</code> container if it has been set, a <code>Nothing</code> otherwise.</p>
+                <p>Maybe[T]: A <code>Just</code>-wrapped inner value of the <code>Once</code> container if it has been set, a <code>Nothing</code> otherwise.</p>
               </div>
             </td>
           </tr>
@@ -1711,7 +1710,7 @@ See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.h
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>value</code></td>            <td>
+<td><code>T</code></td>            <td>
                   <code><span title="apfel.container.once.Once[T]">T</span></code>
             </td>
             <td>
@@ -1786,18 +1785,18 @@ See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.OnceCell.h
     <table>
       <thead>
         <tr>
-<th>Name</th>          <th>Type</th>
+          <th>Type</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>container</code></td>            <td>
-                  <code><a class="autorefs autorefs-internal" title="Once (apfel.container.once.Once)" href="#apfel.container.once.Once">Once</a>[<span title="apfel.container.once.Once[T]">T</span>]</code>
+            <td>
+                  <code><a class="autorefs autorefs-internal" title="Once (apfel.container.once.Once)" href="#apfel.container.once.Once">Once</a>[<span title="apfel.container.once.Once.of_hint[U]">U</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p>A <code>Once</code> container hinting the given type.</p>
+                <p>Once[T]: A <code>Once</code> container hinting the given type.</p>
               </div>
             </td>
           </tr>
@@ -1864,18 +1863,19 @@ If a value has already been set, this method returns an <code>Err</code> contain
     <table>
       <thead>
         <tr>
-<th>Name</th>          <th>Type</th>
+          <th>Type</th>
           <th>Description</th>
         </tr>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>result</code></td>            <td>
+            <td>
                   <code><a class="autorefs autorefs-internal" title="Result (apfel.container.result.Result)" href="../result/#apfel.container.result.Result">Result</a>[None, <span title="apfel.container.once.Once[T]">T</span>]</code>
             </td>
             <td>
               <div class="doc-md-description">
-                <p><code>Ok(None)</code> if the value was set successfully.
+                <p>Result[None, T]:
+<code>Ok(None)</code> if the value was set successfully.
 <code>Err(value)</code> if the value has already been set, containing the existing value.</p>
               </div>
             </td>
@@ -1918,7 +1918,7 @@ If no value has been set, this method raises a <code>ValueError</code>.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>value</code></td>            <td>
+<td><code>T</code></td>            <td>
                   <code><span title="apfel.container.once.Once[T]">T</span></code>
             </td>
             <td>
@@ -1989,25 +1989,25 @@ If no value has been set, this method raises a <code>ValueError</code>.</p>
 
         <p>A container that can be lazily initialized only once.
 The stored function will be actually called only on the first retrieval, and the result will be cached for consequent calls.
-See <a class="ref rs" href="https://doc.rust-lang.org/std/cell/struct.LazyCell.html"><code>LazyCell</code></a> for more information.</p>
-<p>This class is exposed in the <a href="../../prelude/#package-namespace"><span class="twemoji"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M17.9 17.39c-.26-.8-1.01-1.39-1.9-1.39h-1v-3a1 1 0 0 0-1-1H8v-2h2a1 1 0 0 0 1-1V7h2a2 2 0 0 0 2-2v-.41a7.984 7.984 0 0 1 2.9 12.8M11 19.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.22.21-1.79L9 15v1a2 2 0 0 0 2 2m1-16A10 10 0 0 0 2 12a10 10 0 0 0 10 10 10 10 0 0 0 10-10A10 10 0 0 0 12 2"/></svg></span> package namespace</a>.</p>
+See <a href="https://doc.rust-lang.org/std/cell/struct.LazyCell.html">:rust <code>LazyCell</code></a> for more information.</p>
+<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.container.once</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lazy</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nd">@Lazy</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">():</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;called&quot;</span><span class="p">)</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">return</span> <span class="nb">object</span><span class="p">()</span>
-<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
-<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
-<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># print &quot;called&quot;</span>
-<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># here, the function `func` will be called and the result will be cached.</span>
-<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
-<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">func</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="ow">is</span> <span class="n">obj</span> <span class="c1"># the function `func` will not be called again.</span>
-</code></pre></div>
+  <pre><code class="language-python">from apfel.container.once import Lazy
+
+@Lazy
+def func():
+    print(&quot;called&quot;)
+    return object()
+
+obj = func.value()
+# print &quot;called&quot;
+# here, the function `func` will be called and the result will be cached.
+
+func.value() is obj # the function `func` will not be called again.
+</code></pre>
 </details>
 
 
@@ -2044,13 +2044,13 @@ Notice that this operator overloading might be slower than calling <code>value</
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Lazy</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">():</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="nb">object</span><span class="p">()</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">func</span><span class="p">()</span>
-<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">func</span><span class="p">()</span> <span class="ow">is</span> <span class="n">obj</span>
-</code></pre></div>
+  <pre><code class="language-python">@Lazy
+def func():
+    return object()
+
+obj = func()
+assert func() is obj
+</code></pre>
 </details>
 
     </div>
@@ -2141,7 +2141,7 @@ If no value has been set, this method raises a <code>ValueError</code>.</p>
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>value</code></td>            <td>
+<td><code>T</code></td>            <td>
                   <code><span title="apfel.container.once.Lazy[T]">T</span></code>
             </td>
             <td>
@@ -2211,7 +2211,7 @@ If no value has been set, this method initializes the value with the stored func
       </thead>
       <tbody>
           <tr class="doc-section-item">
-<td><code>value</code></td>            <td>
+<td><code>T</code></td>            <td>
                   <code><span title="apfel.container.once.Lazy[T]">T</span></code>
             </td>
             <td>
@@ -2302,6 +2302,8 @@ If no value has been set, this method initializes the value with the stored func
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
       
     
   </body>

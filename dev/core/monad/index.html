@@ -1395,9 +1395,9 @@ structured ways to compose and manipulate computations on a single effectful con
 <p>The module defines three abstract classes: <a class="autorefs autorefs-internal" href="#apfel.core.monad.Functor"><code>Functor</code></a>,
 <a class="autorefs autorefs-internal" href="#apfel.core.monad.Applicative"><code>Applicative</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.core.monad.Monad"><code>Monad</code></a>.</p>
 <h2 id="apfel.core.monad--rationale">Rationale<a class="headerlink" href="#apfel.core.monad--rationale" title="Permanent link">#</a></h2>
-<p>Monadic abstractions like <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Data-Functor.html"><code>Functor</code></a>, <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Control-Applicative.html"><code>Applicative</code></a>, and <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Control-Monad.html"><code>Monad</code></a> are popularized by Haskell.
+<p>Monadic abstractions like <a href="https://hackage.haskell.org/package/base/docs/Data-Functor.html">:haskell <code>Functor</code></a>, <a href="https://hackage.haskell.org/package/base/docs/Control-Applicative.html">:haskell <code>Applicative</code></a>, and <a href="https://hackage.haskell.org/package/base/docs/Control-Monad.html">:haskell <code>Monad</code></a> are popularized by Haskell.
 Although Python has weak support for functional programming, we include these abstractions to provide a uniform interface for such calculations.</p>
-<p>Under the hood, these abstractions use dynamic single dispatch provided in <a href="../dispatch/"><code>apfel.core.dispatch</code></a>, which
+<p>Under the hood, these abstractions use dynamic single dispatch provided in <a href="dispatch"><code>apfel.core.dispatch</code></a>, which
 allows us to define monadic helper functions for standard built-in types.
 This module provides default implementations for <code>list</code>, <code>tuple</code>, <code>set</code>, and <code>function</code> as <code>Functor</code>, <code>Applicative</code>, and <code>Monad</code>, <code>dict</code> as <code>Functor</code>.</p>
 <p>Note that we losen the constraints of such abstractions, as writing pure functional code is not a goal of this library.</p>
@@ -1405,25 +1405,27 @@ This module provides default implementations for <code>list</code>, <code>tuple<
 <p>Here's a high-level comparison of the three.
 Assume <code>Value</code> is a <code>Monad</code>.
 <strong>A <code>Monad</code> is always a <code>Functor</code> and an <code>Applicative</code>.</strong></p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">value</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">map</span>  <span class="p">(</span>      <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span> <span class="p">)</span> <span class="o">==</span> <span class="n">Value</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>
-<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">Value</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="n">Value</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>
-<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">value</span><span class="o">.</span><span class="n">bind</span> <span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">Value</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">==</span> <span class="n">Value</span><span class="p">(</span><span class="mi">43</span><span class="p">)</span>
-</code></pre></div>
+<pre><code class="language-python">
+value = Value(42)
+
+assert value.map  (      lambda x: x + 1 ) == Value(43)
+assert value.apply(Value(lambda x: x + 1)) == Value(43)
+assert value.bind (lambda x: Value(x + 1)) == Value(43)
+
+</code></pre>
 <p>If you are familiar with Rust,
-<a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a> is a <code>Monad</code>,
-<a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map"><code>Option.map</code></a> is its <code>Functor.map</code>,
-<a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then"><code>Option.and_then</code></a> is its <code>Monad.bind</code>.</p>
+<a href="https://doc.rust-lang.org/std/option/enum.Option.html">:rust <code>Option</code></a> is a <code>Monad</code>,
+<a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.map">:rust <code>Option.map</code></a> is its <code>Functor.map</code>,
+<a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then">:rust <code>Option.and_then</code></a> is its <code>Monad.bind</code>.</p>
 <h3 id="apfel.core.monad--case-list">Case: <code>list</code><a class="headerlink" href="#apfel.core.monad--case-list" title="Permanent link">#</a></h3>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">assert</span> <span class="n">Functor</span><span class="o">.</span><span class="n">map</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="k">assert</span> <span class="n">Applicative</span><span class="o">.</span><span class="n">apply</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="p">[</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">]</span>
-<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a><span class="k">assert</span> <span class="n">Monad</span><span class="o">.</span><span class="n">bind</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
-</code></pre></div>
+<pre><code class="language-python">assert Functor.map([1, 2, 3], lambda x: x + 1) == [2, 3, 4]
+assert Applicative.apply([1, 2, 3], [lambda x: x + 1, lambda x: x + 2]) == [2, 3, 4, 3, 4, 5]
+assert Monad.bind([1, 2, 3], lambda x: [x, x + 1]) == [1, 2, 2, 3, 3, 4]
+</code></pre>
 <h3 id="apfel.core.monad--case-function">Case: <code>function</code><a class="headerlink" href="#apfel.core.monad--case-function" title="Permanent link">#</a></h3>
 <p><code>Functor.map</code> of a function is exactly a composition of functions.</p>
-<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">assert</span> <span class="n">Functor</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)(</span><span class="mi">2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
-</code></pre></div>
+<pre><code class="language-python">assert Functor.map(lambda x: x * 2, lambda x: x + 1)(2) == 5
+</code></pre>
 
 
 
@@ -1457,13 +1459,13 @@ Assume <code>Value</code> is a <code>Monad</code>.
 
 
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Functor</span><span class="p">[</span><span class="n">T</span><span class="p">](</span><span class="n">ABC</span><span class="p">):</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="nb">map</span>
-</code></pre></div>
+        <pre><code class="language-python">class Functor[T](ABC):
+    map
+</code></pre>
 <p>A <a href="https://en.wikipedia.org/wiki/Functor">functor</a> is a type that can apply
 a function to its inner value(s) without changing its structure.</p>
 <p>To implement a <code>Functor</code>, you need to implement at least the <code>map</code> method.</p>
-<p>See <a class="ref hs" href="https://wiki.haskell.org/Functor">Functor</a> for more information.</p>
+<p>See <a href="https://wiki.haskell.org/Functor">:haskell Functor</a> for more information.</p>
 
 
 
@@ -1498,22 +1500,22 @@ a function to its inner value(s) without changing its structure.</p>
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">map</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">where</span> <span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]</span>
-</code></pre></div>
+        <pre><code class="language-python">def map[F, R](self, func: F, /) -&gt; Self[R]
+    where F: Callable[[T], R]
+</code></pre>
 <p>Apply a function to the inner value(s) of the functor, returning a new 
 instance of the functor.
-This corresponds to the <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:fmap"><code>fmap</code></a> in Haskell.</p>
-<p>Built-in <a class="ref py" href="https://docs.python.org/3/library/functions.html#map"><code>map</code></a> function
+This corresponds to the <a href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:fmap">:haskell <code>fmap</code></a> in Haskell.</p>
+<p>Built-in <a href="https://docs.python.org/3/library/functions.html#map">:python <code>map</code></a> function
 returns an iterator, not a new instance of the functor.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">add</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">+</span> <span class="mi">1</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">Functor</span><span class="o">.</span><span class="n">map</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">add</span><span class="p">)</span> <span class="c1"># [2, 3, 4]</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nb">map</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">add</span><span class="p">)</span>         <span class="c1"># &lt;map object at ...&gt;</span>
-</code></pre></div>
+  <pre><code class="language-python">add = lambda x: x + 1
+Functor.map([1, 2, 3], add) # [2, 3, 4]
+map([1, 2, 3], add)         # &lt;map object at ...&gt;
+</code></pre>
 </details>
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -1603,14 +1605,14 @@ returns an iterator, not a new instance of the functor.</p>
 
 
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Applicative</span><span class="p">[</span><span class="n">T</span><span class="p">](</span><span class="n">Functor</span><span class="p">):</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">pure</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="n">apply</span>
-</code></pre></div>
+        <pre><code class="language-python">class Applicative[T](Functor):
+    pure
+    apply
+</code></pre>
 <p>An <a href="https://en.wikipedia.org/wiki/Applicative_functor">applicative functor</a> is a functor
 extended with the ability to apply an effectful function to its inner value(s).</p>
 <p>To implement an <code>Applicative</code>, you need to implement at least the <code>pure</code> and <code>apply</code> methods.</p>
-<p>See <a class="ref hs" href="https://wiki.haskell.org/Applicative">Applicative</a> for more information.</p>
+<p>See <a href="https://wiki.haskell.org/Applicative">:haskell Applicative</a> for more information.</p>
 
 
 
@@ -1645,9 +1647,9 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">apply</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">where</span> <span class="n">F</span><span class="p">:</span> <span class="n">Self</span><span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">R</span><span class="p">]]</span>
-</code></pre></div>
+        <pre><code class="language-python">def apply[F, R](self, func: F) -&gt; Self[R]
+    where F: Self[Callable[[T], R]]
+</code></pre>
 <p>Applies a function wrapped inside the applicative structure to the inner value(s) of this applicative.</p>
 
 
@@ -1730,8 +1732,8 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">pure</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="n">T</span><span class="p">,</span> <span class="o">/</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">T</span><span class="p">]</span>
-</code></pre></div>
+        <pre><code class="language-python">def pure(cls, value: T, /) -&gt; Self[T]
+</code></pre>
 <p>Wrap a value into the applicative structure.</p>
 
 
@@ -1822,10 +1824,10 @@ extended with the ability to apply an effectful function to its inner value(s).<
 
 
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Monad</span><span class="p">[</span><span class="n">T</span><span class="p">](</span><span class="n">Applicative</span><span class="p">):</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">bind</span>
-<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="p">(</span><span class="n">Applicative</span><span class="o">.</span><span class="n">pure</span><span class="p">)</span>
-</code></pre></div>
+        <pre><code class="language-python">class Monad[T](Applicative):
+    bind
+    (Applicative.pure)
+</code></pre>
 <p>A <a href="https://en.wikipedia.org/wiki/Monad_(functional_programming)">monad</a> is an applicative
 functor extended with the ability to reuse results of previous computations and chain
 effectful computations together.</p>
@@ -1836,13 +1838,13 @@ the <a class="autorefs autorefs-internal" title="pure(value)
       abstractmethod
       classmethod
   " href="#apfel.core.monad.Applicative.pure"><code>pure</code></a> method from <code>Applicative</code>.</p>
-<p>See <a class="ref hs" href="https://wiki.haskell.org/Monad">Monad</a> for more information.</p>
+<p>See <a href="https://wiki.haskell.org/Monad">:haskell Monad</a> for more information.</p>
 
 
 <details class="notes" open>
   <summary>Notes</summary>
-  <p><code>return</code> is a reserved keyword in Python, and Haskell <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:return"><code>return</code></a> is a historical mistake that is now
-pointing to <a class="ref hs" href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:pure"><code>pure</code></a>.</p>
+  <p><code>return</code> is a reserved keyword in Python, and Haskell <a href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:return">:haskell <code>return</code></a> is a historical mistake that is now
+pointing to <a href="https://hackage.haskell.org/package/base/docs/Prelude.html#v:pure">:haskell <code>pure</code></a>.</p>
 </details>
 
 
@@ -1877,16 +1879,16 @@ pointing to <a class="ref hs" href="https://hackage.haskell.org/package/base/doc
 
     <div class="doc doc-contents ">
 
-        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">def</span><span class="w"> </span><span class="nf">bind</span><span class="p">[</span><span class="n">F</span><span class="p">,</span> <span class="n">R</span><span class="p">](</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">:</span> <span class="n">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]</span>
-<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="n">where</span> <span class="n">F</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">T</span><span class="p">],</span> <span class="n">Self</span><span class="p">[</span><span class="n">R</span><span class="p">]]</span>
-</code></pre></div>
+        <pre><code class="language-python">def bind[F, R](self, func: F) -&gt; Self[R]
+    where F: Callable[[T], Self[R]]
+</code></pre>
 <p>Chain a new monadic computation to the current one.</p>
 <p>The argument <code>f</code> maps a pure value of the monad's inner type to the monadic value.
 <code>bind</code> chains this computation to the one it represents.
 If its computation fails, the following computations will not be executed.</p>
 <p>The function <code>f</code> is called a <a href="https://en.wikipedia.org/wiki/Kleisli_category">Kleisli arrow</a>.
 This <code>bind</code> operation has other names in different programming languages.
-For example, in <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html"><code>Option</code></a> monad, it is called <a class="ref rs" href="https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then"><code>and_then</code></a>.</p>
+For example, in <a href="https://doc.rust-lang.org/std/option/enum.Option.html">:rust <code>Option</code></a> monad, it is called <a href="https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then">:rust <code>and_then</code></a>.</p>
 
 
 <p><span class="doc-section-title">Parameters:</span></p>
@@ -2051,6 +2053,8 @@ For example, in <a class="ref rs" href="https://doc.rust-lang.org/std/option/enu
     
     
       <script src="../../assets/javascripts/bundle.79ae519e.min.js"></script>
+      
+        <script src="../../javascripts/extra.js"></script>
       
     
   </body>
