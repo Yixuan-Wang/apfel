@@ -1929,7 +1929,7 @@
   and <code>Err</code> means a failure value is present.</p>
 <p>This module also provides a <a class="autorefs autorefs-internal" href="#apfel.container.result.caught"><code>caught</code></a> decorator, which wraps a partial function to a total function returning a <code>Result</code>.</p>
 <p>The <a class="autorefs autorefs-internal" href="#apfel.container.result.Result"><code>Result</code></a> class, and the <a class="autorefs autorefs-internal" href="#apfel.container.result.ok"><code>ok</code></a>, <a class="autorefs autorefs-internal" href="#apfel.container.result.err"><code>err</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.container.result.caught"><code>caught</code></a> functions
-  are exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+  are exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 <h3 id="apfel.container.result--rationale">Rationale<a class="headerlink" href="#apfel.container.result--rationale" title="Permanent link">#</a></h3>
 <p>Python <a href="https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement">:python <code>raise</code></a>
   is easily missed, since the gradual typing system does not support checked exceptions.
@@ -2135,7 +2135,7 @@ and the comparison table is provided below.</p>
 
         <p>A container that holds either a success or a failure.
 See <a href="result#result">module-level documentation</a> for more details.</p>
-<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<p>This class is exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 
 
 
@@ -2706,11 +2706,11 @@ Alias of <a class="autorefs autorefs-internal" title="and_then(func)" href="#apf
         <p>Call a function with the contained <code>Ok</code> value if it exists.</p>
 <p>Unlike <a href="https://doc.rust-lang.org/std/result/enum.Result.html#method.inspect">:rust <code>Result::inspect</code></a>,
 this method does not require the function to return <code>None</code>.</p>
-<pre><code class="language-python">some_ok = ok(5)
-some_err = err(&quot;error&quot;)
-some_ok.tap(print)  # prints: 5
-some_err.tap(print)  # prints nothing
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_ok</span> <span class="o">=</span> <span class="n">ok</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">some_err</span> <span class="o">=</span> <span class="n">err</span><span class="p">(</span><span class="s2">&quot;error&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">some_ok</span><span class="o">.</span><span class="n">tap</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>  <span class="c1"># prints: 5</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">some_err</span><span class="o">.</span><span class="n">tap</span><span class="p">(</span><span class="nb">print</span><span class="p">)</span>  <span class="c1"># prints nothing</span>
+</code></pre></div>
 
 
     </div>
@@ -2955,17 +2955,17 @@ some_err.tap(print)  # prints nothing
 
 
         <p>Construct an <code>Ok</code> value.</p>
-<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
-<pre><code class="language-python">some_ok = ok(42)
-
-match some_ok:
-    case ok(value):
-        print(f&quot;Got an Ok with value: {value}&quot;)
-    case err(error):
-        print(f&quot;Got an Err with error: {error}&quot;)
-
-# Output: Got an Ok with value: 42
-</code></pre>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_ok</span> <span class="o">=</span> <span class="n">ok</span><span class="p">(</span><span class="mi">42</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">match</span> <span class="n">some_ok</span><span class="p">:</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">case</span> <span class="n">ok</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Ok with value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">case</span> <span class="n">err</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Err with error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># Output: Got an Ok with value: 42</span>
+</code></pre></div>
 
 
 
@@ -3010,16 +3010,16 @@ match some_ok:
 
 
         <p>Construct an <code>Err</code> value.</p>
-<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
-<pre><code class="language-python">some_err = err(&quot;Something went wrong&quot;)
-match some_err:
-    case ok(value):
-        print(f&quot;Got an Ok with value: {value}&quot;)
-    case err(error):
-        print(f&quot;Got an Err with error: {error}&quot;)
-
-# Output: Got an Err with error: Something went wrong
-</code></pre>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">some_err</span> <span class="o">=</span> <span class="n">err</span><span class="p">(</span><span class="s2">&quot;Something went wrong&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">match</span> <span class="n">some_err</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">case</span> <span class="n">ok</span><span class="p">(</span><span class="n">value</span><span class="p">):</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Ok with value: </span><span class="si">{</span><span class="n">value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">case</span> <span class="n">err</span><span class="p">(</span><span class="n">error</span><span class="p">):</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Got an Err with error: </span><span class="si">{</span><span class="n">error</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="c1"># Output: Got an Err with error: Something went wrong</span>
+</code></pre></div>
 
 
 
@@ -3072,18 +3072,18 @@ match some_err:
 <li>Use as a higher-order function with specific exception types as args (<code>caught(func, ExceptionA, ExceptionB)</code>) to catch only those exceptions.</li>
 <li>Use generic syntax to provide type hints (<code>@caught[ExceptionA]</code>, <code>@caught[ExceptionA]()</code>, <code>caught[ExceptionA]()</code>), <em>without affecting runtime behavior</em>.</li>
 </ul>
-<p>This function is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<p>This function is exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 
 
 <details class="usage" open>
   <summary>Usage</summary>
-  <pre><code class="language-python">@caught(ZeroDivisionError)
-def divide(a: float, b: float) -&gt; float:
-    return a / b
-
-divide(4, 2)  # Ok(2.0)
-divide(4, 0)  # Err(ZeroDivisionError)
-</code></pre>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@caught</span><span class="p">(</span><span class="ne">ZeroDivisionError</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">divide</span><span class="p">(</span><span class="n">a</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span> <span class="n">b</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="n">a</span> <span class="o">/</span> <span class="n">b</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">divide</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1"># Ok(2.0)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">divide</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>  <span class="c1"># Err(ZeroDivisionError)</span>
+</code></pre></div>
 </details>
 
 

@@ -1951,7 +1951,7 @@ It provides a large number of methods that are commonly found in Rust <a href="h
 <li>Use <a class="autorefs autorefs-internal" title="itrt(iterable)" href="#apfel.core.iter.itrt"><code>itrt</code></a> to wrap any iterable or Python vanilla iterator,</li>
 <li>Use <code>Iterator</code> methods directly on any Python vanilla iterator.</li>
 </ul>
-<p><a class="autorefs autorefs-internal" href="#apfel.core.iter.Iterator"><code>Iterator</code></a> and <a class="autorefs autorefs-internal" title="itrt(iterable)" href="#apfel.core.iter.itrt"><code>itrt</code></a> are are exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<p><a class="autorefs autorefs-internal" href="#apfel.core.iter.Iterator"><code>Iterator</code></a> and <a class="autorefs autorefs-internal" title="itrt(iterable)" href="#apfel.core.iter.itrt"><code>itrt</code></a> are are exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 <h2 id="apfel.core.iter--implementation">Implementation<a class="headerlink" href="#apfel.core.iter--implementation" title="Permanent link">#</a></h2>
 <p>Iterators have a large number of methods. Missing methods will be added gradually over time.</p>
 
@@ -2510,9 +2510,9 @@ Standalone <code>itertools</code> functions can still be used through <a class="
 
 
 
-        <pre><code class="language-python">class Iterator[I](ABC):
-    __next__
-</code></pre>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">class</span><span class="w"> </span><span class="nc">Iterator</span><span class="p">[</span><span class="n">I</span><span class="p">](</span><span class="n">ABC</span><span class="p">):</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>    <span class="fm">__next__</span>
+</code></pre></div>
 <p>The interface for an iterator.
 See module level documentation for more information.</p>
 
@@ -2552,17 +2552,17 @@ See module level documentation for more information.</p>
         <p>Return the next item of the iterator.
 If the iterator is exhausted, raise <code>StopIteration</code>.</p>
 <p>Any implementor of <a href="https://docs.python.org/3/library/collections.abc.html#collections.abc.Iterator">:python <code>collections.abc.Iterator</code></a> should be directly compatible with this interface.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-assert next(iterator) == 1
-assert next(iterator) == 2
-assert next(iterator) == 3
-
-try:
-    next(iterator)
-except StopIteration:
-    # Iterator is exhausted
-    pass
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="nb">next</span><span class="p">(</span><span class="n">iterator</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">except</span> <span class="ne">StopIteration</span><span class="p">:</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="c1"># Iterator is exhausted</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a>    <span class="k">pass</span>
+</code></pre></div>
 
 
     </div>
@@ -2597,14 +2597,14 @@ this method enforces an explicit initial state and binary function;
 it also <em>does not</em> yield the initial state before consuming any element.
 This is also consistent with the <a href="https://numpy.org/doc/stable/reference/generated/numpy.ufunc.accumulate.html#numpy.ufunc.accumulate">:python <code>numpy.ufunc.accumulate</code></a> behavior.
 Also check <a class="autorefs autorefs-internal" title="scan(state, func)" href="#apfel.core.iter.Iterator.scan"><code>Iterator.scan</code></a> for a method that provides more generalized state control.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4])
-result = iterator.accumulate(0, lambda acc, x: acc + x)
-assert result.next().unwrap() == 1
-assert result.next().unwrap() == 3
-assert result.next().unwrap() == 6
-assert result.next().unwrap() == 10
-assert result.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">accumulate</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -2635,11 +2635,11 @@ assert result.next().is_nothing()
 If the iterator is exhausted before advancing <code>n</code> steps,
 return an <code>Err</code> containing the number of remaining steps.
 Otherwise, return <code>Ok(())</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-assert iterator.advance_by(2).is_ok()
-assert iterator.next().unwrap() == 3
-assert iterator.advance_by(6).unwrap_err() == 4
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">advance_by</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">is_ok</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">advance_by</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap_err</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+</code></pre></div>
 
 
     </div>
@@ -2670,14 +2670,14 @@ assert iterator.advance_by(6).unwrap_err() == 4
 Otherwise, returns <code>False</code>.</p>
 <p>The iteration short-circuits if an element is found that does not satisfy the predicate.
 An empty iterator returns <code>True</code>.</p>
-<pre><code class="language-python">iterator = itrt([2, 4, 6])
-assert iterator.all(lambda x: x % 2 == 0)
-assert iterator.next().is_nothing()
-
-iterator = itrt([2, 3, 6])
-assert not iterator.all(lambda x: x % 2 == 0)
-assert iterator.next().unwrap() == 6
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="ow">not</span> <span class="n">iterator</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+</code></pre></div>
 
 
     </div>
@@ -2708,14 +2708,14 @@ assert iterator.next().unwrap() == 6
 Otherwise, returns <code>False</code>.</p>
 <p>The iteration short-circuits if an element is found that satisfies the predicate.
 An empty iterator returns <code>False</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 3, 5])
-assert not iterator.any(lambda x: x % 2 == 0)
-assert iterator.next().is_nothing()
-
-iterator = itrt([1, 2, 3])
-assert iterator.any(lambda x: x % 2 == 0)
-assert iterator.next().unwrap() == 3
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="ow">not</span> <span class="n">iterator</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+</code></pre></div>
 
 
     </div>
@@ -2744,21 +2744,21 @@ assert iterator.next().unwrap() == 3
 
         <p>Creates a new iterator that yields elements from this iterator until it is exhausted,
 then yields elements from the <code>other</code> iterator.</p>
-<pre><code class="language-python">iterator1 = itrt([1, 2])
-iterator2 = itrt([3, 4])
-iterator3 = itrt([5, 6])
-chained_iterator = iterator1.chain(iterator2, iterator3)
-
-assert chained_iterator.next().unwrap() == 1
-assert chained_iterator.next().unwrap() == 2
-assert iterator1.next().is_nothing()  # original iterator1 is also exhausted
-assert chained_iterator.next().unwrap() == 3
-assert chained_iterator.next().unwrap() == 4
-assert iterator2.next().is_nothing()  # original iterator2 is also exhausted
-assert chained_iterator.next().unwrap() == 5
-assert chained_iterator.next().unwrap() == 6
-assert chained_iterator.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator1</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">iterator2</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">iterator3</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="n">chained_iterator</span> <span class="o">=</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">chain</span><span class="p">(</span><span class="n">iterator2</span><span class="p">,</span> <span class="n">iterator3</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># original iterator1 is also exhausted</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="n">iterator2</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># original iterator2 is also exhausted</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">assert</span> <span class="n">chained_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -2786,9 +2786,9 @@ assert chained_iterator.next().is_nothing()
     <div class="doc doc-contents ">
 
         <p>Counts the number of elements in the iterator, until it is exhausted.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-assert iterator.count() == 5
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">count</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+</code></pre></div>
 
 
     </div>
@@ -2848,13 +2848,13 @@ where index starts from 0 or the specified <code>init</code> value.</p>
           </tr>
       </tbody>
     </table>
-        <pre><code class="language-python">iterator = itrt(['a', 'b', 'c'])
-enumerated_iterator = iterator.enumerate()
-assert enumerated_iterator.next().unwrap() == (0, 'a')
-assert enumerated_iterator.next().unwrap() == (1, 'b')
-assert enumerated_iterator.next().unwrap() == (2, 'c')
-assert enumerated_iterator.next().is_nothing()
-</code></pre>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">enumerated_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">enumerate</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">enumerated_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">enumerated_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">enumerated_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">enumerated_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -2883,18 +2883,18 @@ assert enumerated_iterator.next().is_nothing()
     <div class="doc doc-contents ">
 
         <p>Checks if two iterators are equal by comparing their elements pairwise.</p>
-<pre><code class="language-python">iterator1 = itrt([1, 2, 3])
-iterator2 = itrt([1, 2, 3])
-assert iterator1.eq(iterator2)
-
-iterator1 = itrt([1, 2, 3])
-iterator3 = itrt([1, 2, 4])
-assert not iterator1.eq(iterator3)
-
-iterator1 = itrt([1, 2, 3])
-iterator4 = itrt([1, 2])
-assert not iterator1.eq(iterator4)
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator1</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">iterator2</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">iterator2</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator1</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">iterator3</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="ow">not</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">iterator3</span><span class="p">)</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">iterator1</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">iterator4</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="ow">not</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">eq</span><span class="p">(</span><span class="n">iterator4</span><span class="p">)</span>
+</code></pre></div>
 
 
     </div>
@@ -2923,13 +2923,13 @@ assert not iterator1.eq(iterator4)
 
         <p>Creates a new iterator that yields only the elements of the original iterator
 that satisfy the predicate <code>pred</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-filtered_iterator = iterator.filter(lambda x: x % 2 == 0)
-assert filtered_iterator.next().unwrap() == 2
-assert filtered_iterator.next().unwrap() == 4
-assert filtered_iterator.next().is_nothing()
-assert iterator.next().is_nothing()  # original iterator is also exhausted
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">filtered_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">filtered_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">filtered_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">filtered_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># original iterator is also exhausted</span>
+</code></pre></div>
 
 
     </div>
@@ -2958,20 +2958,20 @@ assert iterator.next().is_nothing()  # original iterator is also exhausted
 
         <p>Creates a new iterator that applies <code>pred</code> to each element and yields the unwrapped
 value for each result that is a <a class="autorefs autorefs-internal" title="Maybe" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Just</code></a>, skipping <code>Nothing</code>.</p>
-<pre><code class="language-python">from apfel.container.maybe import Maybe
-
-def try_parse(s):
-    try:
-        return Maybe.make_just(int(s))
-    except ValueError:
-        return Maybe.make_nothing()
-
-iterator = itrt([&quot;1&quot;, &quot;two&quot;, &quot;3&quot;, &quot;four&quot;])
-filtered = iterator.filter_map(try_parse)
-assert filtered.next().unwrap() == 1
-assert filtered.next().unwrap() == 3
-assert filtered.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.container.maybe</span><span class="w"> </span><span class="kn">import</span> <span class="n">Maybe</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">try_parse</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="k">return</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">make_just</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>        <span class="k">return</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">make_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="s2">&quot;1&quot;</span><span class="p">,</span> <span class="s2">&quot;two&quot;</span><span class="p">,</span> <span class="s2">&quot;3&quot;</span><span class="p">,</span> <span class="s2">&quot;four&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">filtered</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">filter_map</span><span class="p">(</span><span class="n">try_parse</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="n">filtered</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">assert</span> <span class="n">filtered</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">assert</span> <span class="n">filtered</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3001,12 +3001,12 @@ assert filtered.next().is_nothing()
         <p>Returns the first element in the iterator that satisfies the predicate <code>f</code>,
 wrapped in a <a class="autorefs autorefs-internal" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Maybe</code></a>.
 If no such element is found, returns <code>Nothing</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-assert iterator.find(lambda x: x % 2 == 0).unwrap() == 2
-assert iterator.find(lambda x: x &lt;= 3).unwrap() == 3  # 1, 2 have been consumed
-assert iterator.find(lambda x: x &gt; 10).is_nothing()  # no such element exists
-assert iterator.next().is_nothing()  # iterator is exhausted
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;=</span> <span class="mi">3</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>  <span class="c1"># 1, 2 have been consumed</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># no such element exists</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># iterator is exhausted</span>
+</code></pre></div>
 
 
     </div>
@@ -3036,17 +3036,17 @@ assert iterator.next().is_nothing()  # iterator is exhausted
         <p>Applies the function <code>pred</code> to each element of the iterator and returns the first
 result that is a <a class="autorefs autorefs-internal" title="Maybe" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Just</code></a>, unwrapped.
 If no element produces a <code>Just</code>, returns <code>Nothing</code>.</p>
-<pre><code class="language-python">from apfel import Maybe
-
-iterator = itrt([&quot;lol&quot;, &quot;NaN&quot;, &quot;2&quot;, &quot;5&quot;])
-def try_parse(s):
-    try:
-        return Maybe.make_just(int(s))
-    except ValueError:
-        return Maybe.make_nothing()
-
-assert iterator.find_map(try_parse).unwrap() == 2
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel</span><span class="w"> </span><span class="kn">import</span> <span class="n">Maybe</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="s2">&quot;lol&quot;</span><span class="p">,</span> <span class="s2">&quot;NaN&quot;</span><span class="p">,</span> <span class="s2">&quot;2&quot;</span><span class="p">,</span> <span class="s2">&quot;5&quot;</span><span class="p">])</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">try_parse</span><span class="p">(</span><span class="n">s</span><span class="p">):</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="k">try</span><span class="p">:</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>        <span class="k">return</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">make_just</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">))</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>    <span class="k">except</span> <span class="ne">ValueError</span><span class="p">:</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>        <span class="k">return</span> <span class="n">Maybe</span><span class="o">.</span><span class="n">make_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">find_map</span><span class="p">(</span><span class="n">try_parse</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+</code></pre></div>
 
 
     </div>
@@ -3075,16 +3075,16 @@ assert iterator.find_map(try_parse).unwrap() == 2
 
         <p>Creates a new iterator that applies <code>func</code> to each element and flattens the results.
 Equivalent to <code>.map(func).flatten()</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-result = iterator.flat_map(lambda x: itrt([x, x * 10]))
-assert result.next().unwrap() == 1
-assert result.next().unwrap() == 10
-assert result.next().unwrap() == 2
-assert result.next().unwrap() == 20
-assert result.next().unwrap() == 3
-assert result.next().unwrap() == 30
-assert result.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">flat_map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">itrt</span><span class="p">([</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">10</span><span class="p">]))</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">10</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">20</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">30</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3114,16 +3114,16 @@ assert result.next().is_nothing()
 
         <p>Flattens an iterable of iterators into a single iterator by yielding all elements
 from each inner iterator in sequence.</p>
-<pre><code class="language-python">iterator = itrt([itrt([1, 2]), itrt([3, 4]), itrt([5])])
-flattened_iterator = iterator.flatten()
-assert flattened_iterator.next().unwrap() == 1
-assert flattened_iterator.next().unwrap() == 2
-assert flattened_iterator.next().unwrap() == 3
-assert flattened_iterator.next().unwrap() == 4
-assert flattened_iterator.next().unwrap() == 5
-assert flattened_iterator.next().is_nothing()
-assert iterator.next().is_nothing()  # original iterator is also exhausted
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]),</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">]),</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">5</span><span class="p">])])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">flattened_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">flattened_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">flattened_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">flattened_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">flattened_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">flattened_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">flattened_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># original iterator is also exhausted</span>
+</code></pre></div>
 
 
     </div>
@@ -3159,14 +3159,14 @@ starting with the initial value <code>init</code>.</p>
   <summary>Tip</summary>
   <p>The default implementation of this method uses <a href="https://docs.python.org/3/library/functools.html#functools.reduce">:python <code>functools.reduce</code></a>
 under the hood, but allows keyword arguments for both <code>init</code> and <code>func</code>.</p>
-</details>        <pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-result = iterator.fold(0, lambda acc, x: acc + x)
-assert result == 15  # 0 + 1 + 2 + 3 + 4 + 5
-
-iterator = itrt([])
-result = iterator.fold(10, lambda acc, x: acc + x)
-assert result == 10  # initial value only
-</code></pre>
+</details>        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">15</span>  <span class="c1"># 0 + 1 + 2 + 3 + 4 + 5</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">fold</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">10</span>  <span class="c1"># initial value only</span>
+</code></pre></div>
 
 
     </div>
@@ -3196,10 +3196,10 @@ assert result == 10  # initial value only
         <p>Applies the function <code>func</code> to each element of the iterator.
 Compare to <a class="autorefs autorefs-internal" title="map(func)" href="#apfel.core.iter.Iterator.map"><code>map</code></a>, the result of each function application is discarded,
   and the iterator is consumed eagerly.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-iterator.for_each(lambda x: print(x, end=&quot; &quot;))
-# Output: 1 2 3
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">iterator</span><span class="o">.</span><span class="n">for_each</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">end</span><span class="o">=</span><span class="s2">&quot; &quot;</span><span class="p">))</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="c1"># Output: 1 2 3</span>
+</code></pre></div>
 
 
     </div>
@@ -3224,9 +3224,9 @@ iterator.for_each(lambda x: print(x, end=&quot; &quot;))
 
         <p>Hints the type of items in the iterator for better type inference.
 This method does not affect runtime behavior.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3]).hint(int)
-assert iterator.next().unwrap() == 1
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span><span class="o">.</span><span class="n">hint</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+</code></pre></div>
 
 
     </div>
@@ -3254,18 +3254,18 @@ assert iterator.next().unwrap() == 1
     <div class="doc doc-contents ">
 
         <p>Creates a new iterator that places <code>separator</code> between adjacent elements.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-result = iterator.intersperse(0)
-assert result.next().unwrap() == 1
-assert result.next().unwrap() == 0
-assert result.next().unwrap() == 2
-assert result.next().unwrap() == 0
-assert result.next().unwrap() == 3
-assert result.next().is_nothing()
-
-assert itrt([]).intersperse(0).next().is_nothing()
-assert itrt([1]).intersperse(0).next().unwrap() == 1
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">intersperse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">assert</span> <span class="n">itrt</span><span class="p">([])</span><span class="o">.</span><span class="n">intersperse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">])</span><span class="o">.</span><span class="n">intersperse</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+</code></pre></div>
 
 
     </div>
@@ -3294,23 +3294,23 @@ assert itrt([1]).intersperse(0).next().unwrap() == 1
 
         <p>Creates a new iterator that places the value returned by <code>sep_fn</code> between adjacent elements.
 <code>sep_fn</code> is called once for each separator inserted.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-result = iterator.intersperse_with(lambda: 0)
-assert result.next().unwrap() == 1
-assert result.next().unwrap() == 0
-assert result.next().unwrap() == 2
-assert result.next().unwrap() == 0
-assert result.next().unwrap() == 3
-assert result.next().is_nothing()
-
-n = 0
-def counter():
-    nonlocal n
-    n += 1
-    return n
-result = itrt(['a', 'b', 'c']).intersperse_with(counter)
-assert list(result) == ['a', 1, 'b', 2, 'c']
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">intersperse_with</span><span class="p">(</span><span class="k">lambda</span><span class="p">:</span> <span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">0</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">n</span> <span class="o">=</span> <span class="mi">0</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">def</span><span class="w"> </span><span class="nf">counter</span><span class="p">():</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>    <span class="k">nonlocal</span> <span class="n">n</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a>    <span class="n">n</span> <span class="o">+=</span> <span class="mi">1</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a>    <span class="k">return</span> <span class="n">n</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="n">result</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">])</span><span class="o">.</span><span class="n">intersperse_with</span><span class="p">(</span><span class="n">counter</span><span class="p">)</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a><span class="k">assert</span> <span class="nb">list</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;c&#39;</span><span class="p">]</span>
+</code></pre></div>
 
 
     </div>
@@ -3339,13 +3339,13 @@ assert list(result) == ['a', 1, 'b', 2, 'c']
 
         <p>Returns the last element of the iterator, wrapped in a <a class="autorefs autorefs-internal" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Maybe</code></a>.
 If the iterator is empty, returns <code>Nothing</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-assert iterator.last().unwrap() == 5
-assert iterator.next().is_nothing()  # iterator is exhausted
-
-iterator = itrt([])
-assert iterator.last().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">last</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># iterator is exhausted</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">last</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3373,14 +3373,14 @@ assert iterator.last().is_nothing()
     <div class="doc doc-contents ">
 
         <p>Creates a new iterator that applies the function <code>func</code> to each element of the original iterator.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-mapped_iterator = iterator.map(lambda x: x * 2)
-assert mapped_iterator.next().unwrap() == 2
-assert mapped_iterator.next().unwrap() == 4
-assert mapped_iterator.next().unwrap() == 6
-assert mapped_iterator.next().is_nothing()
-assert iterator.next().is_nothing()  # original iterator is also exhausted
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">mapped_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">mapped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">mapped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">mapped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">mapped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># original iterator is also exhausted</span>
+</code></pre></div>
 
 
     </div>
@@ -3410,20 +3410,20 @@ assert iterator.next().is_nothing()  # original iterator is also exhausted
         <p>Creates a new iterator that applies <code>pred</code> to each element and yields the unwrapped
 value while the result is a <a class="autorefs autorefs-internal" title="Maybe" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Just</code></a>.
 Once <code>pred</code> returns <code>Nothing</code>, iteration stops immediately.</p>
-<pre><code class="language-python">from apfel.container.maybe import just, nothing
-
-def checked_double(x):
-    if x &lt; 4:
-        return just(x * 2)
-    return nothing()
-
-iterator = itrt([1, 2, 3, 4, 5])
-result = iterator.map_while(checked_double)
-assert result.next().unwrap() == 2
-assert result.next().unwrap() == 4
-assert result.next().unwrap() == 6
-assert result.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.container.maybe</span><span class="w"> </span><span class="kn">import</span> <span class="n">just</span><span class="p">,</span> <span class="n">nothing</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">def</span><span class="w"> </span><span class="nf">checked_double</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>    <span class="k">if</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">:</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>        <span class="k">return</span> <span class="n">just</span><span class="p">(</span><span class="n">x</span> <span class="o">*</span> <span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">return</span> <span class="n">nothing</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">map_while</span><span class="p">(</span><span class="n">checked_double</span><span class="p">)</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">6</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3451,12 +3451,12 @@ assert result.next().is_nothing()
     <div class="doc doc-contents ">
 
         <p>Return the next item of the iterator, wrapped in a <a class="autorefs autorefs-internal" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Maybe</code></a>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3])
-assert iterator.next().unwrap() == 1
-assert iterator.next().unwrap() == 2
-assert iterator.next().unwrap() == 3
-assert iterator.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3490,13 +3490,13 @@ If the iterator has fewer than <code>n + 1</code> elements, returns <code>Nothin
 <details class="note" open>
   <summary>Note</summary>
   <p>This method consumes the first <code>n + 1</code> elements of the iterator.</p>
-</details>        <pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-assert iterator.nth(2).unwrap() == 3  # gets index 2 (third element)
-assert iterator.next().unwrap() == 4  # continues from after nth element
-
-iterator = itrt([1, 2])
-assert iterator.nth(5).is_nothing()  # not enough elements
-</code></pre>
+</details>        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>  <span class="c1"># gets index 2 (third element)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>  <span class="c1"># continues from after nth element</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">nth</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># not enough elements</span>
+</code></pre></div>
 
 
     </div>
@@ -3525,18 +3525,18 @@ assert iterator.nth(5).is_nothing()  # not enough elements
 
         <p>Pipes the iterator into the function <code>func</code>, passing any additional positional and keyword arguments.
 This allows for chaining operations in a functional style.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-result = iterator.pipe(sum, start=10)
-assert result == 25  # 10 + 1 + 2 + 3 + 4 + 5
-
-iterator = itrt([1, 2, 3])
-result = iterator.pipe(max)
-assert result == 3
-
-iterator = itrt([1, 2, 3, 4])
-result = iterator.map(str).pipe(&quot;-&quot;.join)
-assert result == &quot;1-2-3-4&quot;
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">sum</span><span class="p">,</span> <span class="n">start</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">25</span>  <span class="c1"># 10 + 1 + 2 + 3 + 4 + 5</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="nb">max</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span><span class="o">.</span><span class="n">pipe</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">)</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="s2">&quot;1-2-3-4&quot;</span>
+</code></pre></div>
 
 
     </div>
@@ -3566,14 +3566,14 @@ assert result == &quot;1-2-3-4&quot;
         <p>Returns the index of the first element in the iterator that satisfies the predicate <code>pred</code>,
 wrapped in a <a class="autorefs autorefs-internal" href="../../container/maybe/#apfel.container.maybe.Maybe"><code>Maybe</code></a>.
 If no such element is found, returns <code>Nothing</code>.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-assert iterator.position(lambda x: x % 2 == 0).unwrap() == 1
-assert iterator.next().unwrap() == 3  # 1, 2 have been consumed
-
-iterator = itrt([1, 2, 3])
-assert iterator.position(lambda x: x &gt; 10).is_nothing()
-assert iterator.next().is_nothing()  # iterator is exhausted
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>  <span class="c1"># 1, 2 have been consumed</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">position</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&gt;</span> <span class="mi">10</span><span class="p">)</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># iterator is exhausted</span>
+</code></pre></div>
 
 
     </div>
@@ -3604,14 +3604,14 @@ assert iterator.next().is_nothing()  # iterator is exhausted
 The first element of the iterator is used as the initial accumulator value.
 If the iterator is empty, returns <code>Nothing</code>.</p>
 <p>See also <a class="autorefs autorefs-internal" title="fold(init, func)" href="#apfel.core.iter.Iterator.fold"><code>fold</code></a> if an explicit initial value is needed.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-result = iterator.reduce(lambda acc, x: acc + x)
-assert result.unwrap() == 15  # 1 + 2 + 3 + 4 + 5
-
-iterator = itrt([])
-result = iterator.reduce(lambda acc, x: acc + x)
-assert result.is_nothing()  # no elements to reduce
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">15</span>  <span class="c1"># 1 + 2 + 3 + 4 + 5</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([])</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">reduce</span><span class="p">(</span><span class="k">lambda</span> <span class="n">acc</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">acc</span> <span class="o">+</span> <span class="n">x</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># no elements to reduce</span>
+</code></pre></div>
 
 
     </div>
@@ -3644,21 +3644,21 @@ assert result.is_nothing()  # no elements to reduce
 returns <code>Just</code>; stops on <code>Nothing</code>.</p>
 <p><code>state</code> is passed directly to <code>func</code> each iteration — pass a mutable container
 such as <a class="autorefs autorefs-internal" href="../../container/value/#apfel.container.value.Value"><code>Value</code></a> if <code>func</code> needs to update it across iterations.</p>
-<pre><code class="language-python">from apfel.container.maybe import just, nothing
-from apfel.container.value import Value
-from apfel.core.common import imperative
-
-state = Value(1)
-iterator = itrt([1, 2, 3, 4])
-result = iterator.scan(state, lambda s, x: imperative(
-    s.update(lambda v: v * x),
-    nothing() if s.done() &gt; 6 else just(-s.done()),
-))
-assert result.next().unwrap() == -1
-assert result.next().unwrap() == -2
-assert result.next().unwrap() == -6
-assert result.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.container.maybe</span><span class="w"> </span><span class="kn">import</span> <span class="n">just</span><span class="p">,</span> <span class="n">nothing</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.container.value</span><span class="w"> </span><span class="kn">import</span> <span class="n">Value</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.core.common</span><span class="w"> </span><span class="kn">import</span> <span class="n">imperative</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">state</span> <span class="o">=</span> <span class="n">Value</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">result</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">scan</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="k">lambda</span> <span class="n">s</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">imperative</span><span class="p">(</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>    <span class="n">s</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="k">lambda</span> <span class="n">v</span><span class="p">:</span> <span class="n">v</span> <span class="o">*</span> <span class="n">x</span><span class="p">),</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>    <span class="n">nothing</span><span class="p">()</span> <span class="k">if</span> <span class="n">s</span><span class="o">.</span><span class="n">done</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">6</span> <span class="k">else</span> <span class="n">just</span><span class="p">(</span><span class="o">-</span><span class="n">s</span><span class="o">.</span><span class="n">done</span><span class="p">()),</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="p">))</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">2</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="o">-</span><span class="mi">6</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">assert</span> <span class="n">result</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3741,14 +3741,14 @@ If the original iterator has fewer than <code>n</code> elements, all elements ar
           </tr>
       </tbody>
     </table>
-        <pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-skipped_iterator = iterator.skip(2)
-assert skipped_iterator.next().unwrap() == 3
-assert skipped_iterator.next().unwrap() == 4
-assert skipped_iterator.next().unwrap() == 5
-assert skipped_iterator.next().is_nothing()
-assert iterator.next().is_nothing()  # original iterator is also exhausted
-</code></pre>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">skipped_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">skip</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>  <span class="c1"># original iterator is also exhausted</span>
+</code></pre></div>
 
 
     </div>
@@ -3777,13 +3777,13 @@ assert iterator.next().is_nothing()  # original iterator is also exhausted
 
         <p>Creates a new iterator that skips elements while the predicate <code>pred</code> returns <code>True</code>.
 Once the predicate returns <code>False</code>, all remaining elements are yielded.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 1, 2])
-skipped_iterator = iterator.skip_while(lambda x: x &lt; 4)
-assert skipped_iterator.next().unwrap() == 4
-assert skipped_iterator.next().unwrap() == 1
-assert skipped_iterator.next().unwrap() == 2
-assert skipped_iterator.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">skipped_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">skip_while</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">skipped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3813,14 +3813,14 @@ assert skipped_iterator.next().is_nothing()
         <p>Creates a new iterator that yields every <code>n</code>-th element of the original iterator.
 The first element (index 0) is always yielded.
 It does not guarantee the skipped elements are consumed before or after yielding the next element.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5, 6, 7, 8])
-stepped_iterator = iterator.step_by(2)
-assert stepped_iterator.next().unwrap() == 1
-assert stepped_iterator.next().unwrap() == 3
-assert stepped_iterator.next().unwrap() == 5
-assert stepped_iterator.next().unwrap() == 7
-assert stepped_iterator.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">stepped_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">step_by</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">stepped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">stepped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">stepped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">5</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">stepped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">7</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">stepped_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -3903,14 +3903,14 @@ If the original iterator has fewer than <code>n</code> elements, all elements ar
           </tr>
       </tbody>
     </table>
-        <pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 5])
-taken_iterator = iterator.take(3)
-assert taken_iterator.next().unwrap() == 1
-assert taken_iterator.next().unwrap() == 2
-assert taken_iterator.next().unwrap() == 3
-assert taken_iterator.next().is_nothing()
-assert iterator.next().unwrap() == 4  # original iterator continues from where take stopped
-</code></pre>
+        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">taken_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">take</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">4</span>  <span class="c1"># original iterator continues from where take stopped</span>
+</code></pre></div>
 
 
     </div>
@@ -3939,14 +3939,14 @@ assert iterator.next().unwrap() == 4  # original iterator continues from where t
 
         <p>Creates a new iterator that yields elements while the predicate <code>pred</code> returns <code>True</code>.
 Once the predicate returns <code>False</code>, iteration stops.</p>
-<pre><code class="language-python">iterator = itrt([1, 2, 3, 4, 1, 2])
-taken_iterator = iterator.take_while(lambda x: x &lt; 4)
-assert taken_iterator.next().unwrap() == 1
-assert taken_iterator.next().unwrap() == 2
-assert taken_iterator.next().unwrap() == 3
-assert taken_iterator.next().is_nothing()
-assert iterator.next().unwrap() == 1  # elements after the predicate failed
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">taken_iterator</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">take_while</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="o">&lt;</span> <span class="mi">4</span><span class="p">)</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">taken_iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">iterator</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>  <span class="c1"># elements after the predicate failed</span>
+</code></pre></div>
 
 
     </div>
@@ -3975,17 +3975,17 @@ assert iterator.next().unwrap() == 1  # elements after the predicate failed
 
         <p>Creates a new iterator that calls <code>func</code> on each element for side effects,
 passing the element through unchanged.</p>
-<pre><code class="language-python">result = []
-iterator = itrt([1, 2, 3])
-tapped = iterator.tap(result.append)
-assert tapped.next().unwrap() == 1
-assert result == [1]
-assert tapped.next().unwrap() == 2
-assert result == [1, 2]
-assert tapped.next().unwrap() == 3
-assert result == [1, 2, 3]
-assert tapped.next().is_nothing()
-</code></pre>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">result</span> <span class="o">=</span> <span class="p">[]</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">tapped</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">tap</span><span class="p">(</span><span class="n">result</span><span class="o">.</span><span class="n">append</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">tapped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">1</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">tapped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="k">assert</span> <span class="n">tapped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="mi">3</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="k">assert</span> <span class="n">tapped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>
@@ -4029,29 +4029,29 @@ Iteration stops whenever an iterator or iterable is exhausted.</p>
   <summary>Warning</summary>
   <p>The original iterators should not be pulled after being zipped together, as some
 of their elements may have been consumed and discarded during the zipping process.</p>
-</details>        <pre><code class="language-python">iterator1 = itrt([1, 2, 3])
-iterator2 = itrt([4, 5, 6])
-zipped = iterator1.zip(iterator2)
-assert zipped.next().unwrap() == (1, 4)
-assert zipped.next().unwrap() == (2, 5)
-assert zipped.next().unwrap() == (3, 6)
-assert zipped.next().is_nothing()
-
-iterator1 = itrt([1, 2, 3])
-iterator2 = itrt(['a', 'b'])
-zipped = iterator1.zip(iterator2)
-assert zipped.next().unwrap() == (1, 'a')
-assert zipped.next().unwrap() == (2, 'b')
-assert zipped.next().is_nothing()
-assert iterator1.next().is_nothing() # 3 is consumed and discarded during zipping
-
-iterator = itrt([1, 2, 3])
-zipped = iterator.zip([4, 5, 6])
-assert zipped.next().unwrap() == (1, 4)
-assert zipped.next().unwrap() == (2, 5)
-assert zipped.next().unwrap() == (3, 6)
-assert zipped.next().is_nothing()
-</code></pre>
+</details>        <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="n">iterator1</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="n">iterator2</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="n">zipped</span> <span class="o">=</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">iterator2</span><span class="p">)</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="n">iterator1</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="n">iterator2</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">])</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">zipped</span> <span class="o">=</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">zip</span><span class="p">(</span><span class="n">iterator2</span><span class="p">)</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="s1">&#39;b&#39;</span><span class="p">)</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="k">assert</span> <span class="n">iterator1</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span> <span class="c1"># 3 is consumed and discarded during zipping</span>
+<a id="__codelineno-0-16" name="__codelineno-0-16" href="#__codelineno-0-16"></a>
+<a id="__codelineno-0-17" name="__codelineno-0-17" href="#__codelineno-0-17"></a><span class="n">iterator</span> <span class="o">=</span> <span class="n">itrt</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">])</span>
+<a id="__codelineno-0-18" name="__codelineno-0-18" href="#__codelineno-0-18"></a><span class="n">zipped</span> <span class="o">=</span> <span class="n">iterator</span><span class="o">.</span><span class="n">zip</span><span class="p">([</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">])</span>
+<a id="__codelineno-0-19" name="__codelineno-0-19" href="#__codelineno-0-19"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
+<a id="__codelineno-0-20" name="__codelineno-0-20" href="#__codelineno-0-20"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+<a id="__codelineno-0-21" name="__codelineno-0-21" href="#__codelineno-0-21"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">unwrap</span><span class="p">()</span> <span class="o">==</span> <span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<a id="__codelineno-0-22" name="__codelineno-0-22" href="#__codelineno-0-22"></a><span class="k">assert</span> <span class="n">zipped</span><span class="o">.</span><span class="n">next</span><span class="p">()</span><span class="o">.</span><span class="n">is_nothing</span><span class="p">()</span>
+</code></pre></div>
 
 
     </div>

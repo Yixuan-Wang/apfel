@@ -1406,7 +1406,7 @@
     <div class="doc doc-contents first">
 
         <p>Primitives for containers that can be written only once. Inspired by <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a> and <a href="https://doc.rust-lang.org/std/cell/struct.LazyCell.html">:rust <code>LazyCell</code></a>.</p>
-<p>The <a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> and <a class="autorefs autorefs-internal" href="#apfel.container.once.Lazy"><code>Lazy</code></a> classes, are exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<p>The <a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> and <a class="autorefs autorefs-internal" href="#apfel.container.once.Lazy"><code>Lazy</code></a> classes, are exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 <h2 id="apfel.container.once--implementation">Implementation<a class="headerlink" href="#apfel.container.once--implementation" title="Permanent link">#</a></h2>
 <p><a class="autorefs autorefs-internal" href="#apfel.container.once.Once"><code>Once</code></a> takes reference from <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a> and the current status is as follows:</p>
 <table>
@@ -1498,7 +1498,7 @@
 
         <p>A container that can be written only once.
 See <a href="https://doc.rust-lang.org/std/cell/struct.OnceCell.html">:rust <code>OnceCell</code></a> for more information.</p>
-<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<p>This class is exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 
 
 
@@ -1990,24 +1990,24 @@ If no value has been set, this method raises a <code>ValueError</code>.</p>
         <p>A container that can be lazily initialized only once.
 The stored function will be actually called only on the first retrieval, and the result will be cached for consequent calls.
 See <a href="https://doc.rust-lang.org/std/cell/struct.LazyCell.html">:rust <code>LazyCell</code></a> for more information.</p>
-<p>This class is exposed in the <a href="../prelude#package-namespace">package namespace</a>.</p>
+<p>This class is exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
 
 
 <details class="example" open>
   <summary>Example</summary>
-  <pre><code class="language-python">from apfel.container.once import Lazy
-
-@Lazy
-def func():
-    print(&quot;called&quot;)
-    return object()
-
-obj = func.value()
-# print &quot;called&quot;
-# here, the function `func` will be called and the result will be cached.
-
-func.value() is obj # the function `func` will not be called again.
-</code></pre>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kn">from</span><span class="w"> </span><span class="nn">apfel.container.once</span><span class="w"> </span><span class="kn">import</span> <span class="n">Lazy</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="nd">@Lazy</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">():</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;called&quot;</span><span class="p">)</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a>    <span class="k">return</span> <span class="nb">object</span><span class="p">()</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">value</span><span class="p">()</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a><span class="c1"># print &quot;called&quot;</span>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1"># here, the function `func` will be called and the result will be cached.</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a><span class="n">func</span><span class="o">.</span><span class="n">value</span><span class="p">()</span> <span class="ow">is</span> <span class="n">obj</span> <span class="c1"># the function `func` will not be called again.</span>
+</code></pre></div>
 </details>
 
 
@@ -2044,13 +2044,13 @@ Notice that this operator overloading might be slower than calling <code>value</
 
 <details class="example" open>
   <summary>Example</summary>
-  <pre><code class="language-python">@Lazy
-def func():
-    return object()
-
-obj = func()
-assert func() is obj
-</code></pre>
+  <div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nd">@Lazy</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="k">def</span><span class="w"> </span><span class="nf">func</span><span class="p">():</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a>    <span class="k">return</span> <span class="nb">object</span><span class="p">()</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="n">obj</span> <span class="o">=</span> <span class="n">func</span><span class="p">()</span>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="k">assert</span> <span class="n">func</span><span class="p">()</span> <span class="ow">is</span> <span class="n">obj</span>
+</code></pre></div>
 </details>
 
     </div>
