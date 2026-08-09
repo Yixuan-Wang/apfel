@@ -24,11 +24,11 @@ are expected.
 
 - **Unpythonic**.
   Use best practices and API naming conventions from other languages,
-  especially [Rust](https://doc.rust-lang.org/stable/std){ .ref .rs },
-  [Haskell](https://hoogle.haskell.org/?scope=set%3Aincluded-with-ghc){ .ref .hs },
-  [R](https://www.rdocumentation.org/){ .ref .rl },
-  and [Julia](https://docs.julialang.org/en/v1){ .ref .jl } to mitigate Python's limitations.
-  [Go](https://go.dev/){ .ref .go } is also a good reference for simplicity and readability comparable to Python.
+  especially <a class="ref rust" href="https://doc.rust-lang.org/stable/std">Rust</a>,
+  <a class="ref haskell" href="https://hoogle.haskell.org/?scope=set%3Aincluded-with-ghc">Haskell</a>,
+  <a class="ref rlang" href="https://www.rdocumentation.org/">R</a>,
+  and <a class="ref julia" href="https://docs.julialang.org/en/v1">Julia</a> to mitigate Python's limitations.
+  <a class="ref golang" href="https://go.dev/">Go</a> is also a good reference for simplicity and readability comparable to Python.
 
 - **Type safe**.
   Add expressive and sound type hints whenever possible.

@@ -10,10 +10,10 @@ The module defines three abstract classes: [`Functor`][apfel.core.monad.Functor]
 
 # Rationale
 
-Monadic abstractions like [`Functor`](https://hackage.haskell.org/package/base/docs/Data-Functor.html){.ref .hs}, [`Applicative`](https://hackage.haskell.org/package/base/docs/Control-Applicative.html){.ref .hs}, and [`Monad`](https://hackage.haskell.org/package/base/docs/Control-Monad.html){.ref .hs} are popularized by Haskell.
+Monadic abstractions like [:haskell `Functor`](https://hackage.haskell.org/package/base/docs/Data-Functor.html), [:haskell `Applicative`](https://hackage.haskell.org/package/base/docs/Control-Applicative.html), and [:haskell `Monad`](https://hackage.haskell.org/package/base/docs/Control-Monad.html) are popularized by Haskell.
 Although Python has weak support for functional programming, we include these abstractions to provide a uniform interface for such calculations.
 
-Under the hood, these abstractions use dynamic single dispatch provided in [`apfel.core.dispatch`](dispatch.md), which
+Under the hood, these abstractions use dynamic single dispatch provided in [`apfel.core.dispatch`](dispatch), which
 allows us to define monadic helper functions for standard built-in types.
 This module provides default implementations for `list`, `tuple`, `set`, and `function` as `Functor`, `Applicative`, and `Monad`, `dict` as `Functor`.
 
@@ -36,9 +36,9 @@ assert value.bind (lambda x: Value(x + 1)) == Value(43)
 ```
 
 If you are familiar with Rust,
-[`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){.ref .rs} is a `Monad`,
-[`Option.map`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map){.ref .rs} is its `Functor.map`,
-[`Option.and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then){.ref .rs} is its `Monad.bind`.
+[:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html) is a `Monad`,
+[:rust `Option.map`](https://doc.rust-lang.org/std/option/enum.Option.html#method.map) is its `Functor.map`,
+[:rust `Option.and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then) is its `Monad.bind`.
 
 ## Case: `list`
 
@@ -77,7 +77,7 @@ class Functor(ABCDispatch):
 
     To implement a `Functor`, you need to implement at least the `map` method.
 
-    See [Functor](https://wiki.haskell.org/Functor){.ref .hs} for more information.
+    See [:haskell Functor](https://wiki.haskell.org/Functor) for more information.
     """
 
     @abstractmethod
@@ -90,9 +90,9 @@ class Functor(ABCDispatch):
 
         Apply a function to the inner value(s) of the functor, returning a new 
         instance of the functor.
-        This corresponds to the [`fmap`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:fmap){.ref .hs} in Haskell.
+        This corresponds to the [:haskell `fmap`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:fmap) in Haskell.
         
-        Built-in [`map`](https://docs.python.org/3/library/functions.html#map){.ref .py} function
+        Built-in [:python `map`](https://docs.python.org/3/library/functions.html#map) function
         returns an iterator, not a new instance of the functor.
 
         Example:
@@ -124,7 +124,7 @@ class Applicative(Functor, ABCDispatch):
 
     To implement an `Applicative`, you need to implement at least the `pure` and `apply` methods.
 
-    See [Applicative](https://wiki.haskell.org/Applicative){ .ref .hs } for more information.
+    See [:haskell Applicative](https://wiki.haskell.org/Applicative) for more information.
     """
 
     @classmethod
@@ -189,11 +189,11 @@ class Monad(Applicative, ABCDispatch):
     To implement a `Monad`, you need to implement at least the `bind` method, and
     the [`pure`][apfel.core.monad.Applicative.pure] method from `Applicative`.
 
-    See [Monad](https://wiki.haskell.org/Monad){ .ref .hs } for more information.
+    See [:haskell Monad](https://wiki.haskell.org/Monad) for more information.
 
     Notes:
-        `return` is a reserved keyword in Python, and Haskell [`return`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:return){.ref .hs} is a historical mistake that is now
-        pointing to [`pure`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:pure){.ref .hs}.
+        `return` is a reserved keyword in Python, and Haskell [:haskell `return`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:return) is a historical mistake that is now
+        pointing to [:haskell `pure`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:pure).
     """
 
     @abstractmethod
@@ -212,7 +212,7 @@ class Monad(Applicative, ABCDispatch):
 
         The function `f` is called a [Kleisli arrow](https://en.wikipedia.org/wiki/Kleisli_category).
         This `bind` operation has other names in different programming languages.
-        For example, in [`Option`](https://doc.rust-lang.org/std/option/enum.Option.html){.ref .rs} monad, it is called [`and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then){.ref .rs}.
+        For example, in [:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html) monad, it is called [:rust `and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then).
 
         Args:
             f: The function that returns a new monadic computation.
@@ -250,7 +250,7 @@ Besides `dict` which is only a `Functor`, all other types are `Functor`, `Applic
 
 This function should be called before using the monadic abstractions.
 
-See the [module level usage guide][apfel.core.monad--usage] for more information.
+See the [module level usage guide](#usage) for more information.
 """
 for name, impl in vars(_implementation).items():
     if name.startswith("do_impl_for_"):
