@@ -13,7 +13,7 @@ The module defines three abstract classes: [`Functor`][apfel.core.monad.Functor]
 Monadic abstractions like [:haskell `Functor`](https://hackage.haskell.org/package/base/docs/Data-Functor.html), [:haskell `Applicative`](https://hackage.haskell.org/package/base/docs/Control-Applicative.html), and [:haskell `Monad`](https://hackage.haskell.org/package/base/docs/Control-Monad.html) are popularized by Haskell.
 Although Python has weak support for functional programming, we include these abstractions to provide a uniform interface for such calculations.
 
-Under the hood, these abstractions use dynamic single dispatch provided in [`apfel.core.dispatch`](dispatch), which
+Under the hood, these abstractions use dynamic single dispatch provided in [`apfel.core.dispatch`](dispatch.md), which
 allows us to define monadic helper functions for standard built-in types.
 This module provides default implementations for `list`, `tuple`, `set`, and `function` as `Functor`, `Applicative`, and `Monad`, `dict` as `Functor`.
 

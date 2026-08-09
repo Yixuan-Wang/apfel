@@ -11,7 +11,7 @@ A `Result` has two possible states, `Ok` or `Err`.
 This module also provides a [`caught`][apfel.container.result.caught] decorator, which wraps a partial function to a total function returning a `Result`.
 
 The [`Result`][apfel.container.result.Result] class, and the [`ok`][apfel.container.result.ok], [`err`][apfel.container.result.err], and [`caught`][apfel.container.result.caught] functions
-  are exposed in the [package namespace](../prelude#package-namespace).
+  are exposed in the [package namespace](../prelude.md#package-namespace).
 
 ## Rationale
 
@@ -85,7 +85,7 @@ class Result(Monad):
     """A container that holds either a success or a failure.
     See [module-level documentation](result#result) for more details.
 
-    This class is exposed in the [package namespace](../prelude#package-namespace).
+    This class is exposed in the [package namespace](../prelude.md#package-namespace).
     """
 
     __slots__ = ("_val", "_is_ok")
@@ -402,7 +402,7 @@ class ok:
     """
     Construct an `Ok` value.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     ```python
     some_ok = ok(42)
@@ -436,7 +436,7 @@ class err:
     """
     Construct an `Err` value.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     ```python
     some_err = err("Something went wrong")
@@ -476,7 +476,7 @@ class caught:
     - Use as a higher-order function with specific exception types as args (`caught(func, ExceptionA, ExceptionB)`) to catch only those exceptions.
     - Use generic syntax to provide type hints (`@caught[ExceptionA]`, `@caught[ExceptionA]()`, `caught[ExceptionA]()`), *without affecting runtime behavior*.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     Usage:
         ```python

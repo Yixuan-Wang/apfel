@@ -9,7 +9,7 @@ The reason that we don't use `Some`-`None` or `Nil` nomencalture is to avoid [co
 This module also provides a [`some`][apfel.container.maybe.some] constructor, which converts an `Optional[T]` value to a `Maybe[T]` value.
 
 The [`Maybe`][apfel.container.maybe.Maybe] class, and the [`just`][apfel.container.maybe.just], [`nothing`][apfel.container.maybe.nothing], and [`some`][apfel.container.maybe.some] functions
-  are exposed in the [package namespace](../prelude#package-namespace).
+  are exposed in the [package namespace](../prelude.md#package-namespace).
 
 # Rationale
 
@@ -138,7 +138,7 @@ class Maybe(Monad):
     A container that optionally holds a value.
     See [module-level documentation](maybe#maybe) for more information.
 
-    This class is exposed in the [package namespace](../prelude#package-namespace).
+    This class is exposed in the [package namespace](../prelude.md#package-namespace).
     """
 
     __slots__ = ("_val", "_has_value")
@@ -707,7 +707,7 @@ class just:
     """
     Constructs a `Just` value.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     ```python
     j: Maybe[int] = just(42)
@@ -743,7 +743,7 @@ class nothing:
     Constructs a `Nothing` value.
     Notice that this is not a literal.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     ```python
     n: Maybe[int] = nothing()
@@ -770,7 +770,7 @@ class some:
     """
     Converts an `Optional[T]` to a `Maybe[T]` value.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     ```python
     something: Maybe[int] = some(42)

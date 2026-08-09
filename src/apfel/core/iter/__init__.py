@@ -7,7 +7,7 @@ To create or use this abstraction of iterator:
 - Use [`itrt`][apfel.core.iter.itrt] to wrap any iterable or Python vanilla iterator,
 - Use `Iterator` methods directly on any Python vanilla iterator.
 
-[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [package namespace](../prelude#package-namespace).
+[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [package namespace](../prelude.md#package-namespace).
 
 # Implementation
 

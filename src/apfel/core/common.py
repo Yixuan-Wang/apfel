@@ -18,8 +18,8 @@ def apply(value, func, /):
       who requires the function to be wrapped in `Value`.
     In contrast, this function accepts arbitrary callables.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace)
-      and the [builtins namespace](../prelude#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace)
+      and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         value (T): The value to be passed to the function.
@@ -35,8 +35,8 @@ def identity(value, /):
     """
     Returns the sole argument passed to it doing nothing.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace)
-      and the [builtins namespace](../prelude#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace)
+      and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         value (T): Any object.
@@ -52,8 +52,8 @@ def imperative(*exprs):
     Returns the last expression passed into the function.
     If no expression are passed, returns `None`, per Python's convention.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace)
-      and the [builtins namespace](../prelude#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace)
+      and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         *exprs (*tuple[*Ts, R]): Any number of expressions.
@@ -68,7 +68,7 @@ def not_none(value, /):
     """
     Type narrowing: assert the value isn't None.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     Args:
         x (T): Any value that type-checked to be `None`,
@@ -107,8 +107,8 @@ def pipe(
       [`FunctionObject.__rand__`][apfel.core.function_object.FunctionObject.__rand__].
     See also [:haskell `&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-), [:julia `|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping) or roughly [:rlang `%>%`](https://magrittr.tidyverse.org/reference/pipe.html).
 
-    This function is exposed in the [package namespace](../prelude#package-namespace)
-        and the [builtins namespace](../prelude#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace)
+        and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         value (T): The initial value to be piped.
@@ -125,8 +125,8 @@ def todo(message=None, /):
     Marks an unimplemented location that **might** be implemented in the future.
     See [:rust `todo!`](https://doc.rust-lang.org/std/macro.todo.html) for usage.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace)
-      and the [builtins namespace](../prelude#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace)
+      and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.
@@ -142,8 +142,8 @@ def unimplemented(message=None, /):
     Marks an unimplemented location that **might not** be implemented in the future.
     See [:rust `unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html) for usage.
 
-    This function is exposed in the [package namespace](../prelude#package-namespace)
-        and the [builtins namespace](../prelude#builtins-namespace).
+    This function is exposed in the [package namespace](../prelude.md#package-namespace)
+        and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.
