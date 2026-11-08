@@ -23,8 +23,6 @@ class TransformSourceFileLoader(_frozen_importlib_external.SourceFileLoader):
     that applies all registered hooks to the source code of a module or package during import.
 
     Note:
-        **Implementation**
-
         This loader will directly read the source code from the `.py` file, completely ignoring the `.pyc` file.
         The transformed source code will not have a bytecode cache (`.pyc`) generated.
         If your file system has high latency, this may slow down the import process.

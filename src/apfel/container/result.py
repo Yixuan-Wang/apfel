@@ -2,23 +2,23 @@
 A container that holds either a success or a failure.
 
 See [:rust `Result`](https://doc.rust-lang.org/std/result/enum.Result.html)
-  and [:haskell `Either`](https://hackage.haskell.org/package/base/docs/Data-Either.html).
+and [:haskell `Either`](https://hackage.haskell.org/package/base/docs/Data-Either.html).
 
 A `Result` has two possible states, `Ok` or `Err`.
 `Ok` means a successful value is present,
-  and `Err` means a failure value is present.
+and `Err` means a failure value is present.
 
 This module also provides a [`caught`][apfel.container.result.caught] decorator, which wraps a partial function to a total function returning a `Result`.
 
 The [`Result`][apfel.container.result.Result] class, and the [`ok`][apfel.container.result.ok], [`err`][apfel.container.result.err], and [`caught`][apfel.container.result.caught] functions
-  are exposed in the [package namespace](../prelude.md#package-namespace).
+are exposed in the [package namespace](../prelude.md#package-namespace).
 
 ## Rationale
 
 Python [:python `raise`](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement)
-  is easily missed, since the gradual typing system does not support checked exceptions.
+is easily missed, since the gradual typing system does not support checked exceptions.
 An alternative is to return [:golang nullable error flags](https://go.dev/blog/error-handling-and-go),
-  which is cumbersome to work with.
+which is cumbersome to work with.
 
 ## Implementation
 
@@ -82,7 +82,8 @@ if TYPE_CHECKING:
 
 
 class Result(Monad):
-    """A container that holds either a success or a failure.
+    """
+    A container that holds either a success or a failure.
     See [module-level documentation](result#result) for more details.
 
     This class is exposed in the [package namespace](../prelude.md#package-namespace).
@@ -135,7 +136,7 @@ class Result(Monad):
         /,
     ):
         """
-        Implementation of [Applicative.apply][apfel.core.monad.Applicative.apply].
+        Implementation of [`Applicative.apply`][apfel.core.monad.Applicative.apply].
         Applies the callable wrapped within a `Result` to the inner value, if both are `Ok`.
         """
         if self._is_ok:
@@ -177,7 +178,7 @@ class Result(Monad):
             else _maybe.Maybe.make_nothing()
         )
 
-    def expect(self, message):
+    def expect(self, message, /):
         """
         Unwrap the inner `Ok` value, if any. Otherwise, raise a `ValueError` with a custom message.
         """
@@ -185,7 +186,7 @@ class Result(Monad):
             raise ValueError(message)
         return self._val
 
-    def expect_err(self, message):
+    def expect_err(self, message, /):
         """
         Unwrap the inner `Err` value, if any. Otherwise, raise a `ValueError` with a custom message.
         """
@@ -478,15 +479,14 @@ class caught:
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
-    Usage:
-        ```python
-        @caught(ZeroDivisionError)
-        def divide(a: float, b: float) -> float:
-            return a / b
+    ```python
+    @caught(ZeroDivisionError)
+    def divide(a: float, b: float) -> float:
+        return a / b
 
-        divide(4, 2)  # Ok(2.0)
-        divide(4, 0)  # Err(ZeroDivisionError)
-        ```
+    divide(4, 2)  # Ok(2.0)
+    divide(4, 0)  # Err(ZeroDivisionError)
+    ```
     """
 
     def __class_getitem__(cls, item):

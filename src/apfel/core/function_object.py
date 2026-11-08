@@ -1,10 +1,10 @@
 """
 Extend functions with operator overloads for function calling.
 
-Conceptually, [**function objects**](https://en.wikipedia.org/Function_objects) are
+Conceptually, [**function objects**](https://en.wikipedia.org/wiki/Function_object) are
 objects that implement the function call operator.
 
-# Rationale
+## Rationale
 
 Python codes contain extensive use of parentheses, which can be cumbersome in interactive environments.
 This module simply provides a way to reduce the pain of wrapping huge expressions in parentheses.
@@ -109,7 +109,7 @@ class FunctionObject:
         return repr(self.__wrapped__)
 
     def __or__(self, value, /):
-        """\
+        """
         ```python
         def |[T, R](self, value: T) -> R
         ```
@@ -118,20 +118,19 @@ class FunctionObject:
 
         `f | x` is equivalent to `f(x)`. This operator behaves the same as [`@`](#operator-at), but with a different precedence.
 
-        Example:
-            ```python
-            @fob
-            def f(x):
-                return x * 2
+        ```python
+        @fob
+        def f(x):
+            return x * 2
 
-            f | 1 + 2
-            # 6
-            ```
+        f | 1 + 2
+        # 6
+        ```
         """
         return self.__call__(value)
 
     def __rand__(self, value):
-        """\
+        """
         ```python
         def &[T, R](self, value: T) -> R
         ```
@@ -143,93 +142,88 @@ class FunctionObject:
         Warning:
             `np.array` and array-like types are common overloaders of `&`, therefore this operator cannot be used with them.
 
+        ```python
+        @fob
+        def f(x):
+            return x + 1
 
-        Example:
-            ```python
-            @fob
-            def f(x):
-                return x + 1
-
-            1 + 2 & f
-            # 6
-            ```
+        1 + 2 & f
+        # 4
+        ```
         """
         return self.__call__(value)
 
     def __matmul__(self, value):
-        """\
+        """
         ```python
-        def @[T, R](self, rhs: T) -> R
+        def @[T, R](self, value: T) -> R
         ```
 
         Function application operator `@` for `FunctionObject`s.
 
         `f @ x` is equivalent to `f(x)`. This operator behaves the same as [`|`](#operator-or), but with a different precedence.
 
-        Example:
-            ```python
-            @fob
-            def f(x):
-                return x * 2
+        ```python
+        @fob
+        def f(x):
+            return x * 2
 
-            f @ 1 + 2
-            # 4
-            ```
+        f @ 1 + 2
+        # 4
+        ```
         """
         return self.__call__(value)
 
     def __pow__(self, value):
-        """\
+        """
         ```python
         def **[T, R](self, value: T) -> R
         ```
-        
+
         Function application operator `**` for `FunctionObject`s.
 
         `f ** g ** x` is equivalent to `f(g(x))`.
         This operator has the highest precedence of all overloadable operators,
         and it binds from right to left.
         It intends to simulate [:haskell `$`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:-36-) operator, except the precedence.
-        
-        Example:
-            ```python
-            @fob
-            def f(x):
-                return x + 1
 
-            @fob
-            def g(x):
-                return x * 2
+        ```python
+        @fob
+        def f(x):
+            return x + 1
 
-            f ** g ** 1
-            # 3
-            ```
+        @fob
+        def g(x):
+            return x * 2
+
+        f ** g ** 1
+        # 3
+        ```
         """
         return self.__call__(value)
 
     def __mod__(self, value):
-        """\
+        """
         ```python
         def %[R](self, value) -> R
         ```
 
         Function application operator `%` for `FunctionObject`s of multi-argument functions.
 
-        - If the right hand side is a [:python Sequence](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence), spreads the sequence as positional arguments. For example, `x % (a, b, c)` is equivalent to `x(a, b, c)`.
-        - If the right hand side is a [:python Mapping](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping), spreads the mapping as keyword arguments. For example, `x % { "a": 1, "b": 2, "c": 3 }` is equivalent to `x(a=1, b=2, c=3)`.
+        - If the right hand side is a [:python `Sequence`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Sequence), spreads the sequence as positional arguments. For example, `x % (a, b, c)` is equivalent to `x(a, b, c)`.
+        - If the right hand side is a [:python `Mapping`](https://docs.python.org/3/library/collections.abc.html#collections.abc.Mapping), spreads the mapping as keyword arguments. For example, `x % { "a": 1, "b": 2, "c": 3 }` is equivalent to `x(a=1, b=2, c=3)`.
         - Specifically, you can use `...` as the map key to pass keyword arguments with keyword arguments at the same time, `x % { ...: (1, 2), "c": 3 }` is equivalent to `x(1, 2, c=3)`.
         - Otherwise, it calls on the right-hand side. This catches the case where you forget the trailing comma in the right-hand side tuple.
 
-        Example:
-            ```python
-            @fob
-            def f(a, b, c):
-                return a + b + c
+        ```python
+        @fob
+        def f(a, b, c):
+            return a + b + c
 
-            f % (1, 2, 3)                  # 6
-            f % { "a": 1, "b": 2, "c": 3 } # 6
-            f % { ...: (1, 2), "c": 3 }    # 6
-            ```
+        f % (1, 2, 3)                  # 6
+        f % { "a": 1, "b": 2, "c": 3 } # 6
+        f % { ...: (1, 2), "c": 3 }    # 6
+        ```
 
         Warning:
             This operator does not support the case where `...` (the `Ellipsis`, not `"..."`) is used as a keyword argument.
@@ -247,7 +241,7 @@ class FunctionObject:
             return self.__call__(value)
 
 def fob(func, /, *funcs):
-    """\
+    """
     ```python
     def fob[F: Callable](func: F) -> F
     def fob[*Fs](*funcs: *Fs) -> tuple[*Fs]
@@ -255,17 +249,16 @@ def fob(func, /, *funcs):
 
     Turn callables into `FunctionObject` yet keeps their original type hints.
 
-    Example:
-        ```python
-        @fob
-        def f(a: int) -> int:
-            return f + 1
+    ```python
+    @fob
+    def f(a: int) -> int:
+        return a + 1
 
-        f | 1
-        # 2
+    f | 1
+    # 2
 
-        print, display, str = fob(print, display, str)
-        ```
+    print, display, str = fob(print, display, str)
+    ```
 
     Note:
         As a callable, `FunctionObject` has less static typing support.
@@ -277,7 +270,7 @@ def fob(func, /, *funcs):
 
 
 def reveal_fob(func, /):
-    """\
+    """
     ```python
     def reveal_fob(func: Any) -> FunctionObject raise TypeError
     ```
@@ -285,7 +278,7 @@ def reveal_fob(func, /):
     Cast a `FunctionObject` to `FunctionObject` type.
 
     Raises:
-       TypeError: This function performs runtime check and raises `TypeError` if the input is not a `FunctionObject`.
+        TypeError: This function performs runtime check and raises `TypeError` if the input is not a `FunctionObject`.
     """
     if not isinstance(func, FunctionObject):
         raise TypeError(

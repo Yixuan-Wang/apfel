@@ -14,12 +14,12 @@ def apply(value, func, /):
     See also [:python <code><del>apply</del></code>](https://docs.python.org/2.7/library/functions.html#apply) from Python 2.7.
 
     This function is different from [`Value.apply`][apfel.container.value.Value.apply],
-      which is an implementation of [`Applicative`][apfel.core.monad.Applicative]
-      who requires the function to be wrapped in `Value`.
+    which is an implementation of [`Applicative`][apfel.core.monad.Applicative]
+    who requires the function to be wrapped in `Value`.
     In contrast, this function accepts arbitrary callables.
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace)
-      and the [builtins namespace](../prelude.md#builtins-namespace).
+    and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         value (T): The value to be passed to the function.
@@ -36,7 +36,7 @@ def identity(value, /):
     Returns the sole argument passed to it doing nothing.
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace)
-      and the [builtins namespace](../prelude.md#builtins-namespace).
+    and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         value (T): Any object.
@@ -53,7 +53,7 @@ def imperative(*exprs):
     If no expression are passed, returns `None`, per Python's convention.
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace)
-      and the [builtins namespace](../prelude.md#builtins-namespace).
+    and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         *exprs (*tuple[*Ts, R]): Any number of expressions.
@@ -71,7 +71,7 @@ def not_none(value, /):
     This function is exposed in the [package namespace](../prelude.md#package-namespace).
 
     Args:
-        x (T): Any value that type-checked to be `None`,
+        value (T): Any value that type-checked to be `None`,
             but guarantees to be non-`None`.
 
     Returns:
@@ -79,7 +79,6 @@ def not_none(value, /):
 
     Raises:
         ValueError: if the input is actually `None`.
-
     """
     if value is None:
         args = _call_expr()
@@ -104,11 +103,11 @@ def pipe(
     For single function application, see [`apply`][apfel.core.common.apply].
 
     See also [`Value.update`][apfel.container.value.Value.update],
-      [`FunctionObject.__rand__`][apfel.core.function_object.FunctionObject.__rand__].
+    [`FunctionObject.__rand__`][apfel.core.function_object.FunctionObject.__rand__].
     See also [:haskell `&`](https://hackage.haskell.org/package/base/docs/Data-Function.html#v:-38-), [:julia `|>`](https://docs.julialang.org/en/v1/manual/functions/#Function-composition-and-piping) or roughly [:rlang `%>%`](https://magrittr.tidyverse.org/reference/pipe.html).
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace)
-        and the [builtins namespace](../prelude.md#builtins-namespace).
+    and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         value (T): The initial value to be piped.
@@ -126,7 +125,7 @@ def todo(message=None, /):
     See [:rust `todo!`](https://doc.rust-lang.org/std/macro.todo.html) for usage.
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace)
-      and the [builtins namespace](../prelude.md#builtins-namespace).
+    and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.
@@ -143,7 +142,7 @@ def unimplemented(message=None, /):
     See [:rust `unimplemented!`](https://doc.rust-lang.org/std/macro.unimplemented.html) for usage.
 
     This function is exposed in the [package namespace](../prelude.md#package-namespace)
-        and the [builtins namespace](../prelude.md#builtins-namespace).
+    and the [builtins namespace](../prelude.md#builtins-namespace).
 
     Args:
         message (str | None): The extra message to be displayed.

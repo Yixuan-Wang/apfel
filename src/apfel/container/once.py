@@ -242,21 +242,20 @@ class Lazy:
 
     This class is exposed in the [package namespace](../prelude.md#package-namespace).
 
-    Example:
-        ```python
-        from apfel.container.once import Lazy
+    ```python
+    from apfel.container.once import Lazy
 
-        @Lazy
-        def func():
-            print("called")
-            return object()
+    @Lazy
+    def func():
+        print("called")
+        return object()
 
-        obj = func.value()
-        # print "called"
-        # here, the function `func` will be called and the result will be cached.
+    obj = func.value()
+    # print "called"
+    # here, the function `func` will be called and the result will be cached.
 
-        func.value() is obj # the function `func` will not be called again.
-        ```
+    func.value() is obj # the function `func` will not be called again.
+    ```
     """
 
     __slots__ = ("_value", "_has_value", "_init")
@@ -283,15 +282,14 @@ class Lazy:
         An alias for [`Lazy.value`][apfel.container.once.Lazy.value].
         Notice that this operator overloading might be slower than calling `value` directly.
 
-        Example:
-            ```python
-            @Lazy
-            def func():
-                return object()
+        ```python
+        @Lazy
+        def func():
+            return object()
 
-            obj = func()
-            assert func() is obj
-            ```
+        obj = func()
+        assert func() is obj
+        ```
         """
         if self._has_value:
             return self._value
@@ -366,14 +364,13 @@ class LazyLock:
         An alias for [`LazyLock.value`][apfel.container.once.LazyLock.value].
         Notice that this operator overloading might be slower than calling `value` directly.
 
-        Example:
-            ```python
-            from apfel.container.once import LazyLock
+        ```python
+        from apfel.container.once import LazyLock
 
-            lazy_lock = LazyLock(lambda: object())
-            obj = lazy_lock()
-            assert lazy_lock() is obj
-            ```
+        lazy_lock = LazyLock(lambda: object())
+        obj = lazy_lock()
+        assert lazy_lock() is obj
+        ```
         """
         with self._lock:
             if self._has_value:

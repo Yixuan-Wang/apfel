@@ -7,16 +7,13 @@ To create or use this abstraction of iterator:
 - Use [`itrt`][apfel.core.iter.itrt] to wrap any iterable or Python vanilla iterator,
 - Use `Iterator` methods directly on any Python vanilla iterator.
 
-[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [package namespace](../prelude.md#package-namespace).
+[`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are exposed in the [package namespace](../prelude.md#package-namespace).
 
 ## Implementation
 
 Iterators have a large number of methods. Missing methods will be added gradually over time.
 
 Note:
-    **[:rust `Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html)**
-
-
     | Reference [:rust `Iterator`](https://doc.rust-lang.org/std/iter/trait.Iterator.html) | Counterpart |
     | --- | --- |
     | `advance_by`         | [`advance_by`][apfel.core.iter.Iterator.advance_by] |
@@ -97,9 +94,6 @@ Note:
     | `zip`                | [`zip`][apfel.core.iter.Iterator.zip] |
 
 Note:
-    **[:python `itertools`](https://docs.python.org/3/library/itertools.html)**
-
-
     This table tracks named `Iterator` counterparts in [:python `itertools`](https://docs.python.org/3/library/itertools.html).
     Standalone `itertools` functions can still be used through [`pipe`][apfel.core.iter.Iterator.pipe] when their first argument is an iterable.
 
@@ -157,7 +151,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     ```
 
     The interface for an iterator.
-    See module level documentation for more information.
+    See [module-level documentation](iter#iterator) for more information.
     """
 
     @abstractmethod
@@ -253,7 +247,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
 
     def all(self, pred, /):
         """
-        Returns `True` if all elements of the iterator satisfy the predicate `f`.
+        Returns `True` if all elements of the iterator satisfy the predicate `pred`.
         Otherwise, returns `False`.
 
         The iteration short-circuits if an element is found that does not satisfy the predicate.
@@ -273,7 +267,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
 
     def any(self, pred, /):
         """
-        Returns `True` if any element of the iterator satisfies the predicate `f`.
+        Returns `True` if any element of the iterator satisfies the predicate `pred`.
         Otherwise, returns `False`.
 
         The iteration short-circuits if an element is found that satisfies the predicate.
@@ -294,7 +288,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
     def chain(self, *others):
         """
         Creates a new iterator that yields elements from this iterator until it is exhausted,
-        then yields elements from the `other` iterator.
+        then yields elements from the `others` iterators.
 
         ```python
         iterator1 = itrt([1, 2])
@@ -360,9 +354,6 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         Creates a new iterator that yields tuples of (index, element) pairs,
         where index starts from 0 or the specified `init` value.
 
-        Args:
-            init (int): The starting index for enumeration. Default is 0.
-
         ```python
         iterator = itrt(['a', 'b', 'c'])
         enumerated_iterator = iterator.enumerate()
@@ -371,6 +362,9 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert enumerated_iterator.next().unwrap() == (2, 'c')
         assert enumerated_iterator.next().is_nothing()
         ```
+
+        Args:
+            init (int): The starting index for enumeration. Default is 0.
         """
         return IteratorAdaptor(builtins.enumerate(self, init))
 
@@ -427,7 +421,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
 
     def find(self, pred, /):
         """
-        Returns the first element in the iterator that satisfies the predicate `f`,
+        Returns the first element in the iterator that satisfies the predicate `pred`,
         wrapped in a [`Maybe`][apfel.container.maybe.Maybe].
         If no such element is found, returns `Nothing`.
 
@@ -534,7 +528,7 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         """
         Applies the function `func` to each element of the iterator.
         Compare to [`map`][apfel.core.iter.Iterator.map], the result of each function application is discarded,
-          and the iterator is consumed eagerly.
+        and the iterator is consumed eagerly.
 
         ```python
         iterator = itrt([1, 2, 3])
@@ -820,12 +814,6 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         Creates a new iterator that skips the first `n` elements of the original iterator.
         If the original iterator has fewer than `n` elements, all elements are skipped.
 
-        Args:
-            n (int): The number of elements to skip from the start of the iterator.
-
-        Raises:
-            ValueError: If `n` is negative.
-
         ```python
         iterator = itrt([1, 2, 3, 4, 5])
         skipped_iterator = iterator.skip(2)
@@ -835,6 +823,12 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert skipped_iterator.next().is_nothing()
         assert iterator.next().is_nothing()  # original iterator is also exhausted
         ```
+
+        Args:
+            n (int): The number of elements to skip from the start of the iterator.
+
+        Raises:
+            ValueError: If `n` is negative.
         """
         if n < 0:
             raise ValueError("n must be non-negative")
@@ -879,12 +873,6 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         Creates a new iterator that stops after the first `n` elements of the original iterator.
         If the original iterator has fewer than `n` elements, all elements are yielded.
 
-        Args:
-            n (int): The number of elements to take from the start of the iterator.
-
-        Raises:
-            ValueError: If `n` is negative.
-
         ```python
         iterator = itrt([1, 2, 3, 4, 5])
         taken_iterator = iterator.take(3)
@@ -894,6 +882,12 @@ class Iterator(_dispatch.ABCDispatch, Generic[I]):
         assert taken_iterator.next().is_nothing()
         assert iterator.next().unwrap() == 4  # original iterator continues from where take stopped
         ```
+
+        Args:
+            n (int): The number of elements to take from the start of the iterator.
+
+        Raises:
+            ValueError: If `n` is negative.
         """
         if n < 0:
             raise ValueError("n must be non-negative")

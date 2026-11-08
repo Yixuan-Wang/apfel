@@ -1,7 +1,7 @@
 # Transform
 
 ::: apfel.impt.transform
-    option:
+    options:
         members:
             - register_transform_hook
             - TransformSourceFileLoader

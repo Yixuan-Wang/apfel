@@ -4,17 +4,17 @@ A container that optionally holds a value.
 See [:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html) and [:haskell `Maybe`](https://hackage.haskell.org/package/base/docs/Data-Maybe.html).
 
 A `Maybe` has two possible states, `Just` or `Nothing`. `Just` means a value is present, and `Nothing` means the value is absent.
-The reason that we don't use `Some`-`None` or `Nil` nomencalture is to avoid [confusion with the built-in `None`](#rationale).
+The reason that we don't use `Some`-`None` or `Nil` nomenclature is to avoid [confusion with the built-in `None`](#rationale).
 
 This module also provides a [`some`][apfel.container.maybe.some] constructor, which converts an `Optional[T]` value to a `Maybe[T]` value.
 
 The [`Maybe`][apfel.container.maybe.Maybe] class, and the [`just`][apfel.container.maybe.just], [`nothing`][apfel.container.maybe.nothing], and [`some`][apfel.container.maybe.some] functions
-  are exposed in the [package namespace](../prelude.md#package-namespace).
+are exposed in the [package namespace](../prelude.md#package-namespace).
 
 ## Rationale
 
 Python has a built-in [:python `None`](https://docs.python.org/3/reference/datamodel.html#none) object that represents the absence of a value,
-and a corresponding type hint [:python `Optional[T]`](https://docs.python.org/3/library/html#Optional).
+and a corresponding type hint [:python `Optional[T]`](https://docs.python.org/3/library/typing.html#typing.Optional).
 However, an `Optional[T]` is semantically different from a `Maybe[T]` object.
 An `Optional[T]` is a *union* of `T` and `None`, not a single object.
 To use a union, you must explicitly check its type before every use.
@@ -51,11 +51,11 @@ Warning:
     Use `Maybe.is_nothing()` to check if a `Maybe` object is `Nothing`.
 
     ```python
-    nothing = Maybe[int].Nothing()
+    n = nothing[int]()
 
-    assert nothing.is_nothing()
-    assert nothing is not None
-    assert nothing != None
+    assert n.is_nothing()
+    assert n is not None
+    assert n != None
     ```
 
 ## Implementation
@@ -166,7 +166,7 @@ class Maybe(Monad):
         Construct a `Nothing` value.
 
         Warning:
-            Prefer using [`Nothing`][apfel.container.maybe.nothing] instead, unless in performance-critical code.
+            Prefer using [`nothing`][apfel.container.maybe.nothing] instead, unless in performance-critical code.
         """
 
         return cls(has_value=False)
@@ -235,7 +235,7 @@ class Maybe(Monad):
 
     def apply(self, func, /):  # type: ignore
         """
-        Implementation of [Applicative.apply][apfel.core.monad.Applicative.apply].
+        Implementation of [`Applicative.apply`][apfel.core.monad.Applicative.apply].
         Applies the callable wrapped within a `Maybe` to the inner value, if both are `Just`.
         """
         return (
@@ -517,7 +517,7 @@ class Maybe(Monad):
     @classmethod
     def pure(cls, value, /):
         """
-        Implementation of [Applicative.pure][apfel.core.monad.Applicative.pure], which is equivalent to [Maybe.make_just][apfel.container.maybe.Maybe.make_just].
+        Implementation of [`Applicative.pure`][apfel.core.monad.Applicative.pure], which is equivalent to [`Maybe.make_just`][apfel.container.maybe.Maybe.make_just].
         """
         return cls(value)
 

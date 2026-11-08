@@ -7,16 +7,16 @@ Also see [:rust `assert!`](https://doc.rust-lang.org/std/macro.assert.html).
 ## Usage
 
 [`affirm`][apfel.expr.affirm.affirm] allows asserting a value according to a predicate,
-  returning the value if the assertion is satisfied,
-  or raising an `AssertionError` with detailed information if not.
+returning the value if the assertion is satisfied,
+or raising an `AssertionError` with detailed information if not.
 
 Similar to the builtin [:python `assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement),
-  the `affirm` function will be a no-op when Python is run with optimizations (the [:python `-O` flag](https://docs.python.org/3/using/cmdline.html#cmdoption-O), or setting [:python `__debug__`](https://docs.python.org/3/library/constants.html#debug__) to `False`).
+the `affirm` function will be a no-op when Python is run with optimizations (the [:python `-O` flag](https://docs.python.org/3/using/cmdline.html#cmdoption-O), or setting [:python `__debug__`](https://docs.python.org/3/library/constants.html#debug__) to `False`).
 
 
 Tip:
     Specifically, the `AssertionError` message will include the full expression passed to `affirm`,
-      not just the evaluated value.
+    not just the evaluated value.
     Different predicates can customize the error message to provide more context.
 
     ```python
@@ -59,7 +59,6 @@ Tip:
     ```python
     just(value).filter(predicate)
     ```
-
 """
 
 from abc import abstractmethod
@@ -83,7 +82,7 @@ def affirm(value, predicate=None):
     Assert the value according to the predicate, return it if it is true.
     This is the expression form of [:python `assert`](https://docs.python.org/3/reference/simple_stmts.html#the-assert-statement).
 
-    See module-level documentation for detailed usage.
+    See [module-level documentation](affirm#affirm) for detailed usage.
 
     Args:
         value (T): The value to be asserted.

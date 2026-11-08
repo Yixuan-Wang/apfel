@@ -1,4 +1,4 @@
-"""\
+"""
 Tip: Meme
     <del>A monad is a **monoid** in the category of **endofunctors**.</del>
 
@@ -17,7 +17,7 @@ Under the hood, these abstractions use dynamic single dispatch provided in [`apf
 allows us to define monadic helper functions for standard built-in types.
 This module provides default implementations for `list`, `tuple`, `set`, and `function` as `Functor`, `Applicative`, and `Monad`, `dict` as `Functor`.
 
-Note that we losen the constraints of such abstractions, as writing pure functional code is not a goal of this library.
+Note that we loosen the constraints of such abstractions, as writing pure functional code is not a goal of this library.
 
 ## Usage
 
@@ -66,7 +66,7 @@ from apfel.core.dispatch import ABCDispatch
 
 
 class Functor(ABCDispatch):
-    """\
+    """
     ```python
     class Functor[T](ABC):
         map
@@ -77,30 +77,29 @@ class Functor(ABCDispatch):
 
     To implement a `Functor`, you need to implement at least the `map` method.
 
-    See [:haskell Functor](https://wiki.haskell.org/Functor) for more information.
+    See [:haskell `Functor`](https://wiki.haskell.org/Functor) for more information.
     """
 
     @abstractmethod
     def map(self, func, /):
-        """\
+        """
         ```python
         def map[F, R](self, func: F, /) -> Self[R]
             where F: Callable[[T], R]
         ```
 
-        Apply a function to the inner value(s) of the functor, returning a new 
+        Apply a function to the inner value(s) of the functor, returning a new
         instance of the functor.
         This corresponds to the [:haskell `fmap`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:fmap) in Haskell.
-        
+
         Built-in [:python `map`](https://docs.python.org/3/library/functions.html#map) function
         returns an iterator, not a new instance of the functor.
 
-        Example:
-            ```python
-            add = lambda x: x + 1
-            Functor.map([1, 2, 3], add) # [2, 3, 4]
-            map([1, 2, 3], add)         # <map object at ...>
-            ```
+        ```python
+        add = lambda x: x + 1
+        Functor.map([1, 2, 3], add) # [2, 3, 4]
+        map([1, 2, 3], add)         # <map object at ...>
+        ```
 
         Args:
             func (Callable[[T], R]): The function to apply.
@@ -112,7 +111,7 @@ class Functor(ABCDispatch):
 
 
 class Applicative(Functor, ABCDispatch):
-    """\
+    """
     ```python
     class Applicative[T](Functor):
         pure
@@ -124,13 +123,13 @@ class Applicative(Functor, ABCDispatch):
 
     To implement an `Applicative`, you need to implement at least the `pure` and `apply` methods.
 
-    See [:haskell Applicative](https://wiki.haskell.org/Applicative) for more information.
+    See [:haskell `Applicative`](https://wiki.haskell.org/Applicative) for more information.
     """
 
     @classmethod
     @abstractmethod
     def pure(cls, value, /):
-        """\
+        """
         ```python
         def pure(cls, value: T, /) -> Self[T]
         ```
@@ -147,7 +146,7 @@ class Applicative(Functor, ABCDispatch):
 
     @abstractmethod
     def apply(self, func, /):
-        """\
+        """
         ```python
         def apply[F, R](self, func: F) -> Self[R]
             where F: Self[Callable[[T], R]]
@@ -175,7 +174,7 @@ class Applicative(Functor, ABCDispatch):
 
 
 class Monad(Applicative, ABCDispatch):
-    """\
+    """
     ```python
     class Monad[T](Applicative):
         bind
@@ -189,16 +188,16 @@ class Monad(Applicative, ABCDispatch):
     To implement a `Monad`, you need to implement at least the `bind` method, and
     the [`pure`][apfel.core.monad.Applicative.pure] method from `Applicative`.
 
-    See [:haskell Monad](https://wiki.haskell.org/Monad) for more information.
+    See [:haskell `Monad`](https://wiki.haskell.org/Monad) for more information.
 
-    Notes:
+    Note:
         `return` is a reserved keyword in Python, and Haskell [:haskell `return`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:return) is a historical mistake that is now
         pointing to [:haskell `pure`](https://hackage.haskell.org/package/base/docs/Prelude.html#v:pure).
     """
 
     @abstractmethod
     def bind(self, func, /):
-        """\
+        """
         ```python
         def bind[F, R](self, func: F) -> Self[R]
             where F: Callable[[T], Self[R]]
@@ -206,16 +205,16 @@ class Monad(Applicative, ABCDispatch):
 
         Chain a new monadic computation to the current one.
 
-        The argument `f` maps a pure value of the monad's inner type to the monadic value.
+        The argument `func` maps a pure value of the monad's inner type to the monadic value.
         `bind` chains this computation to the one it represents.
         If its computation fails, the following computations will not be executed.
 
-        The function `f` is called a [Kleisli arrow](https://en.wikipedia.org/wiki/Kleisli_category).
+        The function `func` is called a [Kleisli arrow](https://en.wikipedia.org/wiki/Kleisli_category).
         This `bind` operation has other names in different programming languages.
         For example, in [:rust `Option`](https://doc.rust-lang.org/std/option/enum.Option.html) monad, it is called [:rust `and_then`](https://doc.rust-lang.org/std/option/enum.Option.html#method.and_then).
 
         Args:
-            f: The function that returns a new monadic computation.
+            func: The function that returns a new monadic computation.
 
         Returns:
             A new instance of the monad with the result of the chained computation.
@@ -244,14 +243,6 @@ class Monad(Applicative, ABCDispatch):
         return Monad.bind(self, lambda a: Applicative.pure[type(self)](func(a)))  # type: ignore
 
 from . import _implementation # noqa: E402
-"""
-Use the default implementations for the built-in types, namely `list`, `tuple`, `set`, `dict` and `function`.
-Besides `dict` which is only a `Functor`, all other types are `Functor`, `Applicative`, and `Monad`.
-
-This function should be called before using the monadic abstractions.
-
-See the [module level usage guide](#usage) for more information.
-"""
 for name, impl in vars(_implementation).items():
     if name.startswith("do_impl_for_"):
         impl()
