@@ -2060,7 +2060,7 @@ The reason that we don't use <code>Some</code>-<code>None</code> or <code>Nil</c
 <p>This module also provides a <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> constructor, which converts an <code>Optional[T]</code> value to a <code>Maybe[T]</code> value.</p>
 <p>The <a class="autorefs autorefs-internal" href="#apfel.container.maybe.Maybe"><code>Maybe</code></a> class, and the <a class="autorefs autorefs-internal" href="#apfel.container.maybe.just"><code>just</code></a>, <a class="autorefs autorefs-internal" href="#apfel.container.maybe.nothing"><code>nothing</code></a>, and <a class="autorefs autorefs-internal" href="#apfel.container.maybe.some"><code>some</code></a> functions
   are exposed in the <a href="../../prelude/#package-namespace">package namespace</a>.</p>
-<h2 id="apfel.container.maybe--rationale">Rationale<a class="headerlink" href="#apfel.container.maybe--rationale" title="Permanent link">#</a></h2>
+<h3 id="apfel.container.maybe--rationale">Rationale<a class="headerlink" href="#apfel.container.maybe--rationale" title="Permanent link">#</a></h3>
 <p>Python has a built-in <a href="https://docs.python.org/3/reference/datamodel.html#none">:python <code>None</code></a> object that represents the absence of a value,
 and a corresponding type hint <a href="https://docs.python.org/3/library/html#Optional">:python <code>Optional[T]</code></a>.
 However, an <code>Optional[T]</code> is semantically different from a <code>Maybe[T]</code> object.
@@ -2098,7 +2098,7 @@ Use <code>Maybe.is_nothing()</code> to check if a <code>Maybe</code> object is <
 <a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="k">assert</span> <span class="n">nothing</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span>
 <a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a><span class="k">assert</span> <span class="n">nothing</span> <span class="o">!=</span> <span class="kc">None</span>
 </code></pre></div>
-</details>        <h2 id="apfel.container.maybe--implementation">Implementation<a class="headerlink" href="#apfel.container.maybe--implementation" title="Permanent link">#</a></h2>
+</details>        <h3 id="apfel.container.maybe--implementation">Implementation<a class="headerlink" href="#apfel.container.maybe--implementation" title="Permanent link">#</a></h3>
 <p><code>Maybe</code> implements the following interfaces:</p>
 <table>
 <thead>

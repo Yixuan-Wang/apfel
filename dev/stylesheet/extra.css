@@ -158,7 +158,6 @@ body[data-md-color-scheme="slate"] .md-typeset .ref {
 }
 
 .md-typeset .ref {
-
     &.python, &.py {
         --ref-color-primary: oklch(50% 0.10224 246.527);
         --ref-color-hover: oklch(60% 0.16 91.172);

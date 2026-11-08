@@ -1208,7 +1208,7 @@
         <p>Dynamic dispatch facilities for Python.</p>
 <p>This addresses the lack of <strong>runtime-available</strong>, <strong>inheritance-free</strong> interfaces in Python.
 It partially resembles the <a href="https://kotlinlang.org/docs/extensions.html">:kotlin <code>extension</code></a> and <a href="https://doc.rust-lang.org/book/ch10-02-traits.html">:rust <code>trait</code></a>.</p>
-<h2 id="apfel.core.dispatch--rationale">Rationale<a class="headerlink" href="#apfel.core.dispatch--rationale" title="Permanent link">#</a></h2>
+<h3 id="apfel.core.dispatch--rationale">Rationale<a class="headerlink" href="#apfel.core.dispatch--rationale" title="Permanent link">#</a></h3>
 <p><strong>Why not <a href="https://docs.python.org/3/library/functools.html#functools.singledispatch">:python <code>functools.singledispatch</code></a>?</strong></p>
 <ul>
 <li>Runtime behavior based on type hints can be confusing.</li>
@@ -1228,7 +1228,7 @@ Some classes do not allow monkey-patching and the implementations must be stored
 <li>Abstract methods defined in an <code>ABCDispatch</code> can <strong>dynamically</strong> forward the call to the concrete implementation based on the real type, and the implementations can be externally provided.
   For example, an <code>ABCDispatch</code> can be used to extend built-in classes.</li>
 </ul>
-<h2 id="apfel.core.dispatch--usage">Usage<a class="headerlink" href="#apfel.core.dispatch--usage" title="Permanent link">#</a></h2>
+<h3 id="apfel.core.dispatch--usage">Usage<a class="headerlink" href="#apfel.core.dispatch--usage" title="Permanent link">#</a></h3>
 <p>First, define a class that subclasses <a class="autorefs autorefs-internal" href="#apfel.core.dispatch.ABCDispatch"><code>ABCDispatch</code></a>.
 This class will be semantically similar to <a href="https://doc.rust-lang.org/book/ch10-02-traits.html">:rust Rust traits</a>.
 All interface functions defined in this method shall be decorated with <a href="https://docs.python.org/3/library/abc.html#abc.abstractmethod">:python <code>@abc.abstractmethod</code></a>.
