@@ -2,7 +2,7 @@
 `apfel.container.value` provides a container that simply wraps a value
 designed to aid chained method calls.
 
-See also [`Identity`](https://hackage.haskell.org/package/base/docs/Data-Functor-Identity.html){ .ref .hs }.
+See also [:haskell `Identity`](https://hackage.haskell.org/package/base/docs/Data-Functor-Identity.html).
 """
 
 from apfel.core.monad import Monad
@@ -35,7 +35,7 @@ class Value(Monad):
             func (Value[Callable[[T], R]]): A `Value` containing a function to apply.
 
         Returns:
-            (Value[R]): A new `Value` containing the result of the function application.
+            Value[R]: A new `Value` containing the result of the function application.
         """
         return Value(func._value(self._value))  # pyright: ignore[reportAttributeAccessIssue]
 
@@ -48,7 +48,7 @@ class Value(Monad):
             func (Callable[[T], Value[R]]): A function that takes the inner value and returns a `Value`.
 
         Returns:
-            (Value[R]): A new `Value` containing the result of the function.
+            Value[R]: A new `Value` containing the result of the function.
         """
         return func(self._value)
 
@@ -69,7 +69,7 @@ class Value(Monad):
             func (Callable[[T], U]): A function to transform the inner value.
 
         Returns:
-            (Value[U]): A new `Value` containing the transformed value.
+            Value[U]: A new `Value` containing the transformed value.
         """
         return Value(func(self._value))
 
@@ -86,7 +86,7 @@ class Value(Monad):
             func (Callable[[T], Any]): A function that mutates the inner value.
 
         Returns:
-            (Value[T]): The mutated container itself.
+            Value[T]: The mutated container itself.
         """
         func(self._value)
         return self
@@ -101,7 +101,7 @@ class Value(Monad):
             value (T): The value to wrap.
 
         Returns:
-            (Value[T]): A new instance of `Value` with the value wrapped.
+            Value[T]: A new instance of `Value` with the value wrapped.
         """
         return cls(value)
 
@@ -113,7 +113,7 @@ class Value(Monad):
             func (Callable[[T], R]): A function to process the value.
 
         Returns:
-            (R): The result of the function.
+            R: The result of the function.
         """
         return func(self._value)
 
@@ -122,7 +122,7 @@ class Value(Monad):
         Call a function over the inner value, ignore the return value,
         and return the original container.
 
-        See also [`also`](https://kotlinlang.org/docs/scope-functions.html#also){ .ref .kt }.
+        See also [:kotlin `also`](https://kotlinlang.org/docs/scope-functions.html#also).
 
         Warning:
             Pragmatically, the function shouldn't mutate the inner value.
@@ -146,7 +146,7 @@ class Value(Monad):
             func (Callable[[T], T]): A function to transform the inner value.
 
         Returns:
-            (Value[T]): The mutated container itself.
+            Value[T]: The mutated container itself.
         """
         self._value = func(self._value)
         return self

@@ -1,7 +1,7 @@
 """
 A set of helper functions that inspect contextual information during runtime.
 
-See [non-standard evaluation](http://adv-r.had.co.nz/Computing-on-the-language.html){ .ref .rl } for more inspiration.
+See [:rlang non-standard evaluation](http://adv-r.had.co.nz/Computing-on-the-language.html) for more inspiration.
 """
 
 import ast

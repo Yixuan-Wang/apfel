@@ -1,3 +1,0 @@
-# Affirm
-
-::: apfel.expr.affirm

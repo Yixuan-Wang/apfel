@@ -1,6 +1,0 @@
-nav:
-  - Apfel: index.md
-  - "*.md"
-  - prelude.md
-  - core
-  - "*"

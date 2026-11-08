@@ -19,7 +19,7 @@ def throw(exc: BaseException, /) -> Never:
     """
     Raise an exception.
 
-    Similar to the [`raise`](docs.python.org/3/reference/simple_stmts.html#the-raise-statement) statement, but can be used in expressions.
+    Similar to the [:python `raise`](https://docs.python.org/3/reference/simple_stmts.html#the-raise-statement) statement, but can be used in expressions.
     This function will pop the top stack frame, simulating the statement.
     """
     try:
