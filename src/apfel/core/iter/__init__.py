@@ -9,7 +9,7 @@ To create or use this abstraction of iterator:
 
 [`Iterator`][apfel.core.iter.Iterator] and [`itrt`][apfel.core.iter.itrt] are are exposed in the [package namespace](../prelude.md#package-namespace).
 
-# Implementation
+## Implementation
 
 Iterators have a large number of methods. Missing methods will be added gradually over time.
 

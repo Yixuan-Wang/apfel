@@ -11,7 +11,7 @@ This module also provides a [`some`][apfel.container.maybe.some] constructor, wh
 The [`Maybe`][apfel.container.maybe.Maybe] class, and the [`just`][apfel.container.maybe.just], [`nothing`][apfel.container.maybe.nothing], and [`some`][apfel.container.maybe.some] functions
   are exposed in the [package namespace](../prelude.md#package-namespace).
 
-# Rationale
+## Rationale
 
 Python has a built-in [:python `None`](https://docs.python.org/3/reference/datamodel.html#none) object that represents the absence of a value,
 and a corresponding type hint [:python `Optional[T]`](https://docs.python.org/3/library/html#Optional).
@@ -58,7 +58,7 @@ Warning:
     assert nothing != None
     ```
 
-# Implementation
+## Implementation
 
 `Maybe` implements the following interfaces:
 

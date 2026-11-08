@@ -4,7 +4,7 @@ Dynamic dispatch facilities for Python.
 This addresses the lack of **runtime-available**, **inheritance-free** interfaces in Python.
 It partially resembles the [:kotlin `extension`](https://kotlinlang.org/docs/extensions.html) and [:rust `trait`](https://doc.rust-lang.org/book/ch10-02-traits.html).
 
-# Rationale
+## Rationale
 
 **Why not [:python `functools.singledispatch`](https://docs.python.org/3/library/functools.html#functools.singledispatch)?**
 
@@ -25,7 +25,7 @@ Using [`ABCDispatch`][apfel.core.dispatch.ABCDispatch] defined in this module,
 - Abstract methods defined in an `ABCDispatch` can **dynamically** forward the call to the concrete implementation based on the real type, and the implementations can be externally provided.
   For example, an `ABCDispatch` can be used to extend built-in classes.
 
-# Usage
+## Usage
 
 First, define a class that subclasses [`ABCDispatch`][apfel.core.dispatch.ABCDispatch].
 This class will be semantically similar to [:rust Rust traits](https://doc.rust-lang.org/book/ch10-02-traits.html).

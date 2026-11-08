@@ -3,7 +3,7 @@ Primitives for containers that can be written only once. Inspired by [:rust `Onc
 
 The [`Once`][apfel.container.once.Once] and [`Lazy`][apfel.container.once.Lazy] classes, are exposed in the [package namespace](../prelude.md#package-namespace).
 
-# Implementation
+## Implementation
 
 [`Once`][apfel.container.once.Once] takes reference from [:rust `OnceCell`](https://doc.rust-lang.org/std/cell/struct.OnceCell.html) and the current status is as follows:
 

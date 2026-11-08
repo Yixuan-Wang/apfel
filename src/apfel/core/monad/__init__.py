@@ -8,7 +8,7 @@ structured ways to compose and manipulate computations on a single effectful con
 The module defines three abstract classes: [`Functor`][apfel.core.monad.Functor],
 [`Applicative`][apfel.core.monad.Applicative], and [`Monad`][apfel.core.monad.Monad].
 
-# Rationale
+## Rationale
 
 Monadic abstractions like [:haskell `Functor`](https://hackage.haskell.org/package/base/docs/Data-Functor.html), [:haskell `Applicative`](https://hackage.haskell.org/package/base/docs/Control-Applicative.html), and [:haskell `Monad`](https://hackage.haskell.org/package/base/docs/Control-Monad.html) are popularized by Haskell.
 Although Python has weak support for functional programming, we include these abstractions to provide a uniform interface for such calculations.
@@ -19,7 +19,7 @@ This module provides default implementations for `list`, `tuple`, `set`, and `fu
 
 Note that we losen the constraints of such abstractions, as writing pure functional code is not a goal of this library.
 
-# Usage
+## Usage
 
 Here's a high-level comparison of the three.
 Assume `Value` is a `Monad`.

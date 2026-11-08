@@ -11,7 +11,7 @@ This module simply provides a way to reduce the pain of wrapping huge expression
 You can use application operators provided by `FunctionObject` to apply the function on the following expression.
 Use the [`fob`][apfel.core.function_object.fob] function to turn a function or a sequence of functions into `FunctionObject`s.
 
-# Usage
+## Usage
 
 Tip: TL;DR
     Use and only use function objects in interactive environments.
