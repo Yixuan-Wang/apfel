@@ -1,3 +1,0 @@
-# Common 
-
-::: apfel.core.common

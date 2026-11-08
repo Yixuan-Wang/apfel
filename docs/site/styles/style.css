@@ -1,0 +1,92 @@
+@layer starlight, starlight-pydocs, overrides, this;
+
+@layer this {
+  
+}
+
+@layer overrides {
+  .pyd-aside {
+    & .pyd-aside-title ~ .pyd-markdown {
+      margin-top: 0.25rem;
+    }
+  }
+
+  .pyd-heading-text {
+    display: inline;
+    align-items: baseline;
+    gap: 0.125rem;
+
+    & code {
+      background: none;
+      padding: 0;
+    }
+  }
+
+  .pyd-member:has(h2) {
+    margin-top: 1.5rem;
+  }
+
+  .pyd-group .pyd-member {
+    margin-top: 3rem;
+  }
+
+  .pyd-heading + * {
+    margin-top: 0.25rem;
+  }
+
+  .pyd-section-title + * {
+    margin-top: 0.125rem;
+  }
+}
+
+@layer overrides {
+  a {
+    transition: color 125ms;
+  }
+
+  aside {
+    border-inline-start: none;
+    border-radius: 0.25rem;
+  }
+
+  .pagination-links {
+    font-size: var(--sl-text-xs);
+    .link-title {
+      font-size: var(--sl-text-base);
+    }
+  }
+
+  .site-title img {
+    height: 1em;
+  }
+
+  .sl-markdown-content a {
+    color: var(--sl-color-accent);
+    word-break: break-word;
+    text-decoration: none;
+
+    code {
+      transition: background-color 125ms;
+    }
+
+    &:hover {
+      color: var(--sl-color-accent-high);
+      code {
+        background-color: var(--sl-color-accent-low);
+      }
+    }
+  }
+
+  .sl-markdown-content :is(code, kbd) {
+    font-variant-ligatures: discretionary-ligatures;
+  }
+
+  .sl-markdown-content code:not(:where(.not-content *)) {
+    border-radius: 0.25rem;
+    padding: 0.125rem 0.25rem;
+  }
+
+  .sl-markdown-content pre:not(:where(.not-content *)) {
+    border-radius: 0.25rem;
+  }
+}

@@ -2,52 +2,49 @@ name: Build Documentation
 
 on:
   push:
-    branches:
-      - main
-      - dev
-    tags:
-      - 'v*'
+    branches: [main]
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
 
 jobs:
-  build-docs:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+
+      - name: Pull docs engine
+        run: docker pull ghcr.io/yixuan-wang/astro-docs-python:latest
+
+      - name: Build site
+        run: |
+          cid="$(docker create \
+            -v "$PWD/docs/site:/app/docs/site:ro" \
+            -v "$PWD/docs/content:/app/src/content/docs:ro" \
+            -v "$PWD:/app/source:ro" \
+            ghcr.io/yixuan-wang/astro-docs-python:latest)"
+          trap 'docker rm -f "$cid" >/dev/null' EXIT
+          docker start -a "$cid"
+          mkdir out
+          docker cp "$cid:/app/dist/." out/
+
+      - uses: actions/upload-pages-artifact@v3
         with:
-          fetch-depth: ${{ github.event_name == 'workflow_dispatch' && 0 || 1 }}
+          path: out
 
-      - name: Setup uv
-        uses: astral-sh/setup-uv@v7
-        with:
-          python-version: 3.12
-
-      - name: Install dependencies
-        run: |
-          uv sync --frozen --group doc
-
-      - name: Configure Git
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-
-      - name: Deploy documentation
-        run: |
-          git fetch origin docs:docs || echo "docs branch does not exist yet"
-
-          if [[ $GITHUB_REF == refs/heads/main ]]; then
-            uv run mike set-default --branch docs --allow-undefined main
-            uv run mike deploy --branch docs --push --update-aliases main
-          elif [[ $GITHUB_REF == refs/heads/dev ]]; then
-            uv run mike deploy --branch docs --push --update-aliases dev
-          elif [[ $GITHUB_REF == refs/tags/v* ]]; then
-            TAG=${GITHUB_REF#refs/tags/}
-            VERSION_CLEAN=${TAG#v}
-            MAJOR_MINOR=$(echo $VERSION_CLEAN | cut -d. -f1,2)
-            uv run mike deploy --branch docs --push --update-aliases $MAJOR_MINOR latest
-          fi
-        
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
